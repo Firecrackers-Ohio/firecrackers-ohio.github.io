@@ -37,7 +37,7 @@ import Layout from '../layouts/Layout.astro';
 						fieldTwo: "FIELD TBD",
             time: "6-8p",
             coachName: "Coach Gary",
-            phone: "614-989-6569"
+            phone: "(614) 989-6569"
           },
           {
             age: "11U",
@@ -49,7 +49,7 @@ import Layout from '../layouts/Layout.astro';
 						fieldTwo: "FIELD 28",
             time: "6-8p",
             coachName: "Coach Matt",
-            phone: "724-252-6396"
+            phone: "(724) 252-6396"
           },
           {
             age: "12U",
@@ -61,7 +61,7 @@ import Layout from '../layouts/Layout.astro';
 						fieldTwo: "FIELD 26",
             time: "6-8p",
             coachName: "Coach Casey",
-            phone: "614-917-8858"
+            phone: "(614) 917-8858"
           },
           {
             age: "13U",
@@ -73,7 +73,7 @@ import Layout from '../layouts/Layout.astro';
 						fieldTwo: "FIELD 26",
             time: "6-8p",
             coachName: "Coach Phil",
-            phone: "614-440-8009"
+            phone: "(614) 440-8009"
           },
           {
             age: "14U",
@@ -85,7 +85,7 @@ import Layout from '../layouts/Layout.astro';
 						fieldTwo: "FIELD 22",
             time: "6-8p",
             coachName: "Coach Andy",
-            phone: "614-206-9110"
+            phone: "(614) 206-9110"
           }
         ].map((team) => (
           <div class="rounded-lg bg-red-600 p-6 space-y-4">
@@ -109,7 +109,7 @@ import Layout from '../layouts/Layout.astro';
                 </div>
               </div>
               <p class="text-lg">
-                {team.coachName} - {team.phone}
+                {team.coachName}: {team.phone}
               </p>
             </div>
           </div>
