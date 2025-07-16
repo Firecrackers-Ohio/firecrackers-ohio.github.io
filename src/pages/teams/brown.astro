@@ -1,0 +1,33 @@
+---
+import { getEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import CoachTitle from "../../components/teams/CoachTitle.astro";
+import VisionPhilosophy from "../../components/teams/VisionPhilosophy.astro";
+
+const team = await getEntry('teams', 'brown');
+if (!team) {
+  throw new Error('Could not find team Brown');
+}
+---
+
+<Layout>
+  <div class="min-h-screen w-auto mx-8 sm:w-auto sm:mx-16 md:w-3/4 md:mx-20 lg:w-3xl">
+    <CoachTitle teamName={team.data.title} />
+
+    <h1 class="mt-8">COACHING STAFF</h1>
+    {
+      team.data.staff.map(coach => (
+        <h2>{coach.name}</h2>
+        <div class="ml-4">
+          {coach.bio.map(paragraph => (
+            <div class="mb-2">{paragraph}</div>
+          ))}
+        </div>
+      ))
+    }
+    <h1 class="mt-8">TRAINING STRUCTURE</h1>
+    <div>
+      Together, this coaching staff is committed to building hard-working, passionate, and fundamentally sound athletes. Their goal is to foster an environment where players compete at a high level, love the game, and grow both on and off the field.  The Firecrackers 10U team will compete at the B-Level, practicing 1-2 times per week throughout the fall and winter along with participating in 2-3 tournaments, with spring and summer seasons practicing 2 times per week and playing in 7-9 tournaments.
+    </div>
+  </div>
+</Layout>

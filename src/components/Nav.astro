@@ -5,7 +5,25 @@ const pageTitles: Record<string, string> = {
   about: "About",
   teams: "Teams",
 };
-const pageTitle = pageTitles[pathname.slice(1)] || "Home";
+
+// Handle team-specific pages and tryouts
+let pageTitle = pageTitles[pathname.slice(1)] || "Home";
+if (pathname.startsWith("/teams/")) {
+  const teamName = pathname.split("/")[2];
+  if (teamName === "brown") {
+    pageTitle = "10U Brown";
+  } else if (teamName === "nieman") {
+    pageTitle = "11U Nieman";
+  } else if (teamName === "allen") {
+    pageTitle = "12U Allen";
+  } else if (teamName === "jones") {
+    pageTitle = "13U Jones";
+  } else if (teamName === "evans") {
+    pageTitle = "14U Evans";
+  }
+} else if (pathname.slice(1) === "tryouts") {
+  pageTitle = "Tryouts";
+}
 ---
 
 <nav class="top-0 z-50 bg-black">
@@ -31,10 +49,61 @@ const pageTitle = pageTitles[pathname.slice(1)] || "Home";
             >About</a
           >
         </div>
-        <div class="menu-item">
-          <a class={pathname.slice(1) === "teams" ? "active" : ""} href="/teams"
-            >Teams</a
+        <div class="menu-item relative">
+          <button
+            id="teams-dropdown-button"
+            class={pathname.slice(1) === "teams" ||
+            pathname.startsWith("/teams/")
+              ? "active"
+              : ""}
           >
+            Teams
+            <svg
+              class="w-4 h-4 ml-1 inline"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div
+            id="teams-dropdown"
+            class="hidden absolute top-full left-0 mt-1 w-48 bg-black border border-gray-700 rounded shadow-lg z-50"
+          >
+            <a
+              href="/tryouts"
+              class="block px-4 py-2 text-white hover:bg-gray-800">Tryouts</a
+            >
+            <a
+              href="/teams"
+              class="block px-4 py-2 text-white hover:bg-gray-800">All Teams</a
+            >
+            <a
+              href="/teams/brown"
+              class="block px-4 py-2 text-white hover:bg-gray-800">10U Brown</a
+            >
+            <a
+              href="/teams/nieman"
+              class="block px-4 py-2 text-white hover:bg-gray-800">11U Nieman</a
+            >
+            <a
+              href="/teams/allen"
+              class="block px-4 py-2 text-white hover:bg-gray-800">12U Allen</a
+            >
+            <a
+              href="/teams/jones"
+              class="block px-4 py-2 text-white hover:bg-gray-800">13U Jones</a
+            >
+            <a
+              href="/teams/evans"
+              class="block px-4 py-2 text-white hover:bg-gray-800">14U Evans</a
+            >
+          </div>
         </div>
         <div class="menu-item">
           <a href="https://gear.firecrackersoftball.com/" target="_blank"
@@ -91,7 +160,7 @@ const pageTitle = pageTitles[pathname.slice(1)] || "Home";
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-black">
+  <div id="mobile-menu" class="hidden md:hidden bg-black relative z-50">
     <div class="px-4 py-2 pb-6 space-y-2">
       <div class="menu-item">
         <a class={pathname.slice(1) === "" ? "active" : ""} href="/">Home</a>
@@ -102,9 +171,61 @@ const pageTitle = pageTitles[pathname.slice(1)] || "Home";
         >
       </div>
       <div class="menu-item">
-        <a class={pathname.slice(1) === "teams" ? "active" : ""} href="/teams"
-          >Teams</a
+        <button
+          id="mobile-teams-dropdown-button"
+          class={pathname.slice(1) === "teams" || pathname.startsWith("/teams/")
+            ? "active"
+            : ""}
         >
+          Teams
+          <svg
+            class="w-4 h-4 ml-1 inline mobile-teams-chevron transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+      </div>
+      <div
+        id="mobile-teams-dropdown"
+        class="hidden overflow-hidden transition-all duration-300 ease-in-out"
+      >
+        <div
+          class="ml-4 mt-2 space-y-2 bg-gray-900 rounded p-3 border border-gray-700 shadow-lg"
+        >
+          <a href="/tryouts" class="block text-white hover:text-red-400 py-1"
+            >Tryouts</a
+          >
+          <a href="/teams" class="block text-white hover:text-red-400 py-1"
+            >All Teams</a
+          >
+          <a
+            href="/teams/brown"
+            class="block text-white hover:text-red-400 py-1">10U Brown</a
+          >
+          <a
+            href="/teams/nieman"
+            class="block text-white hover:text-red-400 py-1">11U Nieman</a
+          >
+          <a
+            href="/teams/allen"
+            class="block text-white hover:text-red-400 py-1">12U Allen</a
+          >
+          <a
+            href="/teams/jones"
+            class="block text-white hover:text-red-400 py-1">13U Jones</a
+          >
+          <a
+            href="/teams/evans"
+            class="block text-white hover:text-red-400 py-1">14U Evans</a
+          >
+        </div>
       </div>
       <div class="menu-item">
         <a href="https://gear.firecrackersoftball.com/" target="_blank">Store</a
@@ -146,6 +267,55 @@ const pageTitle = pageTitles[pathname.slice(1)] || "Home";
     if (mobileMenuButton && mobileMenu) {
       mobileMenuButton.addEventListener("click", function () {
         mobileMenu.classList.toggle("hidden");
+      });
+    }
+
+    // Desktop Teams Dropdown
+    const teamsDropdownButton = document.getElementById(
+      "teams-dropdown-button",
+    );
+    const teamsDropdown = document.getElementById("teams-dropdown");
+
+    if (teamsDropdownButton && teamsDropdown) {
+      teamsDropdownButton.addEventListener("click", function () {
+        teamsDropdown.classList.toggle("hidden");
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function (event) {
+        if (
+          !teamsDropdownButton.contains(event.target as Node) &&
+          !teamsDropdown.contains(event.target as Node)
+        ) {
+          teamsDropdown.classList.add("hidden");
+        }
+      });
+    }
+
+    // Mobile Teams Dropdown
+    const mobileTeamsDropdownButton = document.getElementById(
+      "mobile-teams-dropdown-button",
+    );
+    const mobileTeamsDropdown = document.getElementById(
+      "mobile-teams-dropdown",
+    );
+    const mobileTeamsChevron = document.querySelector(".mobile-teams-chevron");
+
+    if (
+      mobileTeamsDropdownButton &&
+      mobileTeamsDropdown &&
+      mobileTeamsChevron
+    ) {
+      mobileTeamsDropdownButton.addEventListener("click", function () {
+        const isHidden = mobileTeamsDropdown.classList.contains("hidden");
+
+        if (isHidden) {
+          mobileTeamsDropdown.classList.remove("hidden");
+          mobileTeamsChevron.classList.add("rotate-180");
+        } else {
+          mobileTeamsDropdown.classList.add("hidden");
+          mobileTeamsChevron.classList.remove("rotate-180");
+        }
       });
     }
   });

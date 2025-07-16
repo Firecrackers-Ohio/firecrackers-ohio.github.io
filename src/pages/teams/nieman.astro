@@ -1,0 +1,41 @@
+---
+import { getEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import CoachTitle from "../../components/teams/CoachTitle.astro";
+import VisionPhilosophy from "../../components/teams/VisionPhilosophy.astro";
+
+const team = await getEntry('teams', 'nieman');
+if (!team) {
+  throw new Error('Could not find team Nieman');
+}
+---
+
+<Layout>
+  <div class="min-h-screen w-auto mx-8 sm:w-auto sm:mx-16 md:w-3/4 md:mx-20 lg:w-3xl">
+    <CoachTitle teamName={team.data.title} />
+
+    <h1 class="mt-8">TEAM OVERVIEW</h1>
+    <div>
+      The Firecrackers OH 11U Nieman team has had a strong 2024-2025 campaign, earning first-place finishes at the Summer Showdown, 5th Annual Flag City Blast, and Guts and Glory tournaments. The team also secured runner-up finishes at Roundtown Ruckus and Hits for the Heart. With a current 35-12-4 tournament record, the team is highly focused and competitive, ready to take on the 11u season.
+    </div>
+
+    <h1 class="mt-8">COACHING STAFF</h1>
+    {
+      team.data.staff.map(coach => (
+        <h2>{coach.name}</h2>
+        <div class="ml-4">
+          {coach.bio.map(paragraph => (
+            <div class="mb-2">{paragraph}</div>
+          ))}
+        </div>
+      ))
+    }
+    <h1 class="mt-8">PHILOSOPHY & TRAINING APPROACH</h1>
+    <div class="mb-4">
+      The Firecrackers OH 11U Nieman coaching staff emphasize balanced, purposeful training, with weekly practices split between hitting and defensive work. The coaching staff is committed to building softball IQ, sharpening individual skills, and strengthening team unity. Offseason training includes 1–2 practices per week at Hilliard Bradley High School (indoor and outdoor), with 3–4 fall tournaments and 10–12 in the spring/summer, competing at the B-Level.
+    </div>
+    <div>
+      Matt and his coaching staff are passionate about team development, consistently focused on competitive growth, skill refinement, and playing the game with passion and fun.
+    </div>
+  </div>
+</Layout>

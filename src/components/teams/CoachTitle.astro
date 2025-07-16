@@ -1,0 +1,24 @@
+---
+const { teamName } = Astro.props;
+---
+<div class="flex mt-4 mb-2 mx-0 md:mt-6 md:mb-4 md:mx-10">
+  <div class="flex grow">
+    <div class="flex-col w-full mr-0">
+      <div class="flex-none">&nbsp;</div>
+      <div class="grow h-1 bg-red"></div>
+      <div class="flex-none">&nbsp;</div>
+    </div>
+  </div>
+  <div
+    class="align-middle font-extrabold font-[Orbitron] w-fit text-4xl text-red sm:text-5xl md:text-5xl"
+  >
+    {teamName}
+  </div>
+  <div class="flex grow">
+    <div class="flex-col w-full ml-0">
+      <div class="flex-none">&nbsp;</div>
+      <div class="grow h-1 bg-red"></div>
+      <div class="flex-none">&nbsp;</div>
+    </div>
+  </div>
+</div>
