@@ -1,0 +1,31 @@
+---
+import { getEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import CoachTitle from "../../components/teams/CoachTitle.astro";
+import VisionPhilosophy from "../../components/teams/VisionPhilosophy.astro";
+
+const team = await getEntry('teams', 'allen');
+if (!team) {
+  throw new Error('Could not find team Allen');
+}
+---
+
+<Layout>
+  <div class="min-h-screen w-auto mx-8 sm:w-auto sm:mx-16 md:w-3/4 md:mx-20 lg:w-3xl">
+    <CoachTitle teamName={team.data.title} />
+
+    <h1 class="mt-8">COACHING STAFF</h1>
+    {
+      team.data.staff.map(coach => (
+        <h2>{coach.name}</h2>
+        <div class="ml-4">
+          {coach.bio.map(paragraph => (
+            <div class="mb-2">{paragraph}</div>
+          ))}
+        </div>
+      ))
+    }
+    <h1 class="mt-8">COACHING PHILOSOPHY</h1>
+    <div>While planning to compete as a B-class team for the 2025/2026 season, Casey and Josh emphasize player development, hard work, and teamwork throughout their practice and tournament schedules.  Practices are typically 2 nights per week through the fall, winter, and spring, with 3-4 fall tournaments and 8-10 spring/summer tournaments on their schedule. They believe that consistent effort and a strong team culture are key to helping athletes reach their full potential.</div>
+  </div>
+</Layout>

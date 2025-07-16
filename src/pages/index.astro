@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
@@ -10,110 +10,98 @@ import Layout from '../layouts/Layout.astro';
         <img
           src="/logo-text-outline.svg"
           alt="FIRECRACKERS"
-          class="h-24 mx-auto filter brightness-50 dark:brightness-80 dark:invert"
+          class="h-32 mx-auto filter brightness-50 dark:brightness-80 dark:invert"
         />
-        <h2 class="text-4xl font-bold text-gray-900 dark:text-gray-400 font-almarai">TRYOUTS</h2>
-        <p class="py-6 text-lg text-gray-700 dark:text-gray-300 mt-2">All tryouts will be held at Lou Beriner Sports Park. Players are encouraged to attend both dates. See below for age group details. Please reach out to the team coach with any questions.</p>
-        <a
-          href="https://docs.google.com/forms/d/e/1FAIpQLSd3Xiv5M5WycU9bQDIubCt_eAFehdVMxJ-IRgg3rR7nxvEIgw/viewform"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-block mt-4 px-6 py-3 bg-red text-white font-bold rounded-lg transition-colors"
+        <h1
+          class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-gray-400 font-almarai mb-8"
         >
-          Click here to register
-        </a>
+          CENTRAL OHIO
+        </h1>
       </div>
 
-      <!-- Age Groups Grid -->
-      <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        {[
-          {
-            age: "10U",
-            coach: "BROWN",
-            birthYears: "SEPT 2014 - DEC 2015",
-            dateOne: "JULY 15",
-						fieldOne: "FIELD 28",
-            dateTwo: "JULY 20",
-						fieldTwo: "FIELD TBD",
-            time: "6-8p",
-            coachName: "Coach Gary",
-            phone: "(614) 989-6569"
-          },
-          {
-            age: "11U",
-            coach: "NIEMAN",
-            birthYears: "SEPT 2013 - DEC 2014",
-            dateOne: "JULY 16",
-						fieldOne: "FIELD 28",
-            dateTwo: "JULY 20",
-						fieldTwo: "FIELD 28",
-            time: "6-8p",
-            coachName: "Coach Matt",
-            phone: "(724) 252-6396"
-          },
-          {
-            age: "12U",
-            coach: "ALLEN",
-            birthYears: "SEPT 2012 - DEC 2013",
-            dateOne: "JULY 9",
-						fieldOne: "FIELD 26",
-            dateTwo: "JULY 16",
-						fieldTwo: "FIELD 26",
-            time: "6-8p",
-            coachName: "Coach Casey",
-            phone: "(614) 917-8858"
-          },
-          {
-            age: "13U",
-            coach: "JONES",
-            birthYears: "SEPT 2011 - DEC 2012",
-            dateOne: "JULY 15",
-						fieldOne: "FIELD 26",
-            dateTwo: "JULY 20",
-						fieldTwo: "FIELD 26",
-            time: "6-8p",
-            coachName: "Coach Phil",
-            phone: "(614) 440-8009"
-          },
-          {
-            age: "14U",
-            coach: "EVANS",
-            birthYears: "SEPT 2010 - DEC 2011",
-            dateOne: "JULY 15",
-						fieldOne: "FIELD 22",
-            dateTwo: "JULY 20",
-						fieldTwo: "FIELD 22",
-            time: "6-8p",
-            coachName: "Coach Andy",
-            phone: "(614) 206-9110"
-          }
-        ].map((team) => (
-          <div class="rounded-lg bg-red-600 p-6 space-y-4">
-            <!-- Team Info -->
-            <div class="border-b-2 border-gray-800/30 dark:border-gray-300/30 pb-3">
-              <h3 class="text-3xl font-bold text-red">{team.age} - {team.coach}</h3>
-              <p class="text-lg">{team.birthYears}</p>
-            </div>
+      <!-- Main Content -->
+      <div class="max-w-4xl mx-auto space-y-12">
+        <!-- About Section -->
+        <section class="text-center">
+          <p
+            class="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed"
+          >
+            Welcome to Firecrackers Ohio, a group of fastpitch softball teams
+            located in central Ohio who proudly represent the national
+            Firecrackers Softball Organization. Our mission is to provide our
+            athletes with exceptional training that fosters both athletic
+            excellence and personal growth. We are committed to developing
+            confident, respectful, and resilient young women—on and off the
+            field. Our teams compete across multiple age divisions, from 10U
+            through 14U, each emphasizing fundamental skill development,
+            competitive preparation, and building character through teamwork and
+            dedication.
+          </p>
+        </section>
 
-            <!-- Tryout Details -->
-            <div class="space-y-2">
-              <p class="text-lg">LOU BERLINER SPORTS PARK</p>
-              <div class="flex items-baseline justify-between">
-                <div class="text-lg">
-                  <span class="font-bold">{team.dateOne}</span> | {team.fieldOne} | {team.time}
-                </div>
-								</div>
-              <div class="flex items-baseline justify-between">
-                <div class="text-lg">
-                  <span class="font-bold">{team.dateTwo}</span> | {team.fieldTwo} | {team.time}
-                </div>
-              </div>
-              <p class="text-lg">
-                {team.coachName}: {team.phone}
-              </p>
-            </div>
-          </div>
-        ))}
+        <!-- Tryouts Section -->
+        <section class="bg-gray-50 dark:bg-gray-800 rounded-lg p-8 text-center">
+          <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            Tryout Details Announced
+          </h2>
+          <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">
+            We've announced our tryout schedule for the upcoming season! All
+            tryouts will be held at Lou Berliner Sports Park with multiple dates
+            available for each age group. Don't miss your chance to join one of
+            our competitive teams.
+          </p>
+          <a
+            href="/tryouts"
+            class="inline-block px-8 py-4 bg-red text-white font-bold rounded-lg hover:bg-red-700 transition-colors"
+          >
+            View Tryout Schedule
+          </a>
+        </section>
+
+        <!-- Teams Section -->
+        <section class="text-center">
+          <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">
+            Our Teams
+          </h2>
+          <p class="text-lg text-gray-700 dark:text-gray-300 mb-8">
+            Firecrackers Ohio fields competitive teams across five age
+            divisions: 10U Brown, 11U Nieman, 12U Allen, 13U Jones, and 14U
+            Evans. Each team is led by experienced coaches who focus on building
+            well-rounded athletes through skill development, strategic thinking,
+            and character building. From foundational skills in our younger
+            divisions to advanced competitive preparation in our older teams, we
+            provide a comprehensive pathway for player development.
+          </p>
+          <a
+            href="/teams"
+            class="inline-block px-8 py-4 bg-gray-900 dark:bg-gray-700 text-white font-bold rounded-lg hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors"
+          >
+            Meet Our Teams
+          </a>
+        </section>
+
+        <!-- Team Store Section -->
+        <section
+          class="bg-red-50 dark:bg-red-900/20 rounded-lg p-8 text-center"
+        >
+          <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            Support Our Teams
+          </h2>
+          <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">
+            Show your Firecrackers pride! Visit our official team store to
+            purchase fan gear, apparel, and accessories. From jerseys and
+            hoodies to hats and accessories, we have everything you need to
+            represent Firecrackers Ohio with style.
+          </p>
+          <a
+            href="https://gear.firecrackersoftball.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block px-8 py-4 bg-red text-white font-bold rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Shop Team Store
+          </a>
+        </section>
       </div>
     </div>
   </main>
