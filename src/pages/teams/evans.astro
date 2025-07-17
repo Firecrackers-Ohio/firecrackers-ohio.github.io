@@ -2,44 +2,77 @@
 import { getEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import CoachTitle from "../../components/teams/CoachTitle.astro";
-import VisionPhilosophy from "../../components/teams/VisionPhilosophy.astro";
 
-const team = await getEntry('teams', 'evans');
+const team = await getEntry("teams", "evans");
 if (!team) {
-  throw new Error('Could not find team Evans');
+  throw new Error("Could not find team Evans");
 }
 ---
 
 <Layout>
-  <div class="min-h-screen w-auto mx-8 sm:w-auto sm:mx-16 md:w-3/4 md:mx-20 lg:w-3xl">
+  <div
+    class="mx-8 min-h-screen w-auto sm:mx-16 sm:w-auto md:mx-20 md:w-3/4 lg:w-3xl"
+  >
     <CoachTitle teamName={team.data.title} />
 
     <h1 class="mt-8">COACHING STAFF</h1>
     {
       team.data.staff.map(coach => (
-        <h2>{coach.name}</h2>
-        <div class="ml-4">
-          {coach.bio.map(paragraph => (
-            <div class="mb-2">{paragraph}</div>
-          ))}
-        </div>
+        <>
+          <h2>{coach.name}</h2>
+          <div class="ml-4">
+            {coach.bio.map(paragraph => (
+              <div>{paragraph}</div>
+            ))}
+          </div>
+        </>
       ))
     }
     <h1 class="mt-8">TRAINING STRUCTURE</h1>
-    <div>Andy and his staff plan to compete at the B Level in 2025/26. They emphasize hard work, fundamentals, and player development, supported by a structured year-round training schedule that adapts to school and multi-sport commitments. Firecrackers OH 14U Team trains and plays year-round:</div>
-    <ul class="list-disc list-inside">
-      <li>Fall season is comprised of 2 team practices focused on fielding/pitching and hitting, and 3 at-home workouts per week, along with 3 scheduled tournaments plus friendlies/league play totaling 20-25 games.</li>
-      <li>Winter season with weekly practices focused on fundamentals and technique, and 1-2 indoor tournaments, with a break from mid-December through early January, and a school ball break in mid/late February.</li>
-      <li>Spring/Summer Season beginning in May includes 2 practices per week plus at-home training, with 9-10 tournaments including 2 out of state events in Michigan and Tennessee.</li>
+    <div>
+      Andy and his staff plan to compete at the B Level in 2025/26. They
+      emphasize hard work, fundamentals, and player development, supported by a
+      structured year-round training schedule that adapts to school and
+      multi-sport commitments. Firecrackers OH 14U Team trains and plays
+      year-round:
+    </div>
+    <ul class="list-inside list-disc">
+      <li>
+        Fall season is comprised of 2 team practices focused on
+        fielding/pitching and hitting, and 3 at-home workouts per week, along
+        with 3 scheduled tournaments plus friendlies/league play totaling 20-25
+        games.
+      </li>
+      <li>
+        Winter season with weekly practices focused on fundamentals and
+        technique, and 1-2 indoor tournaments, with a break from mid-December
+        through early January, and a school ball break in mid/late February.
+      </li>
+      <li>
+        Spring/Summer Season beginning in May includes 2 practices per week plus
+        at-home training, with 9-10 tournaments including 2 out of state events
+        in Michigan and Tennessee.
+      </li>
     </ul>
 
-<div>
-  <h1 class="mt-8">PROGRAM VISION AND PHILOSOPHY</h1>
-  <div class="mb-20">
-    <div class="mb-4">Coach Evans and his staff are committed to developing multi-sport, well-rounded athletes.</div>
-    <div class="mb-4">“I believe athletes can love more than one sport and shouldn’t have to choose which one they want to play at a high level.” – Andy Evans</div>
-    <div class="mb-4">The coaching approach is rooted in mastering fundamentals first, then building advanced, game-ready skills. Players are encouraged to embrace discomfort, work hard, and grow through challenge—building character as much as talent.</div>
+    <div>
+      <h1 class="mt-8">PROGRAM VISION AND PHILOSOPHY</h1>
+      <div class="mb-20">
+        <div class="mb-4">
+          Coach Evans and his staff are committed to developing multi-sport,
+          well-rounded athletes.
+        </div>
+        <div class="mb-4">
+          “I believe athletes can love more than one sport and shouldn’t have to
+          choose which one they want to play at a high level.” – Andy Evans
+        </div>
+        <div class="mb-4">
+          The coaching approach is rooted in mastering fundamentals first, then
+          building advanced, game-ready skills. Players are encouraged to
+          embrace discomfort, work hard, and grow through challenge—building
+          character as much as talent.
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-</div>
 </Layout>

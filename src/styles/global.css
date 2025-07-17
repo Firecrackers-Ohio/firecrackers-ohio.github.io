@@ -34,32 +34,27 @@
 @layer components {
   /* Nav */
   .menu-item {
-    @apply relative flex items-center justify-center h-12 w-24
-   bg-black text-gray-50 text-lg font-normal
-   hover:text-yellow hover:text-xl hover:font-semibold
-    transition-all duration-150 ease-linear
-    cursor-pointer;
+    @apply hover:text-yellow relative flex h-12 w-24 cursor-pointer items-center justify-center bg-black text-lg font-normal text-gray-50 transition-all duration-150 ease-linear hover:text-xl hover:font-semibold;
   }
   .active {
     @apply text-yellow text-xl font-semibold;
   }
   .social-icon {
-    @apply flex items-center
-    pr-3;
+    @apply flex items-center pr-3;
   }
 
   /* Text Blocks */
   .p-heading {
-    @apply text-2xl md:text-5xl font-bold text-gray-800 mb-4 tracking-tight;
+    @apply mb-4 text-2xl font-bold tracking-tight text-gray-800 md:text-5xl;
   }
   .p-body {
-    @apply text-xl md:text-xl text-gray-600 max-w-fit mx-auto mb-8;
+    @apply mx-auto mb-8 max-w-fit text-xl text-gray-600 md:text-xl;
   }
   .p-link {
     @apply text-red underline;
   }
   h1 {
-    @apply underline decoration-red font-bold text-2xl;
+    @apply decoration-red text-2xl font-bold underline;
   }
   h2 {
     @apply font-semibold;
