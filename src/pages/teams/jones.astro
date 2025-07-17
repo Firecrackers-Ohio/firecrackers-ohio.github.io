@@ -2,7 +2,6 @@
 import { getEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import CoachTitle from "../../components/teams/CoachTitle.astro";
-import VisionPhilosophy from "../../components/teams/VisionPhilosophy.astro";
 
 const team = await getEntry("teams", "jones");
 if (!team) {
@@ -68,8 +67,13 @@ if (!team) {
       </li>
     </ul>
 
-    <VisionPhilosophy
-      text="The Firecrackers OH - 13U Jones coaching staff is committed to building well-rounded athletes through hard work, accountability, and a team-first mentality. With a focus on skill development, game intelligence, and a strong family culture, the program prepares players to compete at a high level-on and off the"
-    />
+    <h1 class="mt-8">PROGRAM VISION AND PHILOSOPHY</h1>
+    <div class="mb-20">
+      The Firecrackers OH - 13U Jones coaching staff is committed to building
+      well-rounded athletes through hard work, accountability, and a team-first
+      mentality. With a focus on skill development, game intelligence, and a
+      strong family culture, the program prepares players to compete at a high
+      level-on and off the
+    </div>
   </div>
 </Layout>

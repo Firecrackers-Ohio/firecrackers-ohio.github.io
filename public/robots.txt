@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://firecrackersohio.com/sitemap.xml
+
+# Block access to admin areas if any exist
+Disallow: /admin/
+Disallow: /.well-known/
+Disallow: /api/
