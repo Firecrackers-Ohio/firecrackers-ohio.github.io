@@ -1,0 +1,64 @@
+---
+import { Image as AstroImage } from "astro:assets";
+
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  loading?: "eager" | "lazy";
+  decoding?: "async" | "sync" | "auto";
+  sizes?: string;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  class: className = "",
+  loading = "lazy",
+  decoding = "async",
+  sizes,
+  ...props
+} = Astro.props;
+
+// Handle both imported assets and public folder images
+const isImportedAsset = typeof src === "object";
+const imageSrc = isImportedAsset ? src : src;
+---
+
+{
+  isImportedAsset && width && height ? (
+    <AstroImage
+      src={imageSrc}
+      alt={alt}
+      width={width}
+      height={height}
+      class={className}
+      loading={loading}
+      decoding={decoding}
+      sizes={sizes}
+      {...props}
+    />
+  ) : (
+    <img
+      src={imageSrc}
+      alt={alt}
+      width={width}
+      height={height}
+      class={className}
+      loading={loading}
+      decoding={decoding}
+      {...props}
+    />
+  )
+}
+
+<style>
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+</style>

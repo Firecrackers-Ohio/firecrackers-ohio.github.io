@@ -1,0 +1,56 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Page Not Found | Firecrackers Central Ohio"
+  description="The page you're looking for doesn't exist. Browse our teams, tryout information, and more."
+>
+  <div class="container mx-auto px-4 py-16">
+    <div class="mx-auto max-w-2xl text-center">
+      <img
+        src="/logo-text-outline.svg"
+        alt="FIRECRACKERS"
+        class="mx-auto mb-8 h-24 brightness-50 filter dark:brightness-80 dark:invert"
+      />
+
+      <h1 class="mb-4 text-6xl font-bold text-gray-900 dark:text-gray-100">
+        404
+      </h1>
+      <h2 class="mb-6 text-3xl font-semibold text-gray-700 dark:text-gray-300">
+        Page Not Found
+      </h2>
+
+      <p class="mb-8 text-lg text-gray-600 dark:text-gray-400">
+        Sorry, the page you're looking for doesn't exist. You might have
+        mistyped the URL or the page may have been moved.
+      </p>
+
+      <div class="space-y-4">
+        <a
+          href="/"
+          class="bg-red inline-block rounded-lg px-8 py-4 font-bold text-white transition-colors hover:bg-red-700"
+        >
+          Go Home
+        </a>
+
+        <div class="text-center">
+          <p class="mb-4 text-gray-600 dark:text-gray-400">
+            Or visit one of these pages:
+          </p>
+          <div class="flex flex-wrap justify-center gap-4">
+            <a href="/teams" class="text-red underline hover:text-red-700"
+              >Teams</a
+            >
+            <a href="/tryouts" class="text-red underline hover:text-red-700"
+              >Tryouts</a
+            >
+            <a href="/about" class="text-red underline hover:text-red-700"
+              >About</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
