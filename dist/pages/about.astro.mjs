@@ -1,11 +1,24 @@
-import { c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead } from '../chunks/astro/server_vuwm5PAE.mjs';
-import 'kleur/colors';
-import 'html-escaper';
-import { $ as $$Layout } from '../chunks/Layout_FG1C4Etn.mjs';
-export { renderers } from '../renderers.mjs';
+import {
+  c as createComponent,
+  r as renderComponent,
+  a as renderTemplate,
+  m as maybeRenderHead,
+} from "../chunks/astro/server_vuwm5PAE.mjs";
+import "kleur/colors";
+import "html-escaper";
+import { $ as $$Layout } from "../chunks/Layout_FG1C4Etn.mjs";
+export { renderers } from "../renderers.mjs";
 
-const $$About = createComponent(($$result, $$props, $$slots) => {
-  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, {}, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<div class="flex flex-col mx-6 mt-8 sm:w-3/4 md:w-2/3 md:ml-36"> <div> <h1 class="p-heading">Firecracker Central Ohio</h1> <p class="p-body">
+const $$About = createComponent(
+  ($$result, $$props, $$slots) => {
+    return renderTemplate`${renderComponent(
+      $$result,
+      "Layout",
+      $$Layout,
+      {},
+      {
+        default:
+          $$result2 => renderTemplate` ${maybeRenderHead()}<div class="flex flex-col mx-6 mt-8 sm:w-3/4 md:w-2/3 md:ml-36"> <div> <h1 class="p-heading">Firecracker Central Ohio</h1> <p class="p-body">
 We are a group of fastpitch softball teams located in central Ohio who
         proudly represent the national <a class="p-link" href="https://firecrackersoftball.com/" target="_blank">Firecracks Softball Organization</a>.
 </p> </div> <div> <h1 class="p-heading">Mission Statement</h1> <p class="p-body">
@@ -32,18 +45,29 @@ The Central Ohio Firecrackers foster a team culture that is tightly
         on and off the field. We lift each other up, celebrate each other&#39;s
         wins, and never let anyone fall behind. It’s more than softball—it’s a
         united team built on encouragement, effort, and shared purpose.
-</p> </div> </div> ` })}`;
-}, "/Users/mike/code/mike/firecrackers/src/pages/about.astro", void 0);
+</p> </div> </div> `,
+      }
+    )}`;
+  },
+  "/Users/mike/code/mike/firecrackers/src/pages/about.astro",
+  void 0
+);
 
 const $$file = "/Users/mike/code/mike/firecrackers/src/pages/about.astro";
 const $$url = "/about";
 
-const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
-  __proto__: null,
-  default: $$About,
-  file: $$file,
-  url: $$url
-}, Symbol.toStringTag, { value: 'Module' }));
+const _page = /*#__PURE__*/ Object.freeze(
+  /*#__PURE__*/ Object.defineProperty(
+    {
+      __proto__: null,
+      default: $$About,
+      file: $$file,
+      url: $$url,
+    },
+    Symbol.toStringTag,
+    { value: "Module" }
+  )
+);
 
 const page = () => _page;
 

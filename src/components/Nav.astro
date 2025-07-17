@@ -27,20 +27,20 @@ if (pathname.startsWith("/teams/")) {
 ---
 
 <nav class="top-0 z-50 bg-black">
-  <div class="flex flex-row h-16">
-    <div class="w-24 h-24 md:w-32 md:h-32 p-2 flex-none -mt-1 relative">
+  <div class="flex h-16 flex-row">
+    <div class="relative -mt-1 h-24 w-24 flex-none p-2 md:h-32 md:w-32">
       <a href="/">
         <img src="/logo-round.svg" alt="Firecrackers of Central Ohio Logo" />
       </a>
     </div>
-    <div class="w-screen flex flex-row p-2 flex-auto">
+    <div class="flex w-screen flex-auto flex-row p-2">
       <!-- Mobile Page Title -->
-      <div class="md:hidden flex items-center justify-center flex-1">
-        <h1 class="text-white font-bold text-lg">{pageTitle}</h1>
+      <div class="flex flex-1 items-center justify-center md:hidden">
+        <h1 class="text-lg font-bold text-white">{pageTitle}</h1>
       </div>
 
       <!-- Desktop Menu -->
-      <div class="hidden md:flex flex-row space-x-6 items-center">
+      <div class="hidden flex-row items-center space-x-6 md:flex">
         <div class="menu-item">
           <a class={pathname.slice(1) === "" ? "active" : ""} href="/">Home</a>
         </div>
@@ -59,7 +59,7 @@ if (pathname.startsWith("/teams/")) {
           >
             Teams
             <svg
-              class="w-4 h-4 ml-1 inline"
+              class="ml-1 inline h-4 w-4"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -73,7 +73,7 @@ if (pathname.startsWith("/teams/")) {
           </button>
           <div
             id="teams-dropdown"
-            class="hidden absolute top-full left-0 mt-1 w-48 bg-black border border-gray-700 rounded shadow-lg z-50"
+            class="absolute top-full left-0 z-50 mt-1 hidden w-48 rounded border border-gray-700 bg-black shadow-lg"
           >
             <a
               href="/tryouts"
@@ -113,15 +113,15 @@ if (pathname.startsWith("/teams/")) {
       </div>
     </div>
     <div
-      class="w-10 h-full bg-[linear-gradient(120deg,_#000000_50%,_#c20202_50%)] flex-none"
+      class="h-full w-10 flex-none bg-[linear-gradient(120deg,_#000000_50%,_#c20202_50%)]"
     >
     </div>
-    <div class="bg-[#c20202] text-white flex flex-row p-2">
+    <div class="flex flex-row bg-[#c20202] p-2 text-white">
       <!-- Mobile Menu Button -->
-      <div class="md:hidden flex items-center">
-        <button id="mobile-menu-button" class="text-white p-2">
+      <div class="flex items-center md:hidden">
+        <button id="mobile-menu-button" class="p-2 text-white">
           <svg
-            class="w-6 h-6"
+            class="h-6 w-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -136,7 +136,7 @@ if (pathname.startsWith("/teams/")) {
       </div>
 
       <!-- Desktop Social Icons -->
-      <div class="hidden md:flex flex-row">
+      <div class="hidden flex-row md:flex">
         <div class="social-icon">
           <a href="https://www.facebook.com/firecrackersohio" target="_blank">
             <img src="/fb.svg" alt="Facebook" class="h-10" />
@@ -160,8 +160,8 @@ if (pathname.startsWith("/teams/")) {
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-black relative z-50">
-    <div class="px-4 py-2 pb-6 space-y-2">
+  <div id="mobile-menu" class="relative z-50 hidden bg-black md:hidden">
+    <div class="space-y-2 px-4 py-2 pb-6">
       <div class="menu-item">
         <a class={pathname.slice(1) === "" ? "active" : ""} href="/">Home</a>
       </div>
@@ -179,7 +179,7 @@ if (pathname.startsWith("/teams/")) {
         >
           Teams
           <svg
-            class="w-4 h-4 ml-1 inline mobile-teams-chevron transition-transform"
+            class="mobile-teams-chevron ml-1 inline h-4 w-4 transition-transform"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -197,33 +197,33 @@ if (pathname.startsWith("/teams/")) {
         class="hidden overflow-hidden transition-all duration-300 ease-in-out"
       >
         <div
-          class="ml-4 mt-2 space-y-2 bg-gray-900 rounded p-3 border border-gray-700 shadow-lg"
+          class="mt-2 ml-4 space-y-2 rounded border border-gray-700 bg-gray-900 p-3 shadow-lg"
         >
-          <a href="/tryouts" class="block text-white hover:text-red-400 py-1"
+          <a href="/tryouts" class="block py-1 text-white hover:text-red-400"
             >Tryouts</a
           >
-          <a href="/teams" class="block text-white hover:text-red-400 py-1"
+          <a href="/teams" class="block py-1 text-white hover:text-red-400"
             >All Teams</a
           >
           <a
             href="/teams/brown"
-            class="block text-white hover:text-red-400 py-1">10U Brown</a
+            class="block py-1 text-white hover:text-red-400">10U Brown</a
           >
           <a
             href="/teams/nieman"
-            class="block text-white hover:text-red-400 py-1">11U Nieman</a
+            class="block py-1 text-white hover:text-red-400">11U Nieman</a
           >
           <a
             href="/teams/allen"
-            class="block text-white hover:text-red-400 py-1">12U Allen</a
+            class="block py-1 text-white hover:text-red-400">12U Allen</a
           >
           <a
             href="/teams/jones"
-            class="block text-white hover:text-red-400 py-1">13U Jones</a
+            class="block py-1 text-white hover:text-red-400">13U Jones</a
           >
           <a
             href="/teams/evans"
-            class="block text-white hover:text-red-400 py-1">14U Evans</a
+            class="block py-1 text-white hover:text-red-400">14U Evans</a
           >
         </div>
       </div>
@@ -233,7 +233,7 @@ if (pathname.startsWith("/teams/")) {
       </div>
 
       <!-- Mobile Social Icons -->
-      <div class="border-t border-gray-700 pt-4 mt-5">
+      <div class="mt-5 border-t border-gray-700 pt-4">
         <div class="flex justify-center space-x-4">
           <div class="social-icon">
             <a href="https://www.facebook.com/firecrackersohio" target="_blank">
@@ -272,7 +272,7 @@ if (pathname.startsWith("/teams/")) {
 
     // Desktop Teams Dropdown
     const teamsDropdownButton = document.getElementById(
-      "teams-dropdown-button",
+      "teams-dropdown-button"
     );
     const teamsDropdown = document.getElementById("teams-dropdown");
 
@@ -294,10 +294,10 @@ if (pathname.startsWith("/teams/")) {
 
     // Mobile Teams Dropdown
     const mobileTeamsDropdownButton = document.getElementById(
-      "mobile-teams-dropdown-button",
+      "mobile-teams-dropdown-button"
     );
     const mobileTeamsDropdown = document.getElementById(
-      "mobile-teams-dropdown",
+      "mobile-teams-dropdown"
     );
     const mobileTeamsChevron = document.querySelector(".mobile-teams-chevron");
 

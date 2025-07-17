@@ -1,0 +1,16 @@
+dist/
+.astro/
+node_modules/
+*.config.js
+*.config.ts
+*.config.mjs
+.env
+.env.local
+.env.production
+.env.development
+coverage/
+.nyc_output/
+*.log
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
