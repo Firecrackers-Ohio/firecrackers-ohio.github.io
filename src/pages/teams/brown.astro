@@ -9,34 +9,57 @@ if (!team) {
 }
 ---
 
-<Layout>
-  <div
-    class="mx-8 min-h-screen w-auto sm:mx-16 sm:w-auto md:mx-20 md:w-3/4 lg:w-3xl"
-  >
+<Layout
+  title="10U Brown Team | Firecrackers Central Ohio"
+  description="Meet the 10U Brown team coaching staff and learn about their training philosophy, competitive structure, and player development approach."
+>
+  <div class="container mx-auto px-4 py-8">
     <CoachTitle teamName={team.data.title} />
 
-    <h1 class="mt-8">COACHING STAFF</h1>
-    {
-      team.data.staff.map(coach => (
-        <>
-          <h2>{coach.name}</h2>
-          <div class="ml-4">
-            {coach.bio.map(paragraph => (
-              <div>{paragraph}</div>
-            ))}
-          </div>
-        </>
-      ))
-    }
-    <h1 class="mt-8">TRAINING STRUCTURE</h1>
-    <div>
-      Together, this coaching staff is committed to building hard-working,
-      passionate, and fundamentally sound athletes. Their goal is to foster an
-      environment where players compete at a high level, love the game, and grow
-      both on and off the field. The Firecrackers 10U team will compete at the
-      B-Level, practicing 1-2 times per week throughout the fall and winter
-      along with participating in 2-3 tournaments, with spring and summer
-      seasons practicing 2 times per week and playing in 7-9 tournaments.
+    <div class="mx-auto max-w-4xl space-y-12">
+      <!-- Coaching Staff Section -->
+      <section>
+        <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
+          COACHING STAFF
+        </h2>
+        <div class="space-y-8">
+          {
+            team.data.staff.map(coach => (
+              <div class="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
+                <h3 class="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">
+                  {coach.name}
+                </h3>
+                <div class="space-y-4">
+                  {coach.bio.map(paragraph => (
+                    <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- Training Structure Section -->
+      <section>
+        <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
+          TRAINING STRUCTURE
+        </h2>
+        <div class="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
+          <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+            Together, this coaching staff is committed to building hard-working,
+            passionate, and fundamentally sound athletes. Their goal is to
+            foster an environment where players compete at a high level, love
+            the game, and grow both on and off the field. The Firecrackers 10U
+            team will compete at the B-Level, practicing 1-2 times per week
+            throughout the fall and winter along with participating in 2-3
+            tournaments, with spring and summer seasons practicing 2 times per
+            week and playing in 7-9 tournaments.
+          </p>
+        </div>
+      </section>
     </div>
   </div>
 </Layout>

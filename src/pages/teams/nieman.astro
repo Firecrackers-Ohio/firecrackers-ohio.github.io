@@ -9,68 +9,118 @@ if (!team) {
 }
 ---
 
-<Layout>
-  <div
-    class="mx-8 min-h-screen w-auto sm:mx-16 sm:w-auto md:mx-20 md:w-3/4 lg:w-3xl"
-  >
+<Layout
+  title="11U Nieman Team | Firecrackers Central Ohio"
+  description="Meet the 11U Nieman team coaching staff and learn about their training philosophy, competitive structure, and player development approach."
+>
+  <div class="container mx-auto px-4 py-8">
     <CoachTitle teamName={team.data.title} />
 
-    <h1 class="mt-8">TEAM OVERVIEW</h1>
-    <div>
-      Firecrackers OH – 11U Nieman continues building upon fundamental skills
-      while introducing more advanced concepts and competitive play. The team
-      focuses on skill refinement, strategic understanding, and developing
-      players' confidence in competitive situations. With an emphasis on growth
-      and teamwork, the program prepares athletes for higher levels of
-      competition while maintaining a positive and supportive environment.
-    </div>
+    <div class="mx-auto max-w-4xl space-y-12">
+      <!-- Team Overview Section -->
+      <section>
+        <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
+          TEAM OVERVIEW
+        </h2>
+        <div class="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
+          <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+            Firecrackers OH – 11U Nieman continues building upon fundamental
+            skills while introducing more advanced concepts and competitive
+            play. The team focuses on skill refinement, strategic understanding,
+            and developing players' confidence in competitive situations. With
+            an emphasis on growth and teamwork, the program prepares athletes
+            for higher levels of competition while maintaining a positive and
+            supportive environment.
+          </p>
+        </div>
+      </section>
 
-    <h1 class="mt-8">COACHING STAFF</h1>
-    {
-      team.data.staff.map(coach => (
-        <>
-          <h2>{coach.name}</h2>
-          <div class="ml-4">
-            {coach.bio.map(paragraph => (
-              <div>{paragraph}</div>
-            ))}
-          </div>
-        </>
-      ))
-    }
-    <h1 class="mt-8">TRAINING STRUCTURE</h1>
-    <div>
-      Matt and his staff focus on skill development and competitive preparation
-      appropriate for 11U athletes. They emphasize fundamental refinement,
-      strategic thinking, and building confidence, supported by a structured
-      training schedule that balances development with competitive play.
-      Firecrackers OH 11U Team trains and plays year-round:
-    </div>
-    <ul class="list-inside list-disc">
-      <li>
-        Fall season includes 2 team practices focused on advanced fundamentals
-        and team concepts, with 3-4 scheduled tournaments emphasizing skill
-        application and competitive growth.
-      </li>
-      <li>
-        Winter season with weekly practices focused on technique refinement and
-        strategic development, with 1-2 indoor tournaments, and appropriate
-        breaks for school commitments.
-      </li>
-      <li>
-        Spring/Summer Season beginning in May includes 2 practices per week plus
-        targeted skill work, with 8-10 tournaments focused on competitive
-        development and team growth.
-      </li>
-    </ul>
+      <!-- Coaching Staff Section -->
+      <section>
+        <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
+          COACHING STAFF
+        </h2>
+        <div class="space-y-8">
+          {
+            team.data.staff.map(coach => (
+              <div class="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
+                <h3 class="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">
+                  {coach.name}
+                </h3>
+                <div class="space-y-4">
+                  {coach.bio.map(paragraph => (
+                    <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
 
-    <h1 class="mt-8">PROGRAM VISION AND PHILOSOPHY</h1>
-    <div class="mb-20">
-      The Firecrackers OH - 11U Nieman coaching staff is committed to developing
-      skilled and confident athletes through progressive coaching, fundamental
-      excellence, and competitive preparation. With a focus on skill refinement,
-      strategic thinking, and character building, the program prepares players
-      for advanced competition while fostering teamwork and sportsmanship.
+      <!-- Training Structure Section -->
+      <section>
+        <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
+          TRAINING STRUCTURE
+        </h2>
+        <div class="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
+          <p
+            class="mb-4 text-lg leading-relaxed text-gray-700 dark:text-gray-300"
+          >
+            Matt and his staff focus on skill development and competitive
+            preparation appropriate for 11U athletes. They emphasize fundamental
+            refinement, strategic thinking, and building confidence, supported
+            by a structured training schedule that balances development with
+            competitive play. Firecrackers OH 11U Team trains and plays
+            year-round:
+          </p>
+          <ul class="space-y-2 text-lg text-gray-700 dark:text-gray-300">
+            <li class="flex items-start">
+              <span class="text-red mr-2">•</span>
+              <span>
+                Fall season includes 2 team practices focused on advanced
+                fundamentals and team concepts, with 3-4 scheduled tournaments
+                emphasizing skill application and competitive growth.
+              </span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-red mr-2">•</span>
+              <span>
+                Winter season with weekly practices focused on technique
+                refinement and strategic development, with 1-2 indoor
+                tournaments, and appropriate breaks for school commitments.
+              </span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-red mr-2">•</span>
+              <span>
+                Spring/Summer Season beginning in May includes 2 practices per
+                week plus targeted skill work, with 8-10 tournaments focused on
+                competitive development and team growth.
+              </span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Program Vision and Philosophy Section -->
+      <section>
+        <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
+          PROGRAM VISION AND PHILOSOPHY
+        </h2>
+        <div class="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
+          <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+            The Firecrackers OH - 11U Nieman coaching staff is committed to
+            developing skilled and confident athletes through progressive
+            coaching, fundamental excellence, and competitive preparation. With
+            a focus on skill refinement, strategic thinking, and character
+            building, the program prepares players for advanced competition
+            while fostering teamwork and sportsmanship.
+          </p>
+        </div>
+      </section>
     </div>
   </div>
 </Layout>
