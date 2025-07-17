@@ -2,37 +2,42 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout>
-  <main class="min-h-screen">
-    <div class="container mx-auto px-4 py-8">
-      <!-- Header -->
-      <div class="mb-12 text-center">
-        <img
-          src="/logo-text-outline.svg"
-          alt="FIRECRACKERS"
-          class="mx-auto h-24 brightness-50 filter dark:brightness-80 dark:invert"
-        />
-        <h2
-          class="font-almarai text-4xl font-bold text-gray-900 dark:text-gray-400"
-        >
-          TRYOUTS
-        </h2>
-        <p class="mt-2 py-6 text-lg text-gray-700 dark:text-gray-300">
-          All tryouts will be held at Lou Beriner Sports Park. Players are
-          encouraged to attend both dates. See below for age group details.
-          Please reach out to the team coach with any questions.
-        </p>
-        <a
-          href="https://docs.google.com/forms/d/e/1FAIpQLSd3Xiv5M5WycU9bQDIubCt_eAFehdVMxJ-IRgg3rR7nxvEIgw/viewform"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="bg-red mt-4 inline-block rounded-lg px-6 py-3 font-bold text-white transition-colors"
-        >
-          Click here to register
-        </a>
-      </div>
+<Layout
+  title="Tryouts | Firecrackers Central Ohio"
+  description="Join Firecrackers Ohio! View tryout schedules, dates, and locations for all age groups from 10U through 14U at Lou Berliner Sports Park."
+>
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="mb-12 text-center">
+      <img
+        src="/logo-text-outline.svg"
+        alt="FIRECRACKERS"
+        class="mx-auto h-32 brightness-50 filter dark:brightness-80 dark:invert"
+      />
+      <h1
+        class="font-almarai mb-8 text-5xl font-bold text-gray-900 md:text-6xl dark:text-gray-400"
+      >
+        TRYOUTS
+      </h1>
+      <p
+        class="mx-auto max-w-2xl text-lg text-gray-700 md:text-xl dark:text-gray-300"
+      >
+        All tryouts will be held at Lou Berliner Sports Park. Players are
+        encouraged to attend both dates. See below for age group details. Please
+        reach out to the team coach with any questions.
+      </p>
+      <a
+        href="https://docs.google.com/forms/d/e/1FAIpQLSd3Xiv5M5WycU9bQDIubCt_eAFehdVMxJ-IRgg3rR7nxvEIgw/viewform"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-red mt-6 inline-block rounded-lg px-8 py-4 font-bold text-white transition-colors hover:bg-red-700"
+      >
+        Click here to register
+      </a>
+    </div>
 
-      <!-- Age Groups Grid -->
+    <!-- Age Groups Grid -->
+    <div class="mx-auto max-w-4xl">
       <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
         {
           [
@@ -97,36 +102,42 @@ import Layout from "../layouts/Layout.astro";
               phone: "(614) 206-9110",
             },
           ].map(team => (
-            <div class="space-y-4 rounded-lg p-6">
-              <div class="border-b-2 border-gray-800/30 pb-3 dark:border-gray-300/30">
+            <div class="rounded-lg bg-gray-50 p-8 shadow-lg dark:bg-gray-800">
+              <div class="mb-6 border-b-2 border-gray-300 pb-4 dark:border-gray-600">
                 <h3 class="text-red text-3xl font-bold">
                   {team.age} - {team.coach}
                   <a
                     href={`/teams/${team.coach.toLowerCase()}`}
-                    class="ml-2 text-sm transition-all hover:text-red-400 hover:underline"
+                    class="ml-2 text-sm text-gray-600 transition-all hover:text-red-400 hover:underline dark:text-gray-400"
                   >
                     (team page)
                   </a>
                 </h3>
-                <p class="text-lg">{team.birthYears}</p>
+                <p class="text-lg text-gray-700 dark:text-gray-300">
+                  {team.birthYears}
+                </p>
               </div>
 
-              <div class="space-y-2">
-                <p class="text-lg">LOU BERLINER SPORTS PARK</p>
-                <div class="flex items-baseline justify-between">
-                  <div class="text-lg">
-                    <span class="font-bold">{team.dateOne}</span> |{" "}
-                    {team.fieldOne} | {team.time}
+              <div class="space-y-4">
+                <p class="text-lg font-semibold text-gray-900 dark:text-white">
+                  LOU BERLINER SPORTS PARK
+                </p>
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between">
+                    <div class="text-lg text-gray-700 dark:text-gray-300">
+                      <span class="font-bold">{team.dateOne}</span> |{" "}
+                      {team.fieldOne} | {team.time}
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="text-lg text-gray-700 dark:text-gray-300">
+                      <span class="font-bold">{team.dateTwo}</span> |{" "}
+                      {team.fieldTwo} | {team.time}
+                    </div>
                   </div>
                 </div>
-                <div class="flex items-baseline justify-between">
-                  <div class="text-lg">
-                    <span class="font-bold">{team.dateTwo}</span> |{" "}
-                    {team.fieldTwo} | {team.time}
-                  </div>
-                </div>
-                <p class="text-lg">
-                  {team.coachName}: {team.phone}
+                <p class="text-lg font-medium text-gray-900 dark:text-white">
+                  Contact: {team.coachName} - {team.phone}
                 </p>
               </div>
             </div>
@@ -134,5 +145,5 @@ import Layout from "../layouts/Layout.astro";
         }
       </div>
     </div>
-  </main>
+  </div>
 </Layout>
