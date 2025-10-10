@@ -6,6 +6,32 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-*: initial;
+    --color-red-50: #fef1f1;
+    --color-red-100: #fee0e0;
+    --color-red-200: #fcc7c7;
+    --color-red-300: #faa0a0;
+    --color-red-400: #f66b6b;
+    --color-red-500: #ef3a3a;
+    --color-red-600: #dc1f1f;
+    --color-red-700: #b81111;
+    --color-red-800: #9b0f0f;
+    --color-red-900: #801414;
+    --color-red-950: #450606;
+    --color-red: #c20202;
+    --color-yellow: #fff200;
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-gray-50: #fbfbfc;
+    --color-gray-100: #f6f7f8;
+    --color-gray-200: #eff1f2;
+    --color-gray-300: #dfe3e5;
+    --color-gray-400: #cfd4d8;
+    --color-gray-500: #bfc6cb;
+    --color-gray-600: #868e92;
+    --color-gray-700: #646a6e;
+    --color-gray-800: #3f4443;
+    --color-gray-900: #212325;
+
+    --font-display: "Poppins", "sans-serif";
 }
