@@ -57,7 +57,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
   </head>
   <body
-    class="font-poppins font-display min-h-screen bg-gray-100 text-black dark:bg-gray-900 dark:text-gray-200"
+    class="font-poppins min-h-screen bg-gray-100 text-black dark:bg-gray-900 dark:text-gray-200"
   >
     <!-- Skip to main content for accessibility -->
     <a
@@ -68,6 +68,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     </a>
 
     <Nav />
+
     <main id="main-content">
       <slot />
     </main>
@@ -81,35 +82,3 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     </footer>
   </body>
 </html>
-
-<style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-
-  .focus\:not-sr-only:focus {
-    position: static;
-    width: auto;
-    height: auto;
-    padding: 0.5rem;
-    margin: 0;
-    overflow: visible;
-    clip: auto;
-    white-space: normal;
-  }
-</style>
