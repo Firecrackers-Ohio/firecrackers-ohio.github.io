@@ -14,6 +14,17 @@
   --color-red-900: #801414;
   --color-red-950: #450606;
   --color-red: #c20202;
+  --color-blue-50: #eff6ff;
+  --color-blue-100: #dbeafe;
+  --color-blue-200: #bfdbfe;
+  --color-blue-300: #93c5fd;
+  --color-blue-400: #60a5fa;
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+  --color-blue-700: #1d4ed8;
+  --color-blue-800: #1e40af;
+  --color-blue-900: #1e3a8a;
+  --color-blue-950: #172554;
   --color-yellow: #fff200;
   --color-white: #ffffff;
   --color-black: #000000;
@@ -29,6 +40,8 @@
   --color-gray-900: #212325;
 
   --font-display: "Poppins", "sans-serif";
+  --font-poppins: "Poppins", "sans-serif";
+  --font-almarai: "Almarai", "sans-serif";
 }
 
 @layer components {
@@ -43,7 +56,91 @@
     @apply flex items-center pr-3;
   }
 
-  /* Text Blocks */
+  /* Cards */
+  .card {
+    @apply rounded-lg bg-gray-50 p-6 dark:bg-gray-800;
+  }
+  .card-lg {
+    @apply rounded-lg bg-gray-50 p-8 dark:bg-gray-800;
+  }
+  .team-card {
+    @apply block rounded-lg border border-gray-200 bg-white p-6 shadow-lg transition-all duration-300 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800;
+  }
+
+  /* Container query utilities for responsive components
+   * Container queries allow components to respond to their container's size
+   * rather than the viewport, enabling more modular responsive design.
+   *
+   * Usage: Add .card-container to a parent element, then use @container
+   * utilities on children (e.g., @container/sm:text-lg)
+   */
+  .card-container {
+    container-type: inline-size;
+    container-name: card;
+  }
+
+  .content-container {
+    container-type: inline-size;
+    container-name: content;
+  }
+  .highlight-card-blue {
+    @apply rounded-lg bg-blue-50 p-8 text-center dark:bg-blue-900/20;
+  }
+  .highlight-card-red {
+    @apply rounded-lg bg-red-50 p-8 text-center dark:bg-red-900/20;
+  }
+
+  /* Typography */
+  .section-heading {
+    @apply mb-6 text-3xl font-bold text-gray-900 dark:text-white;
+  }
+  .page-title {
+    @apply font-almarai mb-8 text-5xl font-bold text-gray-900 md:text-6xl dark:text-gray-400;
+  }
+  .body-text {
+    @apply text-lg leading-relaxed text-gray-700 dark:text-gray-300;
+  }
+  .body-text-xl {
+    @apply text-lg leading-relaxed text-gray-700 md:text-xl dark:text-gray-300;
+  }
+  .team-card-title {
+    @apply mb-2 text-2xl font-bold text-gray-900 transition-colors dark:text-white;
+  }
+  .team-card-description {
+    @apply mb-4 text-gray-600 dark:text-gray-300;
+  }
+  .team-card-link {
+    @apply text-red;
+  }
+
+  /* Buttons */
+  .btn-dark {
+    @apply inline-block rounded-lg bg-gray-900 px-8 py-4 font-bold text-white transition-colors hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600;
+  }
+  .btn-blue {
+    @apply text-red inline-block rounded-lg bg-blue-600 px-8 py-4 font-bold transition-colors hover:bg-blue-700;
+  }
+  .btn-red {
+    @apply bg-red inline-block rounded-lg px-8 py-4 font-bold text-white transition-colors hover:bg-red-700;
+  }
+
+  /* Links */
+  .text-link {
+    @apply text-red underline transition-all hover:text-red-700 hover:no-underline;
+  }
+
+  /* Lists */
+  .bullet-list {
+    @apply space-y-2 text-lg text-gray-700 dark:text-gray-300;
+  }
+  .bullet-item {
+    @apply flex items-start;
+  }
+  .bullet-icon {
+    @apply text-red mr-2;
+  }
+
+  /* Legacy Text Blocks */
   .p-heading {
     @apply mb-4 text-2xl font-bold tracking-tight text-gray-800 md:text-5xl;
   }

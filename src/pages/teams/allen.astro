@@ -19,21 +19,17 @@ if (!team) {
     <div class="mx-auto max-w-4xl space-y-12">
       <!-- Coaching Staff Section -->
       <section>
-        <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
-          COACHING STAFF
-        </h2>
+        <h2 class="section-heading">COACHING STAFF</h2>
         <div class="space-y-8">
           {
             team.data.staff.map(coach => (
-              <div class="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
+              <div class="card">
                 <h3 class="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">
                   {coach.name}
                 </h3>
                 <div class="space-y-4">
                   {coach.bio.map(paragraph => (
-                    <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-                      {paragraph}
-                    </p>
+                    <p class="body-text">{paragraph}</p>
                   ))}
                 </div>
               </div>
@@ -44,11 +40,9 @@ if (!team) {
 
       <!-- Coaching Philosophy Section -->
       <section>
-        <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
-          COACHING PHILOSOPHY
-        </h2>
-        <div class="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
-          <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+        <h2 class="section-heading">COACHING PHILOSOPHY</h2>
+        <div class="card">
+          <p class="body-text">
             While planning to compete as a B-class team for the 2025/2026
             season, Casey and Josh emphasize player development, hard work, and
             teamwork throughout their practice and tournament schedules.

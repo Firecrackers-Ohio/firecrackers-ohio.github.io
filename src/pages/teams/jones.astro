@@ -19,11 +19,9 @@ if (!team) {
     <div class="mx-auto max-w-4xl space-y-12">
       <!-- Team Overview Section -->
       <section>
-        <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
-          TEAM OVERVIEW
-        </h2>
-        <div class="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
-          <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+        <h2 class="section-heading">TEAM OVERVIEW</h2>
+        <div class="card">
+          <p class="body-text">
             13U Jones has delivered a standout 2025 season with a 44-8
             tournament record, claiming championship titles at the Boneyard
             Bash, Ghouls and Girls Halloween Showdown, Thaw Your Bats, Madison
@@ -38,23 +36,23 @@ if (!team) {
             tournament, recognizing their class, teamwork, and respect for the game.
             <br />
             Three standout players also earned individual awards:
-            <ul class="space-y-2 text-lg text-gray-700 dark:text-gray-300">
-              <li class="flex items-start">
-                <span class="text-red mr-2">•</span>
+            <ul class="bullet-list">
+              <li class="bullet-item">
+                <span class="bullet-icon">•</span>
                 <span>Offensive MVP – Khloe Flaherty</span>
               </li>
-              <li class="flex items-start">
-                <span class="text-red mr-2">•</span>
+              <li class="bullet-item">
+                <span class="bullet-icon">•</span>
                 <span>Outstanding Pitcher – Reagan French</span>
               </li>
-              <li class="flex items-start">
-                <span class="text-red mr-2">•</span>
+              <li class="bullet-item">
+                <span class="bullet-icon">•</span>
                 <span>Tournament MVP – Ava Howard</span>
               </li>
             </ul>
           </p>
           <br />
-          <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+          <p class="body-text">
             Committed to facing top-tier competition, this team continues to
             grow through discipline, preparation, and a desire to play the game
             the right way—on and off the field.
@@ -64,21 +62,17 @@ if (!team) {
 
       <!-- Coaching Staff Section -->
       <section>
-        <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
-          COACHING STAFF
-        </h2>
+        <h2 class="section-heading">COACHING STAFF</h2>
         <div class="space-y-8">
           {
             team.data.staff.map(coach => (
-              <div class="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
+              <div class="card">
                 <h3 class="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">
                   {coach.name}
                 </h3>
                 <div class="space-y-4">
                   {coach.bio.map(paragraph => (
-                    <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-                      {paragraph}
-                    </p>
+                    <p class="body-text">{paragraph}</p>
                   ))}
                 </div>
               </div>
@@ -89,22 +83,18 @@ if (!team) {
 
       <!-- Training Structure Section -->
       <section>
-        <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
-          TRAINING STRUCTURE
-        </h2>
-        <div class="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
-          <p
-            class="mb-4 text-lg leading-relaxed text-gray-700 dark:text-gray-300"
-          >
+        <h2 class="section-heading">TRAINING STRUCTURE</h2>
+        <div class="card">
+          <p class="body-text mb-4">
             Phil and his staff plan to compete at the B Level in 2025/26. They
             emphasize hard work, accountability, and player development,
             supported by a structured year-round training schedule that adapts
             to school and multi-sport commitments. Firecrackers OH 13U Team
             trains and plays year-round:
           </p>
-          <ul class="space-y-2 text-lg text-gray-700 dark:text-gray-300">
-            <li class="flex items-start">
-              <span class="text-red mr-2">•</span>
+          <ul class="bullet-list">
+            <li class="bullet-item">
+              <span class="bullet-icon">•</span>
               <span>
                 Fall season is comprised of 2 team practices focused on
                 fielding/pitching and hitting, and 3 at-home workouts per week,
@@ -112,8 +102,8 @@ if (!team) {
                 totaling 20-25 games.
               </span>
             </li>
-            <li class="flex items-start">
-              <span class="text-red mr-2">•</span>
+            <li class="bullet-item">
+              <span class="bullet-icon">•</span>
               <span>
                 Winter season with weekly practices focused on fundamentals and
                 technique, and 1-2 indoor tournaments, with a break from
@@ -121,8 +111,8 @@ if (!team) {
                 mid/late February.
               </span>
             </li>
-            <li class="flex items-start">
-              <span class="text-red mr-2">•</span>
+            <li class="bullet-item">
+              <span class="bullet-icon">•</span>
               <span>
                 Spring/Summer Season beginning in May includes 2 practices per
                 week plus at-home training, with 9-10 tournaments including 2
@@ -135,11 +125,9 @@ if (!team) {
 
       <!-- Program Vision and Philosophy Section -->
       <section>
-        <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
-          PROGRAM VISION AND PHILOSOPHY
-        </h2>
-        <div class="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
-          <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+        <h2 class="section-heading">PROGRAM VISION AND PHILOSOPHY</h2>
+        <div class="card">
+          <p class="body-text">
             The Firecrackers OH - 13U Jones coaching staff is committed to
             building well-rounded athletes through hard work, accountability,
             and a team-first mentality. With a focus on skill development, game

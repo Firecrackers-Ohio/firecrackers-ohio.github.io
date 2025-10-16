@@ -15,20 +15,14 @@ import Layout from "../layouts/Layout.astro";
           alt="FIRECRACKERS"
           class="mx-auto h-32 brightness-50 filter dark:brightness-80 dark:invert"
         />
-        <h1
-          class="font-almarai mb-8 text-5xl font-bold text-gray-900 md:text-6xl dark:text-gray-400"
-        >
-          CENTRAL OHIO
-        </h1>
+        <h1 class="page-title">CENTRAL OHIO</h1>
       </div>
 
       <!-- Main Content -->
       <div class="mx-auto max-w-4xl space-y-12">
         <!-- About Section -->
         <section class="text-center">
-          <p
-            class="text-lg leading-relaxed text-gray-700 md:text-xl dark:text-gray-300"
-          >
+          <p class="body-text-xl">
             Welcome to Firecrackers Ohio, a group of fastpitch softball teams
             located in central Ohio who proudly represent the national
             Firecrackers Softball Organization. Our mission is to provide our
@@ -43,9 +37,7 @@ import Layout from "../layouts/Layout.astro";
         </section>
 
         <!-- Tournament Announcement Section -->
-        <section
-          class="rounded-lg bg-blue-50 p-8 text-center dark:bg-blue-900/20"
-        >
+        <section class="highlight-card-blue">
           <h2 class="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
             🏆 Tournament Announcement! 🏆
           </h2>
@@ -67,7 +59,7 @@ import Layout from "../layouts/Layout.astro";
                 href="https://tinyurl.com/boneyardbash25"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-red inline-block rounded-lg bg-blue-600 px-6 py-3 font-bold transition-colors hover:bg-blue-700"
+                class="btn-blue px-6 py-3"
               >
                 Click Here to Register!
               </a>
@@ -77,10 +69,8 @@ import Layout from "../layouts/Layout.astro";
 
         <!-- Teams Section -->
         <section class="text-center">
-          <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
-            Our Teams
-          </h2>
-          <p class="mb-8 text-lg text-gray-700 dark:text-gray-300">
+          <h2 class="section-heading">Our Teams</h2>
+          <p class="body-text mb-8">
             Firecrackers Ohio fields competitive teams across five age
             divisions: 10U Brown, 11U Nieman, 12U Allen, 13U Jones, and 14U
             Evans. Each team is led by experienced coaches who focus on building
@@ -89,22 +79,15 @@ import Layout from "../layouts/Layout.astro";
             divisions to advanced competitive preparation in our older teams, we
             provide a comprehensive pathway for player development.
           </p>
-          <a
-            href="/teams"
-            class="inline-block rounded-lg bg-gray-900 px-8 py-4 font-bold text-white transition-colors hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600"
-          >
-            Meet Our Teams
-          </a>
+          <a href="/teams" class="btn-dark"> Meet Our Teams </a>
         </section>
 
         <!-- Team Store Section -->
-        <section
-          class="rounded-lg bg-red-50 p-8 text-center dark:bg-red-900/20"
-        >
+        <section class="highlight-card-red">
           <h2 class="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
             Support Our Teams
           </h2>
-          <p class="mb-6 text-lg text-gray-700 dark:text-gray-300">
+          <p class="body-text mb-6">
             Show your Firecrackers pride! Visit our official team store to
             purchase fan gear, apparel, and accessories. From jerseys and
             hoodies to hats and accessories, we have everything you need to
@@ -114,7 +97,7 @@ import Layout from "../layouts/Layout.astro";
             href="https://gear.firecrackersoftball.com/"
             target="_blank"
             rel="noopener noreferrer"
-            class="bg-red inline-block rounded-lg px-8 py-4 font-bold text-white transition-colors hover:bg-red-700"
+            class="btn-red"
           >
             Shop Team Store
           </a>
