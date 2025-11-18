@@ -1,10 +1,13 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
+import sitemap from "@astrojs/sitemap";
+import compress from "@playform/compress";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://firecrackersohio.com",
+  integrations: [sitemap(), compress()],
 
   // Build optimizations
   build: {

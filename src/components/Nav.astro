@@ -1,4 +1,11 @@
 ---
+import { Image } from "astro:assets";
+import logoRound from "../assets/logo-round.svg";
+import fbIcon from "../assets/fb.svg";
+import igIcon from "../assets/ig.svg";
+import emailIcon from "../assets/email.svg";
+import { EXTERNAL_URLS } from "../config";
+
 const { pathname } = Astro.url;
 const pageTitles: Record<string, string> = {
   "": "Home",
@@ -30,7 +37,7 @@ if (pathname.startsWith("/teams/")) {
   <div class="flex h-16 flex-row">
     <div class="relative -mt-1 h-24 w-24 flex-none p-2 md:h-32 md:w-32">
       <a href="/">
-        <img src="/logo-round.svg" alt="Firecrackers of Central Ohio Logo" />
+        <Image src={logoRound} alt="Firecrackers of Central Ohio Logo" />
       </a>
     </div>
     <div class="flex w-screen flex-auto flex-row p-2">
@@ -107,10 +114,8 @@ if (pathname.startsWith("/teams/")) {
             >
           </div>
         </div>
-        <a
-          class="menu-item"
-          href="https://gear.firecrackersoftball.com/"
-          target="_blank">Store</a
+        <a class="menu-item" href={EXTERNAL_URLS.teamStore} target="_blank"
+          >Store</a
         >
       </div>
     </div>
@@ -139,22 +144,14 @@ if (pathname.startsWith("/teams/")) {
 
       <!-- Desktop Social Icons -->
       <div class="hidden md:flex">
-        <a
-          class="social-icon"
-          href="https://www.facebook.com/firecrackersohio"
-          target="_blank"
-        >
-          <img src="/fb.svg" alt="Facebook" class="h-10" />
+        <a class="social-icon" href={EXTERNAL_URLS.facebook} target="_blank">
+          <Image src={fbIcon} alt="Facebook" class="h-10" />
         </a>
-        <a
-          class="social-icon"
-          href="https://www.instagram.com/firecrackers_oh/"
-          target="_blank"
-        >
-          <img src="/ig.svg" alt="Instagram" class="h-10" />
+        <a class="social-icon" href={EXTERNAL_URLS.instagram} target="_blank">
+          <Image src={igIcon} alt="Instagram" class="h-10" />
         </a>
-        <a class="social-icon" href="#" target="_blank">
-          <img src="/email.svg" alt="Email" class="h-10" />
+        <a class="social-icon" href="mailto:contact@firecrackersohio.com">
+          <Image src={emailIcon} alt="Email" class="h-10" />
         </a>
       </div>
     </div>
@@ -219,32 +216,26 @@ if (pathname.startsWith("/teams/")) {
           >14U Evans</a
         >
       </div>
-      <a
-        class="menu-item"
-        href="https://gear.firecrackersoftball.com/"
-        target="_blank">Store</a
+      <a class="menu-item" href={EXTERNAL_URLS.teamStore} target="_blank"
+        >Store</a
       >
 
       <!-- Mobile Social Icons -->
       <div
         class="mt-5 flex justify-center space-x-4 border-t border-gray-700 pt-4"
       >
-        <a
-          class="social-icon"
-          href="https://www.facebook.com/firecrackersohio"
-          target="_blank"
-        >
-          <img src="/fb.svg" alt="Facebook" class="h-8" />
+        <a class="social-icon" href={EXTERNAL_URLS.facebook} target="_blank">
+          <Image src={fbIcon} alt="Facebook" class="h-8" />
+        </a>
+        <a class="social-icon" href={EXTERNAL_URLS.instagram} target="_blank">
+          <Image src={igIcon} alt="Instagram" class="h-8" />
         </a>
         <a
           class="social-icon"
-          href="https://www.instagram.com/firecrackers_oh/"
+          href="mailto:contact@firecrackersohio.com"
           target="_blank"
         >
-          <img src="/ig.svg" alt="Instagram" class="h-8" />
-        </a>
-        <a class="social-icon" href="#" target="_blank">
-          <img src="/email.svg" alt="Email" class="h-8" />
+          <Image src={emailIcon} alt="Email" class="h-8" />
         </a>
       </div>
     </div>
