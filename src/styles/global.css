@@ -83,8 +83,8 @@
     container-type: inline-size;
     container-name: content;
   }
-  .highlight-card-blue {
-    @apply rounded-lg bg-blue-50 p-8 text-center dark:bg-blue-900/20;
+  .highlight-card-gray {
+    @apply rounded-lg bg-gray-300/50 p-8 text-center dark:bg-gray-800/20;
   }
   .highlight-card-red {
     @apply rounded-lg bg-red-50 p-8 text-center dark:bg-red-900/20;

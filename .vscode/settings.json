@@ -22,5 +22,8 @@
     "astro": "html"
   },
   "typescript.preferences.includePackageJsonAutoImports": "on",
-  "typescript.suggest.autoImports": true
+  "typescript.suggest.autoImports": true,
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  }
 }

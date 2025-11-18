@@ -1,0 +1,58 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import CoachTitle from "../../components/teams/CoachTitle.astro";
+
+export async function getStaticPaths() {
+  const teams = await getCollection("teams");
+  return teams.map((team) => ({
+    params: { team: team.id },
+    props: { team },
+  }));
+}
+
+const { team } = Astro.props;
+
+// Map team IDs to display names
+const teamDisplayNames: Record<string, string> = {
+  allen: "12U Allen Team",
+  brown: "10U Brown Team",
+  evans: "14U Evans Team",
+  jones: "13U Jones Team",
+  nieman: "11U Nieman Team",
+};
+
+const teamTitle = teamDisplayNames[team.id] || `${team.data.title} Team`;
+---
+
+<Layout
+  title={`${teamTitle} | Firecrackers Central Ohio`}
+  description={`Meet the ${teamTitle} coaching staff and learn about their training philosophy, competitive structure, and player development approach.`}
+>
+  <div class="container mx-auto px-4 py-8">
+    <CoachTitle teamName={team.data.title} />
+
+    <div class="mx-auto max-w-4xl space-y-12">
+      <!-- Coaching Staff Section -->
+      <section>
+        <h2 class="section-heading">COACHING STAFF</h2>
+        <div class="space-y-8">
+          {
+            team.data.staff.map((coach) => (
+              <div class="card">
+                <h3 class="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">
+                  {coach.name}
+                </h3>
+                <div class="space-y-4">
+                  {coach.bio.map((paragraph) => (
+                    <p class="body-text">{paragraph}</p>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+  </div>
+</Layout>
