@@ -55,6 +55,9 @@
   .social-icon {
     @apply flex items-center pr-3;
   }
+  .social-icon img {
+    @apply object-contain;
+  }
 
   /* Cards */
   .card {
