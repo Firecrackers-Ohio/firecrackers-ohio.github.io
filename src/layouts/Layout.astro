@@ -62,7 +62,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
   </head>
   <body
-    class="font-poppins min-h-screen bg-gray-100 text-black dark:bg-gray-900 dark:text-gray-200"
+    class="font-poppins flex min-h-screen flex-col bg-gray-100 text-black dark:bg-gray-900 dark:text-gray-200"
   >
     <!-- Skip to main content for accessibility -->
     <a
@@ -74,7 +74,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
     <Nav />
 
-    <main id="main-content">
+    <main id="main-content" class="flex-grow">
       <slot />
     </main>
 

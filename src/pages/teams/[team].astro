@@ -1,11 +1,11 @@
 ---
-import { getCollection, getEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import CoachTitle from "../../components/teams/CoachTitle.astro";
 
 export async function getStaticPaths() {
   const teams = await getCollection("teams");
-  return teams.map((team) => ({
+  return teams.map(team => ({
     params: { team: team.id },
     props: { team },
   }));
@@ -22,7 +22,56 @@ const teamDisplayNames: Record<string, string> = {
   nieman: "11U Nieman Team",
 };
 
+// Map team IDs to Instagram URLs
+const teamInstagramUrls: Record<string, string> = {
+  jones: "https://www.instagram.com/firecrackersoh_jones13u/",
+  nieman: "https://www.instagram.com/firecrackers_nieman11u/",
+  brown: "https://www.instagram.com/firecrackersoh10u/",
+};
+
+// Map team IDs to Facebook URLs
+const teamFacebookUrls: Record<string, string> = {
+  jones: "https://www.facebook.com/profile.php?id=61577221302816",
+  allen: "https://www.facebook.com/FirecrackersAllen",
+  nieman: "https://www.facebook.com/profile.php?id=61577922143240",
+  brown: "https://www.facebook.com/profile.php?id=61577598158529",
+};
+
+// Map coach names to email addresses
+const coachEmails: Record<string, string> = {
+  "Phil Jones": "philjones@firecrackersohio.com",
+  "Gary Brown": "garybrown@firecrackersohio.com",
+  "Casey Allen": "caseyallen@firecrackersohio.com",
+  "Matt Nieman": "mattnieman@firecrackersohio.com",
+  "Andy Evans": "andyevans@firecrackersohio.com",
+  "Doug Gray": "douggray@firecrackersohio.com",
+  "Josh Wheeler": "joshwheeler@firecrackersohio.com",
+};
+
+// Helper function to extract last name and get email
+function getCoachEmail(
+  coachName: string
+): { email: string; lastName: string } | null {
+  // Extract the name part before the dash (e.g., "Phil Jones - Head Coach" -> "Phil Jones")
+  const namePart = coachName.split(" - ")[0].trim();
+
+  // Check if we have an email for this coach
+  const email = coachEmails[namePart];
+  if (email) {
+    // Extract last name (assume it's the last word)
+    const nameWords = namePart.split(" ");
+    const lastName = nameWords[nameWords.length - 1];
+    return { email, lastName };
+  }
+
+  return null;
+}
+
 const teamTitle = teamDisplayNames[team.id] || `${team.data.title} Team`;
+const instagramUrl =
+  teamInstagramUrls[team.id] || "https://www.instagram.com/firecrackers_oh/";
+const facebookUrl =
+  teamFacebookUrls[team.id] || "https://www.facebook.com/firecrackersohio";
 ---
 
 <Layout
@@ -32,24 +81,84 @@ const teamTitle = teamDisplayNames[team.id] || `${team.data.title} Team`;
   <div class="container mx-auto px-4 py-8">
     <CoachTitle teamName={team.data.title} />
 
+    <!-- Follow our team section -->
+    <div
+      class="mx-auto mt-6 mb-8 flex items-center justify-center gap-4 md:mx-10"
+    >
+      <span class="text-lg font-semibold text-gray-900 dark:text-white"
+        >Follow our team!</span
+      >
+      <a
+        href={facebookUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center transition-opacity hover:opacity-70"
+        aria-label="Facebook"
+      >
+        <svg
+          class="aspect-square h-8 w-8 shrink-0"
+          viewBox="0 0 448 448"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M 400,0 H 48 A 48,48 0 0 0 0,48 v 352 a 48,48 0 0 0 48,48 H 185.25 V 295.69 h -63 V 224 h 63 v -54.64 c 0,-62.15 37,-96.48 93.67,-96.48 27.14,0 55.52,4.84 55.52,4.84 v 61 h -31.27 c -30.81,0 -40.42,19.12 -40.42,38.73 V 224 h 68.78 l -11,71.69 H 262.75 V 448 H 400 a 48,48 0 0 0 48,-48 V 48 A 48,48 0 0 0 400,0 Z"
+            fill="#c20202"
+            class="dark:fill-white"></path>
+        </svg>
+      </a>
+      <a
+        href={instagramUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center transition-opacity hover:opacity-70"
+        aria-label="Instagram"
+      >
+        <svg
+          class="aspect-square h-8 w-8 shrink-0"
+          viewBox="0 0 448 448"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M 224,170.66 A 53.34,53.34 0 1 0 277.36,224 53.38,53.38 0 0 0 224,170.66 Z m 124.71,-41 A 54,54 0 0 0 318.3,99.25 c -21,-8.29 -71,-6.43 -94.3,-6.43 -23.3,0 -73.25,-1.93 -94.31,6.43 a 54,54 0 0 0 -30.41,30.41 c -8.28,21 -6.43,71.05 -6.43,94.33 0,23.28 -1.85,73.27 6.47,94.34 a 54,54 0 0 0 30.41,30.41 c 21,8.29 71,6.43 94.31,6.43 23.31,0 73.24,1.93 94.3,-6.43 a 54,54 0 0 0 30.41,-30.41 c 8.35,-21 6.43,-71.05 6.43,-94.33 0,-23.28 1.92,-73.26 -6.43,-94.33 z M 224,306 a 82,82 0 1 1 82,-82 81.9,81.9 0 0 1 -82,82 z m 85.38,-148.3 a 19.14,19.14 0 1 1 19.13,-19.14 19.1,19.1 0 0 1 -19.09,19.18 z M 400,0 H 48 A 48,48 0 0 0 0,48 v 352 a 48,48 0 0 0 48,48 h 352 a 48,48 0 0 0 48,-48 V 48 A 48,48 0 0 0 400,0 Z m -17.12,290 c -1.29,25.63 -7.14,48.34 -25.85,67 -18.71,18.66 -41.4,24.63 -67,25.85 -26.41,1.49 -105.59,1.49 -132,0 C 132.4,381.56 109.77,375.7 91.03,357 72.29,338.3 66.4,315.58 65.18,290 c -1.49,-26.42 -1.49,-105.61 0,-132 1.29,-25.63 7.07,-48.34 25.85,-67 18.78,-18.66 41.47,-24.56 67,-25.78 26.41,-1.49 105.59,-1.49 132,0 25.63,1.29 48.33,7.15 67,25.85 18.67,18.7 24.63,41.42 25.85,67.05 1.49,26.32 1.49,105.44 0,131.88 z"
+            fill="#c20202"
+            class="dark:fill-white"></path>
+        </svg>
+      </a>
+    </div>
+
     <div class="mx-auto max-w-4xl space-y-12">
       <!-- Coaching Staff Section -->
       <section>
         <h2 class="section-heading">COACHING STAFF</h2>
         <div class="space-y-8">
           {
-            team.data.staff.map((coach) => (
-              <div class="card">
-                <h3 class="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">
-                  {coach.name}
-                </h3>
-                <div class="space-y-4">
-                  {coach.bio.map((paragraph) => (
-                    <p class="body-text">{paragraph}</p>
-                  ))}
+            team.data.staff.map(coach => {
+              const coachEmailInfo = getCoachEmail(coach.name);
+              return (
+                <div class="card">
+                  <div class="mb-4 flex items-center justify-between">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">
+                      {coach.name}
+                    </h3>
+                    {coachEmailInfo && (
+                      <a
+                        href={`mailto:${coachEmailInfo.email}`}
+                        class="text-link text-sm font-medium dark:text-red-400"
+                      >
+                        Email Coach {coachEmailInfo.lastName}
+                      </a>
+                    )}
+                  </div>
+                  <div class="space-y-4">
+                    {coach.bio.map(paragraph => (
+                      <p class="body-text">{paragraph}</p>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           }
         </div>
       </section>
