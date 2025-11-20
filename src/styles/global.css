@@ -113,7 +113,7 @@
     @apply mb-4 text-gray-600 dark:text-gray-300;
   }
   .team-card-link {
-    @apply text-red;
+    @apply text-red dark:text-red-400;
   }
 
   /* Buttons */
@@ -129,7 +129,7 @@
 
   /* Links */
   .text-link {
-    @apply text-red underline transition-all hover:text-red-700 hover:no-underline;
+    @apply text-red dark:text-red-400 underline transition-all hover:text-red-700 hover:no-underline;
   }
 
   /* Lists */
@@ -151,7 +151,7 @@
     @apply mx-auto mb-8 max-w-fit text-xl text-gray-600 md:text-xl;
   }
   .p-link {
-    @apply text-red underline;
+    @apply text-red dark:text-red-400 underline;
   }
   h1 {
     @apply decoration-red text-2xl font-bold underline;
