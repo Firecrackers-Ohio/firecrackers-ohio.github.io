@@ -8,9 +8,13 @@ const teams = defineCollection({
   }),
   schema: z.object({
     title: z.string(),
+    displayName: z.string().optional(),
+    instagramUrl: z.string().url().optional(),
+    facebookUrl: z.string().url().optional(),
     staff: z.array(
       z.object({
         name: z.string(),
+        email: z.string().email().optional(),
         bio: z.array(z.string()),
       })
     ),

@@ -1,8 +1,12 @@
 {
   "title": "13U JONES",
+  "displayName": "13U Jones Team",
+  "instagramUrl": "https://www.instagram.com/firecrackersoh_jones13u/",
+  "facebookUrl": "https://www.facebook.com/profile.php?id=61577221302816",
   "staff": [
     {
       "name": "Phil Jones - Head Coach",
+      "email": "philjones@firecrackersohio.com",
       "bio": [
         "With 8 years of coaching experience and in his third season leading a travel team, Coach Jones emphasizes mental toughness, softball IQ, and team culture.",
         "His calm, focused leadership fosters personal growth, accountability, and selfless play."
@@ -10,6 +14,7 @@
     },
     {
       "name": "Doug Gray - Associate Head Coach",
+      "email": "douggray@firecrackersohio.com",
       "bio": [
         "Now in his fourth season of travel softball, Coach Gray brings five years of coaching experience, specializing in pitching and defensive strategy.",
         "His structured and technical approach enhances in-game execution and consistency."
