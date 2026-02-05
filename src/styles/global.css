@@ -132,6 +132,14 @@
     @apply text-red dark:text-red-400 underline transition-all hover:text-red-700 hover:no-underline;
   }
 
+  /* Section Tabs */
+  .section-tab {
+    @apply cursor-pointer whitespace-nowrap;
+  }
+  .section-tab-active {
+    @apply border-red text-red dark:text-red-400;
+  }
+
   /* Lists */
   .bullet-list {
     @apply space-y-2 text-lg text-gray-700 dark:text-gray-300;
