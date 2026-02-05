@@ -129,39 +129,147 @@ const facebookUrl =
     </div>
 
     <div class="mx-auto max-w-4xl space-y-12">
-      <!-- Coaching Staff Section -->
-      <section>
-        <h2 class="section-heading">COACHING STAFF</h2>
-        <div class="space-y-8">
-          {
-            team.data.staff.map(coach => {
-              const coachEmailInfo = getCoachEmail(coach.name);
-              return (
-                <div class="card">
-                  <div class="mb-4 flex items-center justify-between">
-                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">
-                      {coach.name}
-                    </h3>
-                    {coachEmailInfo && (
-                      <a
-                        href={`mailto:${coachEmailInfo.email}`}
-                        class="text-link text-sm font-medium dark:text-red-400"
-                      >
-                        Email Coach {coachEmailInfo.lastName}
-                      </a>
-                    )}
+      <!-- Section Navigation Tabs -->
+      <div class="border-b border-gray-300 dark:border-gray-700">
+        <nav class="-mb-px flex space-x-8" aria-label="Team sections">
+          <button
+            data-section="roster"
+            class="section-tab section-tab-active border-b-2 border-red px-1 py-4 text-lg font-semibold text-red transition-colors dark:text-red-400"
+          >
+            Roster
+          </button>
+          <button
+            data-section="coaches"
+            class="section-tab border-b-2 border-transparent px-1 py-4 text-lg font-semibold text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-300"
+          >
+            Coaches
+          </button>
+          <button
+            data-section="schedule"
+            class="section-tab border-b-2 border-transparent px-1 py-4 text-lg font-semibold text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-300"
+          >
+            Schedule
+          </button>
+          <button
+            data-section="results"
+            class="section-tab border-b-2 border-transparent px-1 py-4 text-lg font-semibold text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-300"
+          >
+            Results
+          </button>
+        </nav>
+      </div>
+
+      <!-- Section Content -->
+      <div class="section-content">
+        <!-- Roster Section (default) -->
+        <section id="roster-section" class="team-section">
+          <h2 class="section-heading">ROSTER</h2>
+          <div class="card">
+            <p class="body-text">Roster content will be added here.</p>
+          </div>
+        </section>
+
+        <!-- Coaches Section -->
+        <section id="coaches-section" class="team-section hidden">
+          <h2 class="section-heading">COACHING STAFF</h2>
+          <div class="space-y-8">
+            {
+              team.data.staff.map(coach => {
+                const coachEmailInfo = getCoachEmail(coach.name);
+                return (
+                  <div class="card">
+                    <div class="mb-4 flex items-center justify-between">
+                      <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">
+                        {coach.name}
+                      </h3>
+                      {coachEmailInfo && (
+                        <a
+                          href={`mailto:${coachEmailInfo.email}`}
+                          class="text-link text-sm font-medium dark:text-red-400"
+                        >
+                          Email Coach {coachEmailInfo.lastName}
+                        </a>
+                      )}
+                    </div>
+                    <div class="space-y-4">
+                      {coach.bio.map(paragraph => (
+                        <p class="body-text">{paragraph}</p>
+                      ))}
+                    </div>
                   </div>
-                  <div class="space-y-4">
-                    {coach.bio.map(paragraph => (
-                      <p class="body-text">{paragraph}</p>
-                    ))}
-                  </div>
-                </div>
-              );
-            })
-          }
-        </div>
-      </section>
+                );
+              })
+            }
+          </div>
+        </section>
+
+        <!-- Schedule Section -->
+        <section id="schedule-section" class="team-section hidden">
+          <h2 class="section-heading">SCHEDULE</h2>
+          <div class="card">
+            <p class="body-text">Schedule content will be added here.</p>
+          </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-section" class="team-section hidden">
+          <h2 class="section-heading">RESULTS</h2>
+          <div class="card">
+            <p class="body-text">Results content will be added here.</p>
+          </div>
+        </section>
+      </div>
     </div>
+
+    <script>
+      // Section navigation functionality
+      document.addEventListener("DOMContentLoaded", () => {
+        const tabs = document.querySelectorAll(".section-tab");
+        const sections = document.querySelectorAll(".team-section");
+
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            const targetSection = tab.getAttribute("data-section");
+
+            // Update tab styles
+            tabs.forEach((t) => {
+              t.classList.remove(
+                "section-tab-active",
+                "border-red",
+                "text-red",
+                "dark:text-red-400"
+              );
+              t.classList.add(
+                "border-transparent",
+                "text-gray-600",
+                "dark:text-gray-400"
+              );
+            });
+
+            tab.classList.add(
+              "section-tab-active",
+              "border-red",
+              "text-red",
+              "dark:text-red-400"
+            );
+            tab.classList.remove(
+              "border-transparent",
+              "text-gray-600",
+              "dark:text-gray-400"
+            );
+
+            // Show/hide sections
+            sections.forEach((section) => {
+              section.classList.add("hidden");
+            });
+
+            const activeSection = document.getElementById(`${targetSection}-section`);
+            if (activeSection) {
+              activeSection.classList.remove("hidden");
+            }
+          });
+        });
+      });
+    </script>
   </div>
 </Layout>
