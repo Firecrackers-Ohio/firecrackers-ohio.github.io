@@ -7,6 +7,17 @@
         "title": {
           "type": "string"
         },
+        "displayName": {
+          "type": "string"
+        },
+        "instagramUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "facebookUrl": {
+          "type": "string",
+          "format": "uri"
+        },
         "staff": {
           "type": "array",
           "items": {
@@ -14,6 +25,10 @@
             "properties": {
               "name": {
                 "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
               },
               "bio": {
                 "type": "array",

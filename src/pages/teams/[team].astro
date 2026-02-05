@@ -13,65 +13,30 @@ export async function getStaticPaths() {
 
 const { team } = Astro.props;
 
-// Map team IDs to display names
-const teamDisplayNames: Record<string, string> = {
-  allen: "12U Allen Team",
-  brown: "10U Brown Team",
-  evans: "14U Evans Team",
-  jones: "13U Jones Team",
-  nieman: "11U Nieman Team",
-};
-
-// Map team IDs to Instagram URLs
-const teamInstagramUrls: Record<string, string> = {
-  jones: "https://www.instagram.com/firecrackersoh_jones13u/",
-  nieman: "https://www.instagram.com/firecrackers_nieman11u/",
-  brown: "https://www.instagram.com/firecrackersoh10u/",
-};
-
-// Map team IDs to Facebook URLs
-const teamFacebookUrls: Record<string, string> = {
-  jones: "https://www.facebook.com/profile.php?id=61577221302816",
-  allen: "https://www.facebook.com/FirecrackersAllen",
-  nieman: "https://www.facebook.com/profile.php?id=61577922143240",
-  brown: "https://www.facebook.com/profile.php?id=61577598158529",
-};
-
-// Map coach names to email addresses
-const coachEmails: Record<string, string> = {
-  "Phil Jones": "philjones@firecrackersohio.com",
-  "Gary Brown": "garybrown@firecrackersohio.com",
-  "Casey Allen": "caseyallen@firecrackersohio.com",
-  "Matt Nieman": "mattnieman@firecrackersohio.com",
-  "Andy Evans": "andyevans@firecrackersohio.com",
-  "Doug Gray": "douggray@firecrackersohio.com",
-  "Josh Wheeler": "joshwheeler@firecrackersohio.com",
-};
-
-// Helper function to extract last name and get email
+// Helper function to extract last name and get email from coach data
 function getCoachEmail(
-  coachName: string
+  coachName: string,
+  coachEmail?: string
 ): { email: string; lastName: string } | null {
+  if (!coachEmail) {
+    return null;
+  }
+
   // Extract the name part before the dash (e.g., "Phil Jones - Head Coach" -> "Phil Jones")
   const namePart = coachName.split(" - ")[0].trim();
 
-  // Check if we have an email for this coach
-  const email = coachEmails[namePart];
-  if (email) {
-    // Extract last name (assume it's the last word)
-    const nameWords = namePart.split(" ");
-    const lastName = nameWords[nameWords.length - 1];
-    return { email, lastName };
-  }
+  // Extract last name (assume it's the last word)
+  const nameWords = namePart.split(" ");
+  const lastName = nameWords[nameWords.length - 1];
 
-  return null;
+  return { email: coachEmail, lastName };
 }
 
-const teamTitle = teamDisplayNames[team.id] || `${team.data.title} Team`;
+const teamTitle = team.data.displayName || `${team.data.title} Team`;
 const instagramUrl =
-  teamInstagramUrls[team.id] || "https://www.instagram.com/firecrackers_oh/";
+  team.data.instagramUrl || "https://www.instagram.com/firecrackers_oh/";
 const facebookUrl =
-  teamFacebookUrls[team.id] || "https://www.facebook.com/firecrackersohio";
+  team.data.facebookUrl || "https://www.facebook.com/firecrackersohio";
 ---
 
 <Layout
@@ -175,7 +140,7 @@ const facebookUrl =
           <div class="space-y-8">
             {
               team.data.staff.map(coach => {
-                const coachEmailInfo = getCoachEmail(coach.name);
+                const coachEmailInfo = getCoachEmail(coach.name, coach.email);
                 return (
                   <div class="card">
                     <div class="mb-4 flex items-center justify-between">
