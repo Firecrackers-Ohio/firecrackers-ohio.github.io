@@ -3,6 +3,7 @@
   "displayName": "13U Jones Team",
   "instagramUrl": "https://www.instagram.com/firecrackersoh_jones13u/",
   "facebookUrl": "https://www.facebook.com/profile.php?id=61577221302816",
+  "teamPhoto": "coaches.jpg",
   "staff": [
     {
       "name": "Phil Jones - Head Coach",
@@ -45,6 +46,99 @@
         "A former First Team All-MAC standout at Kent State University, Coach Ramos brings over six years of coaching experience.",
         "As a certified hitting instructor and former head coach at Worthington Christian and the Ohio All-Americans, she combines high-level playing experience with a proven ability to build confidence and elevate performance at the plate."
       ]
+    }
+  ],
+  "roster": [
+    {
+      "name": "Brooklyn Cunningham",
+      "number": 3,
+      "position": "OF",
+      "gradYear": 2030,
+      "highSchool": "Thomas Worthington"
+    },
+    {
+      "name": "Elle Miller",
+      "number": 4,
+      "position": "IF",
+      "gradYear": 2030,
+      "highSchool": "Buckeye Valley"
+    },
+    {
+      "name": "Delilah Rhoad",
+      "number": 5,
+      "position": "OF",
+      "gradYear": 2031,
+      "highSchool": "Upper Arlington"
+    },
+    {
+      "name": "Khloe Flaherty",
+      "number": 7,
+      "position": "P/SS",
+      "gradYear": 2031,
+      "highSchool": "Westerville South"
+    },
+    {
+      "name": "Bella Watts",
+      "number": 9,
+      "position": "P/UT",
+      "gradYear": 2030,
+      "highSchool": "Fairfield Union"
+    },
+    {
+      "name": "Reagan French",
+      "number": 12,
+      "position": "P/C/OF",
+      "gradYear": 2030,
+      "highSchool": "Olentangy Liberty"
+    },
+    {
+      "name": "Reagan Miller",
+      "number": 13,
+      "position": "UT",
+      "gradYear": 2030,
+      "highSchool": "Buckeye Valley"
+    },
+    {
+      "name": "Brooklynn Tocci",
+      "number": 18,
+      "position": "2B",
+      "gradYear": 2031,
+      "highSchool": "Marysville"
+    },
+    {
+      "name": "Aubri Gray",
+      "number": 21,
+      "position": "1B",
+      "gradYear": 2031,
+      "highSchool": "Marysville"
+    },
+    {
+      "name": "Chelsea Mannix",
+      "number": 22,
+      "position": "3B",
+      "gradYear": 2030,
+      "highSchool": "Worthington Kilbourne"
+    },
+    {
+      "name": "Ava Howard",
+      "number": 24,
+      "position": "C/1B",
+      "gradYear": 2030,
+      "highSchool": "Hilliard Darby"
+    },
+    {
+      "name": "Claire Grubbe",
+      "number": 28,
+      "position": "P",
+      "gradYear": 2030,
+      "highSchool": "Olentangy Liberty"
+    },
+    {
+      "name": "Emma Edwards",
+      "number": 31,
+      "position": "P/IF",
+      "gradYear": 2030,
+      "highSchool": "Teays Valley"
     }
   ]
 }

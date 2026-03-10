@@ -1,7 +1,9 @@
 ---
 import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import CoachTitle from "../../components/teams/CoachTitle.astro";
+import PlayerCard from "../../components/teams/PlayerCard.astro";
 
 export async function getStaticPaths() {
   const teams = await getCollection("teams");
@@ -37,6 +39,29 @@ const instagramUrl =
   team.data.instagramUrl || "https://www.instagram.com/firecrackers_oh/";
 const facebookUrl =
   team.data.facebookUrl || "https://www.facebook.com/firecrackersohio";
+
+const rosterImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/rosters/**/*.{jpg,jpeg,png,webp}",
+  { eager: true }
+);
+
+function getPlayerImage(teamId: string, playerNumber: number): ImageMetadata | undefined {
+  const extensions = ["jpg", "jpeg", "png", "webp"];
+  for (const ext of extensions) {
+    const path = `/src/assets/rosters/${teamId}/${playerNumber}.${ext}`;
+    if (rosterImages[path]) return rosterImages[path].default;
+  }
+  return undefined;
+}
+
+function getTeamPhoto(teamId: string, filename: string): ImageMetadata | undefined {
+  const path = `/src/assets/rosters/${teamId}/${filename}`;
+  return rosterImages[path]?.default;
+}
+
+const teamPhoto = team.data.teamPhoto
+  ? getTeamPhoto(team.id, team.data.teamPhoto)
+  : undefined;
 ---
 
 <Layout
@@ -94,30 +119,44 @@ const facebookUrl =
     </div>
 
     <div class="mx-auto max-w-4xl space-y-12">
+      {teamPhoto && (
+        <div class="hidden overflow-hidden rounded-lg md:block">
+          <Image
+            src={teamPhoto}
+            alt={`${teamTitle} photo`}
+            class="w-full object-cover"
+            width={896}
+          />
+        </div>
+      )}
+
       <!-- Section Navigation Tabs -->
       <div class="border-b border-gray-300 dark:border-gray-700">
-        <nav class="-mb-px flex space-x-8" aria-label="Team sections">
+        <nav
+          class="-mb-px flex justify-between md:justify-start md:space-x-8"
+          aria-label="Team sections"
+        >
           <button
             data-section="roster"
-            class="section-tab section-tab-active border-b-2 border-red px-1 py-4 text-lg font-semibold text-red transition-colors dark:text-red-400"
+            class="section-tab section-tab-active border-red text-red border-b-2 px-1 py-4 text-sm font-semibold transition-colors md:text-lg dark:text-red-400"
           >
             Roster
           </button>
           <button
             data-section="coaches"
-            class="section-tab border-b-2 border-transparent px-1 py-4 text-lg font-semibold text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-300"
+            class="section-tab border-b-2 border-transparent px-1 py-4 text-sm font-semibold text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 md:text-lg dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-300"
           >
             Coaches
           </button>
           <button
             data-section="schedule"
-            class="section-tab border-b-2 border-transparent px-1 py-4 text-lg font-semibold text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-300"
+            class="section-tab border-b-2 border-transparent px-1 py-4 text-sm font-semibold text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 md:text-lg dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-300"
           >
             Schedule
           </button>
           <button
             data-section="results"
-            class="section-tab border-b-2 border-transparent px-1 py-4 text-lg font-semibold text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-300"
+            class="section-tab border-b-2 border-transparent px-1 py-4 text-sm font-semibold text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 md:text-lg dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-300"
           >
             Results
           </button>
@@ -129,9 +168,26 @@ const facebookUrl =
         <!-- Roster Section (default) -->
         <section id="roster-section" class="team-section">
           <h2 class="section-heading">ROSTER</h2>
-          <div class="card">
-            <p class="body-text">Roster content will be added here.</p>
-          </div>
+          {
+            team.data.roster && team.data.roster.length > 0 ? (
+              <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                {team.data.roster.map(player => (
+                  <PlayerCard
+                    name={player.name}
+                    number={player.number}
+                    position={player.position}
+                    gradYear={player.gradYear}
+                    highSchool={player.highSchool}
+                    image={getPlayerImage(team.id, player.number)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div class="card">
+                <p class="body-text">Coming soon.</p>
+              </div>
+            )
+          }
         </section>
 
         <!-- Coaches Section -->
@@ -172,7 +228,7 @@ const facebookUrl =
         <section id="schedule-section" class="team-section hidden">
           <h2 class="section-heading">SCHEDULE</h2>
           <div class="card">
-            <p class="body-text">Schedule content will be added here.</p>
+            <p class="body-text">Coming soon.</p>
           </div>
         </section>
 
@@ -180,7 +236,7 @@ const facebookUrl =
         <section id="results-section" class="team-section hidden">
           <h2 class="section-heading">RESULTS</h2>
           <div class="card">
-            <p class="body-text">Results content will be added here.</p>
+            <p class="body-text">Coming soon.</p>
           </div>
         </section>
       </div>
@@ -192,12 +248,12 @@ const facebookUrl =
         const tabs = document.querySelectorAll(".section-tab");
         const sections = document.querySelectorAll(".team-section");
 
-        tabs.forEach((tab) => {
+        tabs.forEach(tab => {
           tab.addEventListener("click", () => {
             const targetSection = tab.getAttribute("data-section");
 
             // Update tab styles
-            tabs.forEach((t) => {
+            tabs.forEach(t => {
               t.classList.remove(
                 "section-tab-active",
                 "border-red",
@@ -224,11 +280,13 @@ const facebookUrl =
             );
 
             // Show/hide sections
-            sections.forEach((section) => {
+            sections.forEach(section => {
               section.classList.add("hidden");
             });
 
-            const activeSection = document.getElementById(`${targetSection}-section`);
+            const activeSection = document.getElementById(
+              `${targetSection}-section`
+            );
             if (activeSection) {
               activeSection.classList.remove("hidden");
             }

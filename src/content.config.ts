@@ -11,6 +11,7 @@ const teams = defineCollection({
     displayName: z.string().optional(),
     instagramUrl: z.string().url().optional(),
     facebookUrl: z.string().url().optional(),
+    teamPhoto: z.string().optional(),
     staff: z.array(
       z.object({
         name: z.string(),
@@ -18,6 +19,17 @@ const teams = defineCollection({
         bio: z.array(z.string()),
       })
     ),
+    roster: z
+      .array(
+        z.object({
+          name: z.string(),
+          number: z.number(),
+          position: z.string(),
+          gradYear: z.number(),
+          highSchool: z.string(),
+        })
+      )
+      .optional(),
   }),
 });
 
