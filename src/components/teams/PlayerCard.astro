@@ -1,0 +1,63 @@
+---
+import { Image } from "astro:assets";
+import fallbackImage from "../../assets/cracker-dude-ohio.svg";
+
+interface Props {
+  name: string;
+  number: number;
+  position: string;
+  gradYear: number;
+  highSchool: string;
+  image?: ImageMetadata;
+}
+
+const { name, number, position, gradYear, highSchool, image } = Astro.props;
+---
+
+<div class="group overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg dark:bg-gray-800">
+  <div class="relative">
+    {image ? (
+      <Image
+        src={image}
+        alt={`${name} headshot`}
+        class="aspect-[4/5] w-full object-contain"
+        width={240}
+        height={300}
+      />
+    ) : (
+      <img
+        src={fallbackImage.src}
+        alt={`${name} placeholder`}
+        class="aspect-[4/5] w-full object-contain"
+        width="240"
+        height="300"
+      />
+    )}
+    <span
+      class="absolute bottom-2 left-2 flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-red text-sm font-bold text-white shadow-lg drop-shadow-md"
+    >
+      #{number}
+    </span>
+  </div>
+  <div class="p-4">
+    <h3
+      class="text-base font-bold leading-tight text-gray-900 sm:text-lg dark:text-white"
+    >
+      {name}
+    </h3>
+    <div class="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-400">
+      <div class="flex items-center gap-2">
+        <span class="font-semibold text-red dark:text-red-400">POS</span>
+        <span>{position}</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="font-semibold text-red dark:text-red-400">GRAD</span>
+        <span>{gradYear}</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="font-semibold text-red dark:text-red-400">HS</span>
+        <span class="truncate">{highSchool}</span>
+      </div>
+    </div>
+  </div>
+</div>
