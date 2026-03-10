@@ -3,7 +3,7 @@
   "displayName": "13U Jones Team",
   "instagramUrl": "https://www.instagram.com/firecrackersoh_jones13u/",
   "facebookUrl": "https://www.facebook.com/profile.php?id=61577221302816",
-  "teamPhoto": "coaches.jpg",
+  "teamPhoto": "team.jpg",
   "staff": [
     {
       "name": "Phil Jones - Head Coach",
@@ -52,91 +52,91 @@
     {
       "name": "Brooklyn Cunningham",
       "number": 3,
-      "position": "OF",
+      "position": "IF/OF",
       "gradYear": 2030,
       "highSchool": "Thomas Worthington"
     },
     {
       "name": "Elle Miller",
       "number": 4,
-      "position": "IF",
-      "gradYear": 2030,
+      "position": "C/CIF/OF",
+      "gradYear": 2031,
       "highSchool": "Buckeye Valley"
     },
     {
       "name": "Delilah Rhoad",
       "number": 5,
-      "position": "OF",
+      "position": "2B/OF",
       "gradYear": 2031,
       "highSchool": "Upper Arlington"
     },
     {
       "name": "Khloe Flaherty",
       "number": 7,
-      "position": "P/SS",
-      "gradYear": 2031,
-      "highSchool": "Westerville South"
+      "position": "P/SS/3B/OF",
+      "gradYear": 2030,
+      "highSchool": "Westerville North"
     },
     {
       "name": "Bella Watts",
       "number": 9,
-      "position": "P/UT",
+      "position": "P/CIF/OF",
       "gradYear": 2030,
       "highSchool": "Fairfield Union"
     },
     {
       "name": "Reagan French",
       "number": 12,
-      "position": "P/C/OF",
+      "position": "P/C/SS/OF",
       "gradYear": 2030,
       "highSchool": "Olentangy Liberty"
     },
     {
       "name": "Reagan Miller",
       "number": 13,
-      "position": "UT",
-      "gradYear": 2030,
+      "position": "MIF/OF",
+      "gradYear": 2031,
       "highSchool": "Buckeye Valley"
     },
     {
       "name": "Brooklynn Tocci",
       "number": 18,
-      "position": "2B",
+      "position": "MIF/OF",
       "gradYear": 2031,
       "highSchool": "Marysville"
     },
     {
       "name": "Aubri Gray",
       "number": 21,
-      "position": "1B",
+      "position": "1B/OF",
       "gradYear": 2031,
       "highSchool": "Marysville"
     },
     {
       "name": "Chelsea Mannix",
       "number": 22,
-      "position": "3B",
+      "position": "3B/SS/OF",
       "gradYear": 2030,
       "highSchool": "Worthington Kilbourne"
     },
     {
       "name": "Ava Howard",
       "number": 24,
-      "position": "C/1B",
+      "position": "C/SS/OF",
       "gradYear": 2030,
       "highSchool": "Hilliard Darby"
     },
     {
       "name": "Claire Grubbe",
       "number": 28,
-      "position": "P",
-      "gradYear": 2030,
+      "position": "P/1B/OF",
+      "gradYear": 2031,
       "highSchool": "Olentangy Liberty"
     },
     {
       "name": "Emma Edwards",
       "number": 31,
-      "position": "P/IF",
+      "position": "P/C/3B/OF",
       "gradYear": 2030,
       "highSchool": "Teays Valley"
     }
