@@ -226,10 +226,38 @@ const teamPhoto = team.data.teamPhoto
 
         <!-- Schedule Section -->
         <section id="schedule-section" class="team-section hidden">
-          <h2 class="section-heading">SCHEDULE</h2>
-          <div class="card">
-            <p class="body-text">Coming soon.</p>
-          </div>
+          <h2 class="section-heading">2026 SPRING/SUMMER SCHEDULE</h2>
+          {
+            team.data.schedule && team.data.schedule.length > 0 ? (
+              <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+                <table class="w-full text-left text-sm">
+                  <thead>
+                    <tr class="bg-red text-white">
+                      <th class="px-4 py-3 font-semibold uppercase tracking-wide">Dates</th>
+                      <th class="px-4 py-3 font-semibold uppercase tracking-wide">Tournament</th>
+                      <th class="hidden px-4 py-3 font-semibold uppercase tracking-wide sm:table-cell">Location</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    {team.data.schedule.map((event, i) => (
+                      <tr class={i % 2 === 0 ? "bg-white dark:bg-gray-900" : "bg-gray-50 dark:bg-gray-800/50"}>
+                        <td class="whitespace-nowrap px-4 py-3 font-mono text-xs text-gray-600 dark:text-gray-400">{event.dates}</td>
+                        <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
+                          {event.tournament}
+                          <div class="mt-0.5 text-xs text-gray-500 sm:hidden dark:text-gray-400">{event.location}</div>
+                        </td>
+                        <td class="hidden px-4 py-3 text-gray-600 sm:table-cell dark:text-gray-400">{event.location}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div class="card">
+                <p class="body-text">Coming soon.</p>
+              </div>
+            )
+          }
         </section>
 
         <!-- Results Section -->
@@ -244,54 +272,79 @@ const teamPhoto = team.data.teamPhoto
 
     <script>
       // Section navigation functionality
-      document.addEventListener("DOMContentLoaded", () => {
+      const VALID_SECTIONS = ["roster", "coaches", "schedule", "results"];
+
+      function activateSection(targetSection: string, updateHash = true) {
         const tabs = document.querySelectorAll(".section-tab");
         const sections = document.querySelectorAll(".team-section");
+
+        // Update tab styles
+        tabs.forEach(t => {
+          t.classList.remove(
+            "section-tab-active",
+            "border-red",
+            "text-red",
+            "dark:text-red-400"
+          );
+          t.classList.add(
+            "border-transparent",
+            "text-gray-600",
+            "dark:text-gray-400"
+          );
+        });
+
+        const activeTab = document.querySelector(`[data-section="${targetSection}"]`);
+        if (activeTab) {
+          activeTab.classList.add(
+            "section-tab-active",
+            "border-red",
+            "text-red",
+            "dark:text-red-400"
+          );
+          activeTab.classList.remove(
+            "border-transparent",
+            "text-gray-600",
+            "dark:text-gray-400"
+          );
+        }
+
+        // Show/hide sections
+        sections.forEach(section => {
+          section.classList.add("hidden");
+        });
+
+        const activeSection = document.getElementById(`${targetSection}-section`);
+        if (activeSection) {
+          activeSection.classList.remove("hidden");
+        }
+
+        if (updateHash) {
+          history.replaceState(null, "", `#${targetSection}`);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const tabs = document.querySelectorAll(".section-tab");
 
         tabs.forEach(tab => {
           tab.addEventListener("click", () => {
             const targetSection = tab.getAttribute("data-section");
-
-            // Update tab styles
-            tabs.forEach(t => {
-              t.classList.remove(
-                "section-tab-active",
-                "border-red",
-                "text-red",
-                "dark:text-red-400"
-              );
-              t.classList.add(
-                "border-transparent",
-                "text-gray-600",
-                "dark:text-gray-400"
-              );
-            });
-
-            tab.classList.add(
-              "section-tab-active",
-              "border-red",
-              "text-red",
-              "dark:text-red-400"
-            );
-            tab.classList.remove(
-              "border-transparent",
-              "text-gray-600",
-              "dark:text-gray-400"
-            );
-
-            // Show/hide sections
-            sections.forEach(section => {
-              section.classList.add("hidden");
-            });
-
-            const activeSection = document.getElementById(
-              `${targetSection}-section`
-            );
-            if (activeSection) {
-              activeSection.classList.remove("hidden");
-            }
+            if (targetSection) activateSection(targetSection);
           });
         });
+
+        // Activate section from URL hash on load
+        const hash = window.location.hash.slice(1);
+        if (hash && VALID_SECTIONS.includes(hash)) {
+          activateSection(hash, false);
+        }
+      });
+
+      // Handle browser back/forward navigation
+      window.addEventListener("hashchange", () => {
+        const hash = window.location.hash.slice(1);
+        const section = VALID_SECTIONS.includes(hash) ? hash : "roster";
+        activateSection(section, false);
       });
     </script>
   </div>

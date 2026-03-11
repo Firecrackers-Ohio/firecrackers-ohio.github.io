@@ -24,5 +24,15 @@
         "Brent joined the staff in 2024, focused on mental and physical skill development and fundamentals, having coached softball for many years prior to joining Andy’s staff.  He brings a team-first mentality and an emphasis on effort, fundamentals, and steady improvement."
       ]
     }
+  ],
+  "schedule": [
+    { "dates": "5/29 - 5/31", "tournament": "Capital City Showdown", "location": "Berliner Park, Columbus" },
+    { "dates": "6/5 - 6/7", "tournament": "Hits 4 Hope Tourney", "location": "Grove City, OH" },
+    { "dates": "6/12 - 6/14", "tournament": "USSSA Tenn. ST. Champ.", "location": "Hendersonville, TN" },
+    { "dates": "6/19 - 6/21", "tournament": "Firecrackers Boom Bash", "location": "Marysville, OH" },
+    { "dates": "6/26 - 6/28", "tournament": "Rails and RBI’s", "location": "Wellston, OH" },
+    { "dates": "7/10 - 7/12", "tournament": "Marengo Tango", "location": "Marengo, OH" },
+    { "dates": "7/17 - 7/19", "tournament": "Dawg Daze Showdown", "location": "Findlay, OH" },
+    { "dates": "7/24 - 7/26", "tournament": "World Series", "location": "Berliner Park, Columbus" }
   ]
 }

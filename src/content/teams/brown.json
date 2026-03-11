@@ -31,5 +31,14 @@
         "Matt also brings experience as an assistant coach at the 8U and 9U levels, offering a strong foundation in team dynamics and fundamentals."
       ]
     }
+  ],
+  "schedule": [
+    { "dates": "5/8 - 5/10", "tournament": "Summer Starts Here", "location": "Mount Sterling, OH" },
+    { "dates": "5/22 - 5/24", "tournament": "Firefighters Memorial", "location": "Berliner Park, Columbus" },
+    { "dates": "5/29 - 5/31", "tournament": "Capital City Showdown", "location": "Berliner Park, Columbus" },
+    { "dates": "6/5 - 6/7", "tournament": "Queen Of Diamonds", "location": "Findlay, OH" },
+    { "dates": "6/12 - 6/14", "tournament": "USSSA Tenn. ST. Champ.", "location": "Hendersonville, TN" },
+    { "dates": "6/19 - 6/21", "tournament": "Firecrackers Boom Bash", "location": "Marysville, OH" },
+    { "dates": "7/10 - 7/12", "tournament": "Great Lakes B/C W.S.", "location": "Milford, OH" }
   ]
 }
