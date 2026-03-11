@@ -29,5 +29,17 @@
         "Also in his second season, Coach Yogi brings energy and expertise in baserunning and fielding, reinforcing fundamentals and game awareness."
       ]
     }
+  ],
+  "schedule": [
+    { "dates": "4/3 - 4/5", "tournament": "Gators Round Robin", "location": "Ashville, OH" },
+    { "dates": "4/10 - 4/12", "tournament": "Angels for Autism", "location": "Berliner Park, Columbus, OH" },
+    { "dates": "4/24 - 4/26", "tournament": "Six in the Spring", "location": "Zanesville, OH" },
+    { "dates": "5/1 - 5/3", "tournament": "Softball Wars", "location": "Findlay, OH" },
+    { "dates": "5/15 - 5/17", "tournament": "Strikeout Pediatric Cancer", "location": "Berliner Park, Columbus, OH" },
+    { "dates": "5/29 - 5/31", "tournament": "Summer State", "location": "Huber Heights, OH" },
+    { "dates": "6/5 - 6/7", "tournament": "Hits for Hope", "location": "Whitehall, OH" },
+    { "dates": "6/12 - 6/14", "tournament": "USSSA KY State Tourney", "location": "Elizabethtown, KY" },
+    { "dates": "6/19 - 6/21", "tournament": "Firecrackers Boom Bash", "location": "Marysville, OH" },
+    { "dates": "7/10 - 7/12", "tournament": "TBD", "location": "TBD" }
   ]
 }
