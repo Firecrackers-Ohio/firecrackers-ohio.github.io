@@ -30,6 +30,15 @@ const teams = defineCollection({
         })
       )
       .optional(),
+    schedule: z
+      .array(
+        z.object({
+          dates: z.string(),
+          tournament: z.string(),
+          location: z.string(),
+        })
+      )
+      .optional(),
   }),
 });
 

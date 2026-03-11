@@ -78,6 +78,29 @@
             "additionalProperties": false
           }
         },
+        "schedule": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "dates": {
+                "type": "string"
+              },
+              "tournament": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "dates",
+              "tournament",
+              "location"
+            ],
+            "additionalProperties": false
+          }
+        },
         "$schema": {
           "type": "string"
         }

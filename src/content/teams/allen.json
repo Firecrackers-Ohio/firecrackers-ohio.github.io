@@ -20,5 +20,18 @@
         "He has coached alongside Casey for the past three seasons, playing an integral role in player development, game strategy, and overall success."
       ]
     }
+  ],
+  "schedule": [
+    { "dates": "3/6 - 3/8", "tournament": "Queen City Class", "location": "Middletown, OH" },
+    { "dates": "4/10 - 4/12", "tournament": "Ice Breaker Qualifier", "location": "Middletown, OH" },
+    { "dates": "4/24 - 4/26", "tournament": "Battle for the Belt", "location": "Ashville, OH" },
+    { "dates": "5/8 - 5/10", "tournament": "Annual Mother's Day", "location": "Grove City, OH" },
+    { "dates": "5/15 - 5/17", "tournament": "Strikeout Ped. Cancer", "location": "Columbus, OH" },
+    { "dates": "5/22 - 5/24", "tournament": "Firefighters Memorial", "location": "Berliner Park, Columbus" },
+    { "dates": "5/29 - 5/31", "tournament": "Capital City Showdown", "location": "Berliner Park, Columbus" },
+    { "dates": "6/12 - 6/14", "tournament": "Queen of Diamonds", "location": "Pickerington, OH" },
+    { "dates": "6/19 - 6/21", "tournament": "Firecrackers Boom Bash", "location": "Marysville, OH" },
+    { "dates": "6/26 - 6/28", "tournament": "Ohio State Championship", "location": "Marysville, OH" },
+    { "dates": "7/12 - 7/18", "tournament": "B-Class Nat'l Champ.", "location": "Gulf Shores, AL" }
   ]
 }
