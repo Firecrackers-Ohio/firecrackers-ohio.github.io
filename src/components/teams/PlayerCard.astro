@@ -1,6 +1,5 @@
 ---
 import { Image } from "astro:assets";
-import fallbackImage from "../../assets/cracker-dude-ohio.svg";
 
 interface Props {
   name: string;
@@ -25,13 +24,7 @@ const { name, number, position, gradYear, highSchool, image } = Astro.props;
         height={300}
       />
     ) : (
-      <img
-        src={fallbackImage.src}
-        alt={`${name} placeholder`}
-        class="aspect-[4/5] w-full object-contain"
-        width="240"
-        height="300"
-      />
+      <div class="aspect-[4/5] w-full bg-gray-100 dark:bg-gray-700"></div>
     )}
     <span
       class="absolute bottom-2 left-2 flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-red text-sm font-bold text-white shadow-lg drop-shadow-md"

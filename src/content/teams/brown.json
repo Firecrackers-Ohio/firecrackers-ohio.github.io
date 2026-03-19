@@ -32,6 +32,85 @@
       ]
     }
   ],
+  "roster": [
+    {
+      "name": "Selah Grace Foster",
+      "number": 1,
+      "position": "OF/2B",
+      "gradYear": 2033,
+      "highSchool": "Olentangy Liberty"
+    },
+    {
+      "name": "Chloe Biggs",
+      "number": 3,
+      "position": "OF/2B",
+      "gradYear": 2034,
+      "highSchool": "Cardington Lincoln"
+    },
+    {
+      "name": "Macy Mullins",
+      "number": 4,
+      "position": "P/SS",
+      "gradYear": 2033,
+      "highSchool": "Ontario"
+    },
+    {
+      "name": "Mia Martinez",
+      "number": 6,
+      "position": "P/SS",
+      "gradYear": 2032,
+      "highSchool": "Pickerington North"
+    },
+    {
+      "name": "Charlotte French",
+      "number": 8,
+      "position": "P/1B",
+      "gradYear": 2034,
+      "highSchool": "Olentangy Liberty"
+    },
+    {
+      "name": "Presley Purcell",
+      "number": 10,
+      "position": "OF",
+      "gradYear": 2034,
+      "highSchool": "Hilliard Davidson"
+    },
+    {
+      "name": "Jayalah Seldon",
+      "number": 12,
+      "position": "2B/OF",
+      "gradYear": 2033,
+      "highSchool": "Grove City"
+    },
+    {
+      "name": "Gabby Brown",
+      "number": 14,
+      "position": "C",
+      "gradYear": 2033,
+      "highSchool": "Hilliard Darby"
+    },
+    {
+      "name": "Addison Sever",
+      "number": 27,
+      "position": "2B/OF",
+      "gradYear": 2033,
+      "highSchool": "Marysville"
+    },
+    {
+      "name": "Skylar Coleman",
+      "number": 29,
+      "position": "P/3B/OF",
+      "gradYear": 2033,
+      "highSchool": "Northridge"
+    },
+    {
+      "name": "Nora Zakowski",
+      "number": 44,
+      "position": "C/3B",
+      "gradYear": 2033,
+      "highSchool": "Northeastern"
+    }
+  ],
   "schedule": [
     { "dates": "5/8 - 5/10", "tournament": "Summer Starts Here", "location": "Mount Sterling, OH" },
     { "dates": "5/22 - 5/24", "tournament": "Firefighters Memorial", "location": "Berliner Park, Columbus" },

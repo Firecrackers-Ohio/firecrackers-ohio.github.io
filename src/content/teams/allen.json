@@ -21,6 +21,92 @@
       ]
     }
   ],
+  "roster": [
+    {
+      "name": "Emma Dent",
+      "number": 2,
+      "position": "SS/P",
+      "gradYear": 2031,
+      "highSchool": "Grove City"
+    },
+    {
+      "name": "Lily Hayes",
+      "number": 4,
+      "position": "P/OF/2B",
+      "gradYear": 2031,
+      "highSchool": "Hamilton Township"
+    },
+    {
+      "name": "Peyton Allen",
+      "number": 8,
+      "position": "2B/C/OF",
+      "gradYear": 2031,
+      "highSchool": "Grove City"
+    },
+    {
+      "name": "Gracie Weber",
+      "number": 10,
+      "position": "OF/3B/UT",
+      "gradYear": 2031,
+      "highSchool": "Central Crossing"
+    },
+    {
+      "name": "Peyton Smith",
+      "number": 11,
+      "position": "C/OF",
+      "gradYear": 2032,
+      "highSchool": "Big Walnut"
+    },
+    {
+      "name": "Rowan Wheeler",
+      "number": 12,
+      "position": "1B/OF/P",
+      "gradYear": 2031,
+      "highSchool": "Delaware Hayes"
+    },
+    {
+      "name": "Briella Conley",
+      "number": 13,
+      "position": "C/3B/OF",
+      "gradYear": 2031,
+      "highSchool": "Jonathan Alder"
+    },
+    {
+      "name": "Ava Rhoads",
+      "number": 16,
+      "position": "P/3B/1B/OF",
+      "gradYear": 2031,
+      "highSchool": "Amanda Clearcreek"
+    },
+    {
+      "name": "Emma Scipio",
+      "number": 22,
+      "position": "OF/SS/UT",
+      "gradYear": 2032,
+      "highSchool": "Hilliard Bradley"
+    },
+    {
+      "name": "Payton Gibbs",
+      "number": 24,
+      "position": "C/OF",
+      "gradYear": 2031,
+      "highSchool": "Tipp City"
+    },
+    {
+      "name": "Rilee Vorhees",
+      "number": 30,
+      "position": "3B/OF",
+      "gradYear": 2032,
+      "highSchool": "Logan"
+    },
+    {
+      "name": "Liara Kanzlemar",
+      "number": 33,
+      "position": "P/1B",
+      "gradYear": 2032,
+      "highSchool": "Jonathan Alder"
+    }
+  ],
   "schedule": [
     { "dates": "3/6 - 3/8", "tournament": "Queen City Class", "location": "Middletown, OH" },
     { "dates": "4/10 - 4/12", "tournament": "Ice Breaker Qualifier", "location": "Middletown, OH" },
@@ -33,5 +119,9 @@
     { "dates": "6/19 - 6/21", "tournament": "Firecrackers Boom Bash", "location": "Marysville, OH" },
     { "dates": "6/26 - 6/28", "tournament": "Ohio State Championship", "location": "Marysville, OH" },
     { "dates": "7/12 - 7/18", "tournament": "B-Class Nat'l Champ.", "location": "Gulf Shores, AL" }
+  ],
+  "results": [
+    { "tournament": "Ohio Field Of Screams", "location": "Johnstown, Ohio", "date": "Oct 4", "result": "2nd Place" },
+    { "tournament": "Queen City Halloween Haunts", "location": "Fairfield, Ohio", "date": "Oct 25", "result": "Champions" }
   ]
 }

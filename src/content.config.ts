@@ -39,6 +39,16 @@ const teams = defineCollection({
         })
       )
       .optional(),
+    results: z
+      .array(
+        z.object({
+          tournament: z.string(),
+          location: z.string(),
+          date: z.string(),
+          result: z.string(),
+        })
+      )
+      .optional(),
   }),
 });
 
