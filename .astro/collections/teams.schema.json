@@ -101,6 +101,33 @@
             "additionalProperties": false
           }
         },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tournament": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "date": {
+                "type": "string"
+              },
+              "result": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "tournament",
+              "location",
+              "date",
+              "result"
+            ],
+            "additionalProperties": false
+          }
+        },
         "$schema": {
           "type": "string"
         }

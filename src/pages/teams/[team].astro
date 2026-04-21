@@ -62,6 +62,11 @@ function getTeamPhoto(teamId: string, filename: string): ImageMetadata | undefin
 const teamPhoto = team.data.teamPhoto
   ? getTeamPhoto(team.id, team.data.teamPhoto)
   : undefined;
+
+const teamHasPlayerImages = team.data.roster?.some(
+  player => getPlayerImage(team.id, player.number) !== undefined
+) ?? false;
+
 ---
 
 <Layout
@@ -120,21 +125,81 @@ const teamPhoto = team.data.teamPhoto
       <div class="section-content">
         <!-- Roster Section (default) -->
         <section id="roster-section" class="team-section">
-          <h2 class="section-heading">ROSTER</h2>
+          <div class="mb-6 flex items-center justify-between">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white">ROSTER</h2>
+            {team.data.roster && team.data.roster.length > 0 && teamHasPlayerImages && (
+              <div class="flex items-center gap-1">
+                <button
+                  id="roster-list-btn"
+                  class="roster-view-btn rounded-md p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                  aria-label="List view"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+                <button
+                  id="roster-grid-btn"
+                  class="roster-view-btn rounded-md bg-red p-2 text-white transition-colors"
+                  aria-label="Grid view"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 8a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zm6-6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 8a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </div>
           {
             team.data.roster && team.data.roster.length > 0 ? (
-              <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                {team.data.roster.map(player => (
-                  <PlayerCard
-                    name={player.name}
-                    number={player.number}
-                    position={player.position}
-                    gradYear={player.gradYear}
-                    highSchool={player.highSchool}
-                    image={getPlayerImage(team.id, player.number)}
-                  />
-                ))}
-              </div>
+              <>
+                <!-- Table/List View -->
+                <div id="roster-list-view" class:list={[!teamHasPlayerImages ? "" : "hidden"]}>
+                  <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+                    <table class="w-full text-left text-sm">
+                      <thead>
+                        <tr class="bg-red text-white">
+                          <th class="px-4 py-3 font-semibold uppercase tracking-wide">#</th>
+                          <th class="px-4 py-3 font-semibold uppercase tracking-wide">Name</th>
+                          <th class="px-4 py-3 font-semibold uppercase tracking-wide">Pos</th>
+                          <th class="hidden px-4 py-3 font-semibold uppercase tracking-wide sm:table-cell">Grad</th>
+                          <th class="hidden px-4 py-3 font-semibold uppercase tracking-wide sm:table-cell">High School</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        {team.data.roster.map((player, i) => (
+                          <tr class={i % 2 === 0 ? "bg-white dark:bg-gray-900" : "bg-gray-50 dark:bg-gray-800/50"}>
+                            <td class="px-4 py-3 font-mono text-xs font-bold text-red dark:text-red-400">{player.number}</td>
+                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
+                              {player.name}
+                              <div class="mt-0.5 text-xs text-gray-500 sm:hidden dark:text-gray-400">{player.gradYear} &middot; {player.highSchool}</div>
+                            </td>
+                            <td class="px-4 py-3 text-gray-600 dark:text-gray-400">{player.position}</td>
+                            <td class="hidden px-4 py-3 text-gray-600 sm:table-cell dark:text-gray-400">{player.gradYear}</td>
+                            <td class="hidden px-4 py-3 text-gray-600 sm:table-cell dark:text-gray-400">{player.highSchool}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Grid View -->
+                {teamHasPlayerImages && (
+                  <div id="roster-grid-view" class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                    {team.data.roster.map(player => (
+                      <PlayerCard
+                        name={player.name}
+                        number={player.number}
+                        position={player.position}
+                        gradYear={player.gradYear}
+                        highSchool={player.highSchool}
+                        image={getPlayerImage(team.id, player.number)}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
             ) : (
               <div class="card">
                 <p class="body-text">Coming soon.</p>
@@ -215,10 +280,40 @@ const teamPhoto = team.data.teamPhoto
 
         <!-- Results Section -->
         <section id="results-section" class="team-section hidden">
-          <h2 class="section-heading">RESULTS</h2>
-          <div class="card">
-            <p class="body-text">Coming soon.</p>
-          </div>
+          <h2 class="section-heading">2025 FALL RESULTS</h2>
+          {
+            team.data.results && team.data.results.length > 0 ? (
+              <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+                <table class="w-full text-left text-sm">
+                  <thead>
+                    <tr class="bg-red text-white">
+                      <th class="px-4 py-3 font-semibold uppercase tracking-wide">Date</th>
+                      <th class="px-4 py-3 font-semibold uppercase tracking-wide">Tournament</th>
+                      <th class="hidden px-4 py-3 font-semibold uppercase tracking-wide sm:table-cell">Location</th>
+                      <th class="px-4 py-3 font-semibold uppercase tracking-wide">Result</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    {team.data.results.map((entry, i) => (
+                      <tr class={i % 2 === 0 ? "bg-white dark:bg-gray-900" : "bg-gray-50 dark:bg-gray-800/50"}>
+                        <td class="whitespace-nowrap px-4 py-3 font-mono text-xs text-gray-600 dark:text-gray-400">{entry.date}</td>
+                        <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
+                          {entry.tournament}
+                          <div class="mt-0.5 text-xs text-gray-500 sm:hidden dark:text-gray-400">{entry.location}</div>
+                        </td>
+                        <td class="hidden px-4 py-3 text-gray-600 sm:table-cell dark:text-gray-400">{entry.location}</td>
+                        <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{entry.result}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div class="card">
+                <p class="body-text">Coming soon.</p>
+              </div>
+            )
+          }
         </section>
       </div>
     </div>
@@ -276,6 +371,32 @@ const teamPhoto = team.data.teamPhoto
         }
       }
 
+      function setRosterView(view: "list" | "grid") {
+        const listView = document.getElementById("roster-list-view");
+        const gridView = document.getElementById("roster-grid-view");
+        const listBtn = document.getElementById("roster-list-btn");
+        const gridBtn = document.getElementById("roster-grid-btn");
+
+        const activeClasses = ["bg-red", "text-white"];
+        const inactiveClasses = ["text-gray-400", "hover:bg-gray-100", "hover:text-gray-600", "dark:text-gray-500", "dark:hover:bg-gray-800", "dark:hover:text-gray-300"];
+
+        if (view === "list") {
+          listView?.classList.remove("hidden");
+          gridView?.classList.add("hidden");
+          listBtn?.classList.add(...activeClasses);
+          listBtn?.classList.remove(...inactiveClasses);
+          gridBtn?.classList.remove(...activeClasses);
+          gridBtn?.classList.add(...inactiveClasses);
+        } else {
+          listView?.classList.add("hidden");
+          gridView?.classList.remove("hidden");
+          gridBtn?.classList.add(...activeClasses);
+          gridBtn?.classList.remove(...inactiveClasses);
+          listBtn?.classList.remove(...activeClasses);
+          listBtn?.classList.add(...inactiveClasses);
+        }
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
         const tabs = document.querySelectorAll(".section-tab");
 
@@ -285,6 +406,9 @@ const teamPhoto = team.data.teamPhoto
             if (targetSection) activateSection(targetSection);
           });
         });
+
+        document.getElementById("roster-list-btn")?.addEventListener("click", () => setRosterView("list"));
+        document.getElementById("roster-grid-btn")?.addEventListener("click", () => setRosterView("grid"));
 
         // Activate section from URL hash on load
         const hash = window.location.hash.slice(1);
