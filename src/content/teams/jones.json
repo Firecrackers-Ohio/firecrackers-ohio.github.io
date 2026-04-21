@@ -142,14 +142,70 @@
     }
   ],
   "schedule": [
-    { "dates": "5/22 - 5/24", "tournament": "Firefighters Memorial", "location": "Berliner Park, Columbus" },
-    { "dates": "5/29 - 5/31", "tournament": "Capital City Showdown", "location": "Berliner Park, Columbus" },
-    { "dates": "6/5 - 6/7", "tournament": "Queen Of Diamonds", "location": "Findlay, OH" },
-    { "dates": "6/12 - 6/14", "tournament": "USSSA Tenn. ST. Champ.", "location": "Hendersonville, TN" },
-    { "dates": "6/19 - 6/21", "tournament": "Firecrackers Boom Bash", "location": "Marysville, OH" },
-    { "dates": "6/26 - 6/28", "tournament": "USA State Championship", "location": "Berliner Park, Columbus" },
-    { "dates": "7/10 - 7/12", "tournament": "19th Annual Beach Bash", "location": "Holland, MI" },
-    { "dates": "7/17 - 7/19", "tournament": "Helping Community Hospice", "location": "Dover, OH" },
-    { "dates": "7/24 - 7/26", "tournament": "World Series", "location": "Berliner Park, Columbus" }
+    {
+      "dates": "5/22 - 5/24",
+      "tournament": "Firefighters Memorial",
+      "location": "Berliner Park, Columbus"
+    },
+    {
+      "dates": "5/29 - 5/31",
+      "tournament": "Capital City Showdown",
+      "location": "Berliner Park, Columbus"
+    },
+    {
+      "dates": "6/5 - 6/7",
+      "tournament": "Queen Of Diamonds",
+      "location": "Findlay, OH"
+    },
+    {
+      "dates": "6/12 - 6/14",
+      "tournament": "USSSA Tenn. ST. Champ.",
+      "location": "Hendersonville, TN"
+    },
+    {
+      "dates": "6/19 - 6/21",
+      "tournament": "Firecrackers Boom Bash",
+      "location": "Marysville, OH"
+    },
+    {
+      "dates": "6/26 - 6/28",
+      "tournament": "USA State Championship",
+      "location": "Marysville, OH"
+    },
+    {
+      "dates": "7/10 - 7/12",
+      "tournament": "19th Annual Beach Bash",
+      "location": "Holland, MI"
+    },
+    {
+      "dates": "7/17 - 7/19",
+      "tournament": "Helping Community Hospice",
+      "location": "Dover, OH"
+    },
+    {
+      "dates": "7/24 - 7/26",
+      "tournament": "World Series",
+      "location": "Berliner Park, Columbus"
+    }
+  ],
+  "results": [
+    {
+      "tournament": "Apple Butter Bash Hosted by Bombers FP",
+      "location": "Groveport, Ohio",
+      "date": "Oct 11",
+      "result": "4th Place"
+    },
+    {
+      "tournament": "2nd Annual Boneyard Bash Hosted by Firecrackers",
+      "location": "Marysville, Ohio",
+      "date": "Oct 18",
+      "result": "Champions"
+    },
+    {
+      "tournament": "11th Annual Halloween Bash",
+      "location": "Cincinnati, OH",
+      "date": "Oct 25",
+      "result": "2nd Place"
+    }
   ]
 }

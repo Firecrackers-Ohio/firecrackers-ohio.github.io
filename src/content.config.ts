@@ -39,7 +39,7 @@ const teams = defineCollection({
         })
       )
       .optional(),
-      results: z
+    results: z
       .array(
         z.object({
           tournament: z.string(),

@@ -4,14 +4,8 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "eslint.validate": [
-    "javascript",
-    "typescript",
-    "astro"
-  ],
-  "prettier.documentSelectors": [
-    "**/*.astro"
-  ],
+  "eslint.validate": ["javascript", "typescript", "astro"],
+  "prettier.documentSelectors": ["**/*.astro"],
   "[astro]": {
     "editor.defaultFormatter": "astro-build.astro-vscode"
   },
