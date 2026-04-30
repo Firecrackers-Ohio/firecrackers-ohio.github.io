@@ -143,9 +143,46 @@
       "location": "Marysville, OH"
     },
     {
+      "dates": "6/26 - 6/28",
+      "tournament": "Mingo Madness",
+      "location": "Logan, OH"
+    },
+    {
       "dates": "7/10 - 7/12",
-      "tournament": "Great Lakes B/C W.S.",
+      "tournament": "Great Lakes B/C World Series",
       "location": "Milford, OH"
+    }
+  ],
+  "results": [
+    {
+      "tournament": "Pumpkin Pitch Playoff",
+      "location": "Marengo, OH",
+      "date": "Sep 27",
+      "result": "Semi-Finalist"
+    },
+    {
+      "tournament": "Ashland Softball Classic",
+      "location": "Ashland, OH",
+      "date": "Oct 4",
+      "result": "Runner Up"
+    },
+    {
+      "tournament": "2025 Boneyard Bash",
+      "location": "Marysville, OH",
+      "date": "Oct 18-19",
+      "result": "Champions"
+    },
+    {
+      "tournament": "Fields of Fright",
+      "location": "Urbana, OH",
+      "date": "Oct 25-26",
+      "result": "Semi-Finalist"
+    },
+    {
+      "tournament": "Wittenberg Winter Bash",
+      "location": "Springfield, OH",
+      "date": "Dec 7",
+      "result": "Runner Up"
     }
   ]
 }
