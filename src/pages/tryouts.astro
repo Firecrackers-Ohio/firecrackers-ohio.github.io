@@ -2,11 +2,92 @@
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import logoTextOutline from "../assets/logo-text-outline.svg";
+import { EXTERNAL_URLS } from "../config";
+
+const venues = {
+  berliner: {
+    name: "Lou Berliner Sports Park",
+    address: "1300 Deckenbach Rd, Columbus, OH 43223",
+    mapUrl:
+      "https://maps.google.com/?q=Lou+Berliner+Sports+Park+1300+Deckenbach+Rd+Columbus+OH+43223",
+  },
+  desales: {
+    name: "DeSales High School",
+    address: "4212 Karl Rd, Columbus, OH 43224",
+    mapUrl:
+      "https://maps.google.com/?q=DeSales+High+School+4212+Karl+Rd+Columbus+OH+43224",
+  },
+};
+
+const teams = [
+  {
+    age: "11U",
+    gradYear: "2033",
+    coach: "BROWN",
+    coachName: "Coach Gary",
+    dates: "July 16 & July 19",
+    time: "6:00 – 8:00 PM",
+    phone: "(614) 989-6569",
+    email: "garybrown@firecrackersohio.com",
+    venue: "berliner",
+  },
+  {
+    age: "12U",
+    gradYear: "2034",
+    coach: "NIEMAN",
+    coachName: "Coach Matt",
+    dates: "July 16 & July 19",
+    time: "6:00 – 8:00 PM",
+    phone: "(220) 282-6441",
+    email: "mattnieman@firecrackersohio.com",
+    venue: "berliner",
+  },
+  {
+    age: "13U",
+    gradYear: "31/32",
+    coach: "ALLEN",
+    coachName: "Coach Casey",
+    dates: "July 8 & July 22",
+    time: "6:00 – 8:00 PM",
+    phone: "(614) 917-8858",
+    email: "caseyallen@firecrackersohio.com",
+    venue: "berliner",
+  },
+  {
+    age: "14U",
+    gradYear: "30/31",
+    coach: "JONES",
+    coachName: "Coach Phil",
+    dates: "July 14, 16 & 22",
+    time: "6:00 – 8:00 PM",
+    phone: "(614) 440-8009",
+    email: "philjones@firecrackersohio.com",
+    venue: "berliner",
+  },
+  {
+    age: "15U",
+    gradYear: "29/30",
+    coach: "EVANS",
+    coachName: "Coach Andy",
+    dates: "July 8 & July 15",
+    time: "6:00 – 8:00 PM",
+    phone: "(614) 206-9110",
+    email: "andyevans@firecrackersohio.com",
+    venue: "desales",
+  },
+];
+
+const highlights = [
+  "Elite coaching",
+  "Competitive tournament schedule",
+  "Player development focused",
+  "Positive team environment",
+];
 ---
 
 <Layout
   title="Tryouts | Firecrackers Central Ohio"
-  description="Join Firecrackers Ohio! View tryout schedules, dates, and locations for all age groups from 10U through 14U at Lou Berliner Sports Park."
+  description="Firecrackers Central Ohio softball tryouts for the upcoming season. View dates, times, and locations for 11U through 15U, then register online to join the Firecrackers family."
 >
   <div class="container mx-auto px-4 py-8">
     <!-- Header -->
@@ -24,90 +105,122 @@ import logoTextOutline from "../assets/logo-text-outline.svg";
       <p
         class="mx-auto max-w-2xl text-lg text-gray-700 md:text-xl dark:text-gray-300"
       >
-        Our 2026 spring/summer rosters are now set! Follow our social media
-        pages to learn about future tryout opportunities. Interested players can
-        also reach out to the coach of their age group to inquire about private
-        tryouts.
+        🔥🥎 Firecrackers Softball tryouts are here! 🥎🔥
+        <br />
+        Are you ready to take your game to the next level?
       </p>
     </div>
 
-    <!-- Age Groups Grid -->
-    <div class="mx-auto max-w-4xl">
-      <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        {
-          [
-            {
-              age: "10U",
-              coach: "BROWN",
-              birthYears: "SEPT 2014 - DEC 2015",
-              coachName: "Coach Gary",
-              phone: "(614) 989-6569",
-              email: "garybrown@firecrackersohio.com",
-            },
-            {
-              age: "11U",
-              coach: "NIEMAN",
-              birthYears: "SEPT 2013 - DEC 2014",
-              coachName: "Coach Matt",
-              phone: "(724) 252-6396",
-              email: "mattnieman@firecrackersohio.com",
-            },
-            {
-              age: "12U",
-              coach: "ALLEN",
-              birthYears: "SEPT 2012 - DEC 2013",
-              coachName: "Coach Casey",
-              phone: "(614) 917-8858",
-              email: "caseyallen@firecrackersohio.com",
-            },
-            {
-              age: "13U",
-              coach: "JONES",
-              birthYears: "SEPT 2011 - DEC 2012",
-              coachName: "Coach Phil",
-              phone: "(614) 440-8009",
-              email: "philjones@firecrackersohio.com",
-            },
-            {
-              age: "14U",
-              coach: "EVANS",
-              birthYears: "SEPT 2010 - DEC 2011",
-              coachName: "Coach Andy",
-              phone: "(614) 206-9110",
-              email: "andyevans@firecrackersohio.com",
-            },
-          ].map(team => (
-            <div class="rounded-lg bg-gray-50 p-8 shadow-lg dark:bg-gray-800">
-              <div class="mb-2 border-b-2 border-gray-300 pb-4 dark:border-gray-600">
-                <h3 class="text-red text-3xl font-bold">
+    <div class="mx-auto max-w-4xl space-y-12">
+      <!-- Pitch -->
+      <section class="text-center">
+        <p class="body-text-xl">
+          The Firecrackers are looking for dedicated athletes who are ready to
+          compete, develop their skills, and be part of a team-first culture.
+          Whether your dream is to become a stronger player, compete against top
+          talent, or one day play college softball, it all starts with finding
+          the right team and environment.
+        </p>
+      </section>
+
+      <!-- What you get -->
+      <section class="highlight-card-gray">
+        <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
+          Why Firecrackers?
+        </h2>
+        <ul
+          class="mx-auto grid max-w-3xl grid-cols-1 gap-x-8 gap-y-4 text-left sm:grid-cols-2"
+        >
+          {
+            highlights.map(item => (
+              <li class="bullet-item text-lg text-gray-900 dark:text-white">
+                <span class="bullet-icon">✅</span>
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <!-- Schedule -->
+      <section>
+        <h2 class="section-heading text-center">Tryout Schedule</h2>
+        <div class="space-y-4">
+          {
+            teams.map(team => {
+              const venue = venues[team.venue as keyof typeof venues];
+              return (
+              <div class="grid grid-cols-1 gap-4 rounded-lg bg-gray-50 p-5 shadow-lg sm:grid-cols-2 lg:grid-cols-[10rem_11rem_1fr_15rem] lg:items-center dark:bg-gray-800">
+                <div>
                   <a
                     href={`/teams/${team.coach.toLowerCase()}`}
-                    class="transition-all hover:text-red-400 hover:underline dark:text-gray-400"
+                    class="text-red text-xl font-bold transition-all hover:text-red-400 hover:underline dark:text-red-400"
                   >
                     {team.age} - {team.coach}
                   </a>
-                </h3>
-              </div>
-
-              <div class="space-y-2">
-                <p class="text-lg font-medium text-gray-900 dark:text-white">
-                  Contact {team.coachName}
-                </p>
-                <p class="text-lg text-gray-900 dark:text-white">
-                  {team.phone}
-                  <br />
+                  <div class="text-sm text-gray-600 dark:text-gray-400">
+                    Grad Year {team.gradYear}
+                  </div>
+                </div>
+                <div>
+                  <div class="font-semibold text-gray-900 dark:text-white">
+                    {team.dates}
+                  </div>
+                  <div class="text-sm text-gray-700 dark:text-gray-300">
+                    {team.time}
+                  </div>
+                </div>
+                <a
+                  href={venue.mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group block"
+                >
+                  <div class="font-medium text-gray-900 group-hover:underline dark:text-white">
+                    📍 {venue.name}
+                  </div>
+                  <div class="text-sm text-gray-700 dark:text-gray-300">
+                    {venue.address}
+                  </div>
+                </a>
+                <div>
+                  <div class="font-medium text-gray-900 dark:text-white">
+                    {team.coachName}
+                  </div>
+                  <div class="text-gray-900 dark:text-white">{team.phone}</div>
                   <a
                     href={`mailto:${team.email}`}
-                    class="text-link dark:text-red-400"
+                    class="text-link dark:text-red-400 break-all"
                   >
                     {team.email}
                   </a>
-                </p>
+                </div>
               </div>
-            </div>
-          ))
-        }
-      </div>
+              );
+            })
+          }
+        </div>
+      </section>
+
+      <!-- Closing CTA -->
+      <section class="highlight-card-red">
+        <h2 class="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
+          We hope to see you there!
+        </h2>
+        <p class="body-text mx-auto mb-6 max-w-2xl">
+          Reserve your spot today, or reach out to the coach of your age group
+          with any questions. Can't make a listed date? Contact the coach to ask
+          about a private tryout.
+        </p>
+        <a
+          href={EXTERNAL_URLS.tryoutRegistration}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-red px-8 py-4 text-xl"
+        >
+          Register for Tryouts
+        </a>
+      </section>
     </div>
   </div>
 </Layout>
