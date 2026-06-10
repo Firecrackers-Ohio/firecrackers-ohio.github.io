@@ -67,6 +67,15 @@ const teamHasPlayerImages = team.data.roster?.some(
   player => getPlayerImage(team.id, player.number) !== undefined
 ) ?? false;
 
+// Default to the Coaches section when roster information is missing
+const hasRoster = (team.data.roster?.length ?? 0) > 0;
+const defaultSection = hasRoster ? "roster" : "coaches";
+
+const activeTabClass =
+  "section-tab section-tab-active border-red text-red border-b-2 px-1 py-4 text-sm font-semibold transition-colors md:text-lg dark:text-red-400";
+const inactiveTabClass =
+  "section-tab border-b-2 border-transparent px-1 py-4 text-sm font-semibold text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 md:text-lg dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-300";
+
 ---
 
 <Layout
@@ -93,16 +102,17 @@ const teamHasPlayerImages = team.data.roster?.some(
         <nav
           class="-mb-px flex justify-between md:justify-start md:space-x-8"
           aria-label="Team sections"
+          data-default-section={defaultSection}
         >
           <button
             data-section="roster"
-            class="section-tab section-tab-active border-red text-red border-b-2 px-1 py-4 text-sm font-semibold transition-colors md:text-lg dark:text-red-400"
+            class={defaultSection === "roster" ? activeTabClass : inactiveTabClass}
           >
             Roster
           </button>
           <button
             data-section="coaches"
-            class="section-tab border-b-2 border-transparent px-1 py-4 text-sm font-semibold text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 md:text-lg dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-300"
+            class={defaultSection === "coaches" ? activeTabClass : inactiveTabClass}
           >
             Coaches
           </button>
@@ -124,7 +134,7 @@ const teamHasPlayerImages = team.data.roster?.some(
       <!-- Section Content -->
       <div class="section-content">
         <!-- Roster Section (default) -->
-        <section id="roster-section" class="team-section">
+        <section id="roster-section" class:list={["team-section", { hidden: defaultSection !== "roster" }]}>
           <div class="mb-6 flex items-center justify-between">
             <h2 class="text-3xl font-bold text-gray-900 dark:text-white">ROSTER</h2>
             {team.data.roster && team.data.roster.length > 0 && teamHasPlayerImages && (
@@ -209,7 +219,7 @@ const teamHasPlayerImages = team.data.roster?.some(
         </section>
 
         <!-- Coaches Section -->
-        <section id="coaches-section" class="team-section hidden">
+        <section id="coaches-section" class:list={["team-section", { hidden: defaultSection !== "coaches" }]}>
           <h2 class="section-heading">COACHING STAFF</h2>
           <div class="space-y-8">
             {
@@ -321,6 +331,10 @@ const teamHasPlayerImages = team.data.roster?.some(
     <script>
       // Section navigation functionality
       const VALID_SECTIONS = ["roster", "coaches", "schedule", "results"];
+      const DEFAULT_SECTION =
+        document
+          .querySelector("[data-default-section]")
+          ?.getAttribute("data-default-section") || "roster";
 
       function activateSection(targetSection: string, updateHash = true) {
         const tabs = document.querySelectorAll(".section-tab");
@@ -420,7 +434,7 @@ const teamHasPlayerImages = team.data.roster?.some(
       // Handle browser back/forward navigation
       window.addEventListener("hashchange", () => {
         const hash = window.location.hash.slice(1);
-        const section = VALID_SECTIONS.includes(hash) ? hash : "roster";
+        const section = VALID_SECTIONS.includes(hash) ? hash : DEFAULT_SECTION;
         activateSection(section, false);
       });
     </script>
