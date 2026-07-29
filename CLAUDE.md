@@ -19,6 +19,14 @@ npm run type-check   # TypeScript validation
 
 This is an **Astro 5** static site for Firecrackers Central Ohio (competitive youth fastpitch softball), deployed to GitHub Pages at firecrackersohio.com via `.github/workflows/deploy.yml` on push to `main`.
 
+### Workflows
+
+- `checks.yml` — on pull requests and pushes to `main`. Format, lint, type-check and build for the website; `tsc --noEmit` and `sanity build` for `studio/`.
+- `deploy.yml` — builds and deploys the site to Pages on push to `main` and on the Sanity publish webhook.
+- `studio.yml` — deploys the Sanity Studio when `studio/**` changes. See `docs/sanity-cms.md`.
+
+Node is pinned to 22 by `.nvmrc`, which every workflow reads.
+
 ### Routing
 
 File-based routing under `src/pages/`:
