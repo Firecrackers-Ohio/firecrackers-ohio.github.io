@@ -48,6 +48,7 @@ The About page and all team content come from Sanity — see `docs/sanity-cms.md
 - The project ID is duplicated in `src/lib/sanity/client.ts` and `studio/project.ts`; change both. It is not a secret.
 - **Document IDs must not contain a dot.** Sanity treats dotted prefixes as reserved namespaces and blocks unauthenticated reads, which silently empties the collection at build time. Use `team-jones`, never `team.jones`.
 - GROQ projections return `null` for unset fields; `stripNulls` in the loader removes them so Zod schemas can use plain `.optional()`.
+- The loader's `minEntries` option fails the build when a collection comes back empty, which Zod treats as valid. Both collections set it to `1`; set it on any new collection the site can't render without.
 - Editors get text, images and list ordering — never style or layout. New fields should follow that.
 
 ### Adding a New Team

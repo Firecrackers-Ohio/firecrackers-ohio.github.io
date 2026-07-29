@@ -31,6 +31,7 @@ const about = defineCollection({
       sections[]{ heading, body }
     }`,
     entryId: () => "about",
+    minEntries: 1,
   }),
   schema: z.object({
     pageTitle: z.string(),
@@ -74,6 +75,10 @@ const teams = defineCollection({
       results[]{ date, tournament, location, result }
     }`,
     entryId: doc => String(doc.slug),
+    // The nav, the Teams page and the Tryouts page are all derived from this
+    // collection, so an empty result would build a site with no teams at all
+    // and no error to show for it.
+    minEntries: 1,
   }),
   schema: z.object({
     name: z.string(),
