@@ -21,7 +21,7 @@ const about = defineCollection({
   loader: sanityLoader({
     query: `*[_type == "aboutPage"][0...1]{
       pageTitle,
-      sections[]{ heading, style, body }
+      sections[]{ heading, body }
     }`,
     entryId: () => "about",
   }),
@@ -31,7 +31,6 @@ const about = defineCollection({
       .array(
         z.object({
           heading: z.string(),
-          style: z.enum(["centered", "card"]),
           body: portableText,
         })
       )

@@ -1,6 +1,6 @@
 import type { Loader } from "astro/loaders";
 
-import { getSanityClient, isSanityConfigured } from "./client";
+import { getSanityClient } from "./client";
 
 type SanityDocument = Record<string, unknown>;
 
@@ -33,17 +33,6 @@ export function sanityLoader(options: SanityLoaderOptions): Loader {
   return {
     name: "sanity-loader",
     load: async ({ store, parseData, generateDigest, logger }) => {
-      // Leave the collection empty rather than crashing, so `astro check` and
-      // linting still work on a checkout that hasn't been pointed at a Sanity
-      // project yet. Pages that need the content raise their own error.
-      if (!isSanityConfigured) {
-        logger.warn(
-          "Sanity project ID is not set — skipping. See src/lib/sanity/client.ts"
-        );
-        store.clear();
-        return;
-      }
-
       const documents = await getSanityClient().fetch<SanityDocument[]>(
         options.query,
         options.params ?? {}
