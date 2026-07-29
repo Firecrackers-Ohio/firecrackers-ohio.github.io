@@ -37,8 +37,9 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v7
         with:
-          # Sanity 6 requires Node >= 22.12.
-          node-version: 22
+          # Sanity 6 requires Node >= 22.12; .nvmrc pins the version everything
+          # else uses too.
+          node-version-file: .nvmrc
           cache: npm
           # Both lockfiles, because both installs happen below.
           cache-dependency-path: |
