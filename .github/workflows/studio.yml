@@ -32,15 +32,18 @@ jobs:
         working-directory: studio
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           # Sanity 6 requires Node >= 22.12.
           node-version: 22
           cache: npm
-          cache-dependency-path: studio/package-lock.json
+          # Both lockfiles, because both installs happen below.
+          cache-dependency-path: |
+            package-lock.json
+            studio/package-lock.json
 
       # Checked before the install so a missing token fails in seconds. This
       # fails the run rather than skipping quietly: a silent skip would put the
@@ -55,7 +58,18 @@ jobs:
             exit 1
           fi
 
-      - name: Install dependencies
+      # The website's dependencies, which the Studio build needs despite the two
+      # packages being separate. The Studio's bundler reads the nearest
+      # tsconfig.json it can find for the generated entry at
+      # studio/.sanity/runtime/app.js, walks up to the repo root one, and fails
+      # on its `extends: astro/tsconfigs/strict` if root node_modules is absent —
+      # "Tsconfig not found astro/tsconfigs/strict". Nobody hits this locally
+      # because a checkout you develop in has both installed.
+      - name: Install the website's dependencies
+        working-directory: .
+        run: npm ci
+
+      - name: Install the Studio's dependencies
         run: npm ci
 
       # studioHost and appId are set in studio/sanity.cli.ts, so there is
