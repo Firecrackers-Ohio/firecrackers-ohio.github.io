@@ -82,6 +82,10 @@ npm run deploy
 Pick the hostname when prompted, or keep the `studioHost` already set in
 `studio/project.ts`. Result: `https://firecrackersohio.sanity.studio`.
 
+This is the only deploy you have to run by hand. After it, changes under `studio/`
+redeploy on merge — see [Deploying the Studio](#deploying-the-studio) for the one
+secret that needs.
+
 Then invite the coaches: **sanity.io/manage → Members → Invite**. The free plan
 includes a limited number of users, so check the count before inviting everyone.
 Give coaches the **Editor** role, not Administrator.
@@ -134,6 +138,41 @@ Three parts of that table matter more than they look:
   `repository_dispatch: types: [sanity-publish]` trigger in
   `.github/workflows/deploy.yml`. The `client_payload` part is what lets the
   notification email say which document changed.
+
+## Deploying the Studio
+
+The Studio is its own bundle, separate from the website. A schema change merged to
+`main` — a new field, or just reworded help text — does nothing at
+firecrackersohio.sanity.studio until that bundle is rebuilt. Content edits are
+different: they go straight to the dataset and never need a deploy.
+
+`.github/workflows/studio.yml` does the rebuild on any push to `main` that touches
+`studio/**`. It's deliberately a separate workflow from the website deploy —
+different trigger, and a failed Studio deploy shouldn't block the site going out.
+
+It needs one secret, `SANITY_AUTH_TOKEN`:
+
+1. **sanity.io/manage → API → Tokens → Add token.** Give it the **Deploy Studio**
+   role if the project offers it, otherwise **Administrator** — a Viewer or Editor
+   token can read and write content but can't deploy.
+2. Add it to the repo as `SANITY_AUTH_TOKEN` under **Settings → Secrets and
+   variables → Actions**.
+3. **Note its expiry date somewhere**, same as the webhook token below.
+
+If the secret is missing, the workflow fails on its first step and says so rather
+than skipping quietly. A skipped deploy is exactly the silent drift this is meant
+to stop.
+
+Deploying by hand still works, and is what you'll do for first-time setup before
+the secret exists:
+
+```bash
+cd studio
+npm run deploy
+```
+
+To force a redeploy without a code change, use **Actions → Deploy Sanity Studio →
+Run workflow**.
 
 ## Getting emailed when someone publishes
 
@@ -352,8 +391,11 @@ nulls recursively before validation (`stripNulls` in
 `useCdn: false`. Sanity's cached endpoint is eventually consistent, so a build
 starting seconds after Publish could otherwise pick up the previous version.
 
-**Changing the schema needs a redeploy.** Editing files in `studio/` (adding a
-field, say) requires `npm run deploy` from `studio/`. Content edits never do.
+**Changing the schema needs a redeploy.** Editing files in `studio/` — adding a
+field, or just reworking a field's help text — changes nothing at
+firecrackersohio.sanity.studio until the Studio bundle is rebuilt. Content edits
+never need this. `.github/workflows/studio.yml` handles it on merge; see
+[Deploying the Studio](#deploying-the-studio).
 
 ### Private datasets
 

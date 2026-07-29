@@ -41,7 +41,7 @@ Team photos and player headshots are Sanity assets served from its CDN via `src/
 
 The About page and all team content come from Sanity — see `docs/sanity-cms.md`.
 
-- `studio/` is a **separate npm package** (its own `package.json`, excluded from the root `tsconfig.json`) holding the Studio config and schema. Its deps are deliberately kept out of the website build. Deployed on its own with `npm run deploy` from `studio/`.
+- `studio/` is a **separate npm package** (its own `package.json`, excluded from the root `tsconfig.json`) holding the Studio config and schema. Its deps are deliberately kept out of the website build. It is a separate deploy from the website: `.github/workflows/studio.yml` runs `sanity deploy` on any push to `main` touching `studio/**`, and `npm run deploy` from `studio/` does it by hand. **Schema edits — including field titles and descriptions — do nothing on the hosted Studio until that runs.**
 - `src/lib/sanity/loader.ts` is a generic Astro content-collection loader — reuse it for new document types rather than fetching in page frontmatter.
 - Rich text (Portable Text) renders through `src/components/RichText.astro`; paragraph styling comes from `.rich-text` / `.rich-text-xl` in `global.css`.
 - A Sanity webhook triggers `repository_dispatch: sanity-publish` in `deploy.yml` on publish.
