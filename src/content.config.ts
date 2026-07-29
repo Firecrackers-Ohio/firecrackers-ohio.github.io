@@ -1,5 +1,4 @@
 import { defineCollection, z } from "astro:content";
-import { glob } from "astro/loaders";
 
 import { sanityLoader } from "./lib/sanity/loader";
 
@@ -11,6 +10,14 @@ import { sanityLoader } from "./lib/sanity/loader";
 const portableText = z
   .array(z.object({ _type: z.string() }).passthrough())
   .min(1);
+
+/**
+ * A Sanity image reference. The asset ID plus optional crop and hotspot data is
+ * everything the URL builder in lib/sanity/image.ts needs.
+ */
+const sanityImage = z
+  .object({ asset: z.object({ _ref: z.string() }).passthrough() })
+  .passthrough();
 
 /**
  * The About page, edited in Sanity Studio.
@@ -38,24 +45,57 @@ const about = defineCollection({
   }),
 });
 
+/**
+ * Teams, edited in Sanity Studio.
+ *
+ * The entry ID is the team's slug, so `/teams/jones` keeps working and the
+ * dynamic route needs no translation layer.
+ *
+ * Note `staff` requires at least one coach but `roster` may be empty — a team
+ * between seasons legitimately has no players listed yet, and the page shows
+ * "Coming soon" in that case.
+ */
 const teams = defineCollection({
-  loader: glob({
-    pattern: "**/*.json",
-    base: "./src/content/teams",
+  loader: sanityLoader({
+    query: `*[_type == "team" && defined(slug.current)]|order(name asc){
+      name,
+      "slug": slug.current,
+      cardDescription,
+      birthYears,
+      tryoutPhone,
+      teamPhoto,
+      instagramUrl,
+      facebookUrl,
+      scheduleHeading,
+      resultsHeading,
+      staff[]{ name, role, email, bio },
+      roster[]{ name, number, position, gradYear, highSchool, photo },
+      schedule[]{ dates, tournament, location },
+      results[]{ date, tournament, location, result }
+    }`,
+    entryId: doc => String(doc.slug),
   }),
   schema: z.object({
-    title: z.string(),
-    displayName: z.string().optional(),
+    name: z.string(),
+    slug: z.string(),
+    cardDescription: z.string(),
+    birthYears: z.string().optional(),
+    tryoutPhone: z.string().optional(),
+    teamPhoto: sanityImage.optional(),
     instagramUrl: z.string().url().optional(),
     facebookUrl: z.string().url().optional(),
-    teamPhoto: z.string().optional(),
-    staff: z.array(
-      z.object({
-        name: z.string(),
-        email: z.string().email().optional(),
-        bio: z.array(z.string()),
-      })
-    ),
+    scheduleHeading: z.string(),
+    resultsHeading: z.string(),
+    staff: z
+      .array(
+        z.object({
+          name: z.string(),
+          role: z.string(),
+          email: z.string().email().optional(),
+          bio: portableText.optional(),
+        })
+      )
+      .min(1),
     roster: z
       .array(
         z.object({
@@ -64,6 +104,7 @@ const teams = defineCollection({
           position: z.string(),
           gradYear: z.number(),
           highSchool: z.string(),
+          photo: sanityImage.optional(),
         })
       )
       .optional(),
@@ -79,9 +120,9 @@ const teams = defineCollection({
     results: z
       .array(
         z.object({
+          date: z.string(),
           tournament: z.string(),
           location: z.string(),
-          date: z.string(),
           result: z.string(),
         })
       )

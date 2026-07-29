@@ -4,6 +4,31 @@ import { getSanityClient } from "./client";
 
 type SanityDocument = Record<string, unknown>;
 
+/**
+ * Removes null values, recursively.
+ *
+ * A GROQ projection always returns every key it asks for, using null where the
+ * field isn't set. Zod's `.optional()` rejects an explicit null, so without this
+ * every optional field would need `.nullish()` and the schemas would stop
+ * reading like plain descriptions of the data. Since a null from GROQ means
+ * "absent", dropping the key is the accurate translation.
+ */
+function stripNulls(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.filter(item => item !== null).map(stripNulls);
+  }
+
+  if (value !== null && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>)
+        .filter(([, v]) => v !== null)
+        .map(([k, v]) => [k, stripNulls(v)])
+    );
+  }
+
+  return value;
+}
+
 interface SanityLoaderOptions {
   /** A GROQ query that returns an array of documents. */
   query: string;
@@ -52,7 +77,10 @@ export function sanityLoader(options: SanityLoaderOptions): Loader {
           ? options.entryId(doc, index)
           : String(doc._id);
 
-        const data = await parseData({ id, data: doc });
+        const data = await parseData({
+          id,
+          data: stripNulls(doc) as SanityDocument,
+        });
         store.set({ id, data, digest: generateDigest(data) });
       }
 

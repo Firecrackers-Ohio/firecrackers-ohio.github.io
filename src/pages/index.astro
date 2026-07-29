@@ -4,11 +4,16 @@ import { Image } from "astro:assets";
 import logoTextOutline from "../assets/logo-text-outline.svg";
 import boombashFlyer from "../assets/boom-bash-flyer.png";
 import { EXTERNAL_URLS } from "../config";
+import { getCollection } from "astro:content";
+import { ageRangeLabel } from "../lib/teams";
+
+const teams = await getCollection("teams");
+const ageRange = ageRangeLabel(teams.map(team => team.data.name));
 ---
 
 <Layout
   title="Firecrackers Central Ohio Fast Pitch - Competitive Youth Softball"
-  description="Join Firecrackers Ohio for competitive fastpitch softball teams from 10U through 14U in Central Ohio. Exceptional training, character development, and team excellence."
+  description={`Join Firecrackers Ohio for competitive fastpitch softball teams ${ageRange} in Central Ohio. Exceptional training, character development, and team excellence.`}
 >
   <main class="min-h-screen">
     <div class="container mx-auto px-4 py-8">
@@ -33,25 +38,24 @@ import { EXTERNAL_URLS } from "../config";
             athletes with exceptional training that fosters both athletic
             excellence and personal growth. We are committed to developing
             confident, respectful, and resilient young women—on and off the
-            field. Our teams compete across multiple age divisions, from 10U
-            through 14U, each emphasizing fundamental skill development,
-            competitive preparation, and building character through teamwork and
-            dedication.
+            field. Our teams compete across multiple age divisions, {ageRange},
+            each emphasizing fundamental skill development, competitive
+            preparation, and building character through teamwork and dedication.
           </p>
         </section>
 
-        <!-- Tryouts Announcement Section -->
+        <!-- Tryouts Section -->
         <section class="highlight-card-red">
           <h2 class="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
-            🔥🥎 Tryouts Are Here! 🥎🔥
+            🥎 Interested in Joining? 🥎
           </h2>
           <p class="body-text mx-auto mb-6 max-w-2xl">
-            The Firecrackers are looking for dedicated athletes ready to
-            compete, develop their skills, and join a team-first culture.
-            Tryouts for 11U through 15U are happening this July—view the dates,
-            times, and locations, then register online to claim your spot.
+            The Firecrackers are always looking for dedicated athletes ready to
+            compete, develop their skills, and join a team-first culture. Our
+            rosters for the upcoming season are set, but you can reach out to
+            the coach for your age group to ask about a private tryout.
           </p>
-          <a href="/tryouts" class="btn-red px-6 py-3"> View Tryout Details </a>
+          <a href="/tryouts" class="btn-red px-6 py-3"> Contact a Coach </a>
         </section>
 
         <!-- Tournament Announcement Section -->

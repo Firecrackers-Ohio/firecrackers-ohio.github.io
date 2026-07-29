@@ -4,32 +4,30 @@ import logoRound from "../assets/logo-round.svg";
 import fbIcon from "../assets/fb.svg";
 import igIcon from "../assets/ig.svg";
 import emailIcon from "../assets/email.svg";
+import { getCollection } from "astro:content";
 import { EXTERNAL_URLS } from "../config";
+
+// Team links come from the teams collection, so adding, removing or renaming a
+// team in Sanity updates every menu here without a code change.
+const teams = await getCollection("teams");
+const teamLinks = teams.map(team => ({
+  slug: team.id,
+  href: `/teams/${team.id}`,
+  label: team.data.name,
+}));
 
 const { pathname } = Astro.url;
 const pageTitles: Record<string, string> = {
   "": "Home",
   about: "About",
   teams: "Teams",
+  tryouts: "Tryouts",
 };
 
-// Handle team-specific pages and tryouts
 let pageTitle = pageTitles[pathname.slice(1)] || "Home";
 if (pathname.startsWith("/teams/")) {
-  const teamName = pathname.split("/")[2];
-  if (teamName === "brown") {
-    pageTitle = "10U Brown";
-  } else if (teamName === "nieman") {
-    pageTitle = "11U Nieman";
-  } else if (teamName === "allen") {
-    pageTitle = "12U Allen";
-  } else if (teamName === "jones") {
-    pageTitle = "13U Jones";
-  } else if (teamName === "evans") {
-    pageTitle = "14U Evans";
-  }
-} else if (pathname.slice(1) === "tryouts") {
-  pageTitle = "Tryouts";
+  const slug = pathname.split("/")[2];
+  pageTitle = teamLinks.find(link => link.slug === slug)?.label ?? "Teams";
 }
 ---
 
@@ -92,26 +90,16 @@ if (pathname.startsWith("/teams/")) {
               href="/teams"
               class="block px-4 py-2 text-white hover:bg-gray-800">All Teams</a
             >
-            <a
-              href="/teams/brown"
-              class="block px-4 py-2 text-white hover:bg-gray-800">10U Brown</a
-            >
-            <a
-              href="/teams/nieman"
-              class="block px-4 py-2 text-white hover:bg-gray-800">11U Nieman</a
-            >
-            <a
-              href="/teams/allen"
-              class="block px-4 py-2 text-white hover:bg-gray-800">12U Allen</a
-            >
-            <a
-              href="/teams/jones"
-              class="block px-4 py-2 text-white hover:bg-gray-800">13U Jones</a
-            >
-            <a
-              href="/teams/evans"
-              class="block px-4 py-2 text-white hover:bg-gray-800">14U Evans</a
-            >
+            {
+              teamLinks.map(link => (
+                <a
+                  href={link.href}
+                  class="block px-4 py-2 text-white hover:bg-gray-800"
+                >
+                  {link.label}
+                </a>
+              ))
+            }
           </div>
         </div>
         <a class="menu-item" href={EXTERNAL_URLS.teamStore} target="_blank"
@@ -145,13 +133,25 @@ if (pathname.startsWith("/teams/")) {
       <!-- Desktop Social Icons -->
       <div class="hidden md:flex">
         <a class="social-icon" href={EXTERNAL_URLS.facebook} target="_blank">
-          <Image src={fbIcon} alt="Facebook" class="h-10 w-10 shrink-0 aspect-square" />
+          <Image
+            src={fbIcon}
+            alt="Facebook"
+            class="aspect-square h-10 w-10 shrink-0"
+          />
         </a>
         <a class="social-icon" href={EXTERNAL_URLS.instagram} target="_blank">
-          <Image src={igIcon} alt="Instagram" class="h-10 w-10 shrink-0 aspect-square" />
+          <Image
+            src={igIcon}
+            alt="Instagram"
+            class="aspect-square h-10 w-10 shrink-0"
+          />
         </a>
         <a class="social-icon" href="mailto:contact@firecrackersohio.com">
-          <Image src={emailIcon} alt="Email" class="h-10 w-10 shrink-0 aspect-square" />
+          <Image
+            src={emailIcon}
+            alt="Email"
+            class="aspect-square h-10 w-10 shrink-0"
+          />
         </a>
       </div>
     </div>
@@ -200,21 +200,16 @@ if (pathname.startsWith("/teams/")) {
         <a href="/teams" class="block py-1 text-white hover:text-red-400"
           >All Teams</a
         >
-        <a href="/teams/brown" class="block py-1 text-white hover:text-red-400"
-          >10U Brown</a
-        >
-        <a href="/teams/nieman" class="block py-1 text-white hover:text-red-400"
-          >11U Nieman</a
-        >
-        <a href="/teams/allen" class="block py-1 text-white hover:text-red-400"
-          >12U Allen</a
-        >
-        <a href="/teams/jones" class="block py-1 text-white hover:text-red-400"
-          >13U Jones</a
-        >
-        <a href="/teams/evans" class="block py-1 text-white hover:text-red-400"
-          >14U Evans</a
-        >
+        {
+          teamLinks.map(link => (
+            <a
+              href={link.href}
+              class="block py-1 text-white hover:text-red-400"
+            >
+              {link.label}
+            </a>
+          ))
+        }
       </div>
       <a class="menu-item" href={EXTERNAL_URLS.teamStore} target="_blank"
         >Store</a
@@ -225,17 +220,29 @@ if (pathname.startsWith("/teams/")) {
         class="mt-5 flex justify-center space-x-4 border-t border-gray-700 pt-4"
       >
         <a class="social-icon" href={EXTERNAL_URLS.facebook} target="_blank">
-          <Image src={fbIcon} alt="Facebook" class="h-8 w-8 shrink-0 aspect-square" />
+          <Image
+            src={fbIcon}
+            alt="Facebook"
+            class="aspect-square h-8 w-8 shrink-0"
+          />
         </a>
         <a class="social-icon" href={EXTERNAL_URLS.instagram} target="_blank">
-          <Image src={igIcon} alt="Instagram" class="h-8 w-8 shrink-0 aspect-square" />
+          <Image
+            src={igIcon}
+            alt="Instagram"
+            class="aspect-square h-8 w-8 shrink-0"
+          />
         </a>
         <a
           class="social-icon"
           href="mailto:contact@firecrackersohio.com"
           target="_blank"
         >
-          <Image src={emailIcon} alt="Email" class="h-8 w-8 shrink-0 aspect-square" />
+          <Image
+            src={emailIcon}
+            alt="Email"
+            class="aspect-square h-8 w-8 shrink-0"
+          />
         </a>
       </div>
     </div>

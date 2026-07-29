@@ -1,8 +1,13 @@
 # Sanity CMS
 
-The About page is edited in Sanity instead of in code. This is a pilot — every
-other page is still hardcoded. If it works out, the same pattern extends to team
-rosters and coach bios.
+Teams and the About page are edited in Sanity instead of in code.
+
+Teams cover rosters, coaching staff, schedules, results, photos and the tryout
+contact details. Because the Teams listing, the nav menus and the Tryouts page
+are all built from the same collection, adding or removing a team in Sanity
+updates the whole site — there's no longer a hardcoded list of teams anywhere.
+
+Still in code: the home page's main copy, and the tournament announcement.
 
 ## How it fits together
 
@@ -20,13 +25,13 @@ Nothing is fetched in the visitor's browser. The site is still fully static: the
 content is baked in at build time, so if Sanity ever goes down the live site is
 unaffected.
 
-| Thing | Where it lives |
-| --- | --- |
-| Editing UI (Studio) | `firecrackersohio.sanity.studio`, hosted by Sanity |
-| Studio source + schema | `studio/` in this repo |
-| Content itself | Sanity's database, not in git |
-| Website reads it via | `src/lib/sanity/loader.ts` → `about` content collection |
-| Page template | `src/pages/about.astro` |
+| Thing                  | Where it lives                                          |
+| ---------------------- | ------------------------------------------------------- |
+| Editing UI (Studio)    | `firecrackersohio.sanity.studio`, hosted by Sanity      |
+| Studio source + schema | `studio/` in this repo                                  |
+| Content itself         | Sanity's database, not in git                           |
+| Website reads it via   | `src/lib/sanity/loader.ts` → `about` content collection |
+| Page template          | `src/pages/about.astro`                                 |
 
 ## One-time setup
 
@@ -105,26 +110,59 @@ failure to debug months later.
 
 **sanity.io/manage → API → Webhooks → Create webhook**
 
-| Field | Value |
-| --- | --- |
-| Name | `Deploy website` |
-| URL | `https://api.github.com/repos/Firecrackers-Ohio/firecrackers-ohio.github.io/dispatches` |
-| Dataset | `production` |
-| Trigger on | Create, Update, Delete |
-| Filter | `_type == "aboutPage" && !(_id in path("drafts.**"))` |
-| Projection | `{"event_type": "sanity-publish"}` |
-| HTTP method | `POST` |
-| HTTP headers | `Authorization: Bearer <your token>`<br>`Accept: application/vnd.github+json` |
-| Secret | leave empty |
+| Field        | Value                                                                                                                               |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Name         | `Deploy website`                                                                                                                    |
+| URL          | `https://api.github.com/repos/Firecrackers-Ohio/firecrackers-ohio.github.io/dispatches`                                             |
+| Dataset      | `production`                                                                                                                        |
+| Trigger on   | Create, Update, Delete                                                                                                              |
+| Filter       | `_type in ["aboutPage", "team"] && !(_id in path("drafts.**"))`                                                                     |
+| Projection   | `{"event_type": "sanity-publish", "client_payload": {"documentType": _type, "documentName": coalesce(name, pageTitle, "content")}}` |
+| HTTP method  | `POST`                                                                                                                              |
+| HTTP headers | `Authorization: Bearer <your token>`<br>`Accept: application/vnd.github+json`                                                       |
+| Secret       | leave empty                                                                                                                         |
 
-Two parts of that table matter more than they look:
+Three parts of that table matter more than they look:
 
-- **The `drafts.**` filter is essential.** Sanity autosaves drafts constantly.
+- **The `drafts.**` filter is essential.\*\* Sanity autosaves drafts constantly.
   Without it, every few keystrokes would kick off a deploy.
+- **The `_type` list must include every edited type.** If `team` is missing, a
+  coach can publish a roster change and nothing will deploy — the edit just sits
+  there looking like it worked. Add new document types here as you create them.
 - **The projection is what GitHub reads.** It replaces Sanity's default payload
   with the `event_type` GitHub's dispatch API requires, matching the
   `repository_dispatch: types: [sanity-publish]` trigger in
-  `.github/workflows/deploy.yml`.
+  `.github/workflows/deploy.yml`. The `client_payload` part is what lets the
+  notification email say which document changed.
+
+## Getting emailed when someone publishes
+
+Sanity can't send email itself — webhooks only POST to a URL. So the deploy
+workflow sends it, in the "Email on content publish" step of
+`.github/workflows/deploy.yml`. It fires only for Sanity-triggered deploys, not
+for your own pushes, and only after the deploy succeeds.
+
+Add these repository secrets under **Settings → Secrets and variables →
+Actions**:
+
+| Secret          | Value                                         |
+| --------------- | --------------------------------------------- |
+| `MAIL_TO`       | Where to send the alert                       |
+| `MAIL_USERNAME` | The sending account, e.g. a Gmail address     |
+| `MAIL_PASSWORD` | An **app password**, not your normal password |
+| `MAIL_SERVER`   | Optional, defaults to `smtp.gmail.com`        |
+| `MAIL_PORT`     | Optional, defaults to `465`                   |
+
+For Gmail you need 2FA enabled, then generate an app password at
+<https://myaccount.google.com/apppasswords>. A normal account password will be
+rejected.
+
+The step is skipped when `MAIL_USERNAME` or `MAIL_TO` is missing, so leaving
+these unset doesn't break deploys — you just won't get emails.
+
+Note this tells you _something_ changed and links to the site and the build log.
+It doesn't diff the content. To see exactly what changed, open the document in
+the Studio and use its History panel.
 
 Test it by editing the About page and hitting Publish. A run should appear in the
 repo's Actions tab within a few seconds, and the site updates in a couple of
@@ -143,12 +181,12 @@ npx sanity hooks logs "Deploy Website"    # status code of each attempt
 `204` is success — that's what GitHub returns for an accepted dispatch. What the
 failures mean:
 
-| Code | Cause |
-| --- | --- |
+| Code  | Cause                                                                                                                                                                                                                                                     |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `401` | GitHub didn't get valid credentials. Check the token is in an **Authorization header** with a `Bearer ` prefix — not in Sanity's "Secret" field, which is for HMAC signing and which GitHub ignores. Also suspect a truncated paste, or an expired token. |
-| `403` | Token is valid but lacks the `repo` scope. |
-| `404` | Wrong repository in the URL, or the token can't see it. |
-| `422` | GitHub got the request but no `event_type` — the Projection field is missing or wrong. |
+| `403` | Token is valid but lacks the `repo` scope.                                                                                                                                                                                                                |
+| `404` | Wrong repository in the URL, or the token can't see it.                                                                                                                                                                                                   |
+| `422` | GitHub got the request but no `event_type` — the Projection field is missing or wrong.                                                                                                                                                                    |
 
 Two things that surprise people:
 
@@ -224,18 +262,66 @@ template has no styling for them.
 The pieces worth reusing:
 
 - `sanityLoader()` in `src/lib/sanity/loader.ts` takes any GROQ query and feeds
-  the results into a content collection. It isn't About-specific.
+  the results into a content collection.
 - `RichText.astro` renders any Portable Text field with the site's typography.
-- The singleton pattern in `studio/sanity.config.ts` (`singletonTypes`) is how
-  you add another one-of-a-kind page without giving editors a create/delete
-  button.
+- `headshotImage()` / `teamPhotoImage()` in `src/lib/sanity/image.ts` build CDN
+  URLs with a fixed crop and a 2x srcset.
+- The singleton pattern in `studio/sanity.config.ts` (`singletonTypes`) adds
+  another one-of-a-kind page without giving editors a create/delete button.
+- `studio/scripts/` holds the migration scripts. `npx sanity exec <script>
+--with-user-token` runs one against the real dataset using your CLI login, so
+  no API token is needed for one-off data fixes.
 
-For team rosters, the shape is different: many documents rather than one. Drop
-the `entryId` override so each document keys off its own `_id`, and mirror the
-existing Zod schema in `src/content.config.ts`.
+Two things to remember for any new type: add it to the **webhook filter**, or
+publishing won't deploy, and give it a **hyphenated ID** (see the dot gotcha
+below).
 
-Add a `_type` filter for each new document type to the webhook filter, or
-broaden it, so publishing the new content also triggers a deploy.
+## What editors deliberately cannot do
+
+Editors change text, upload images, and add, remove or reorder items in lists.
+They do not control presentation. Keep it that way when adding fields:
+
+- No colour, spacing, font or width options.
+- Rich text is limited to paragraphs, bold, italic and links. Headings and lists
+  are excluded because the templates have no styling for them.
+- The About page's sections alternate plain and boxed **by position**, rather
+  than offering a per-section choice.
+- Which roster view appears, which tabs exist, and the order of page sections are
+  template decisions.
+
+## Working with teams
+
+Each team is one document. Field groups in the Studio mirror the tabs on the
+website — Details, Roster, Coaches, Schedule, Results — so what an editor sees
+lines up with what a visitor sees.
+
+Things worth knowing:
+
+- **The web address is locked after creation.** A team's slug determines
+  `/teams/jones`, so it's set once and then read-only. Changing it would break
+  every existing link. If it genuinely has to change, a developer must do it, and
+  the old URL will 404 afterwards.
+- **Headshots are cropped to 4:5 automatically.** Sanity's CDN does the crop, so
+  a square phone snap and a tall portrait both come out matching the card. Use
+  the crop tool in the Studio to choose which part of the photo is kept —
+  otherwise the middle wins, which sometimes cuts off a face.
+- **Grid view appears only when at least one player has a photo.** A roster with
+  no photos shows the table instead. That's derived, not a setting.
+- **An empty roster is allowed** and shows "Coming soon". A team must always have
+  at least one coach.
+- **Age groups live in the team name.** "14U Jones" is parsed to produce the
+  "from 11U through 14U" phrasing on the home, teams and tryouts pages. Keep the
+  `NNU` format or that phrase will silently drop that team.
+- **Tryout contact details** (phone, birth year range) sit on the team, and the
+  Tryouts page uses the _first_ coach in the staff list as the contact. Reorder
+  the staff and you change who's listed there.
+
+### Removing a team
+
+Delete the document in the Studio. The team disappears from the nav, the Teams
+page and the Tryouts page on the next deploy, and its page stops being built —
+so `/teams/<slug>` will 404 for anyone with an old link. Consider whether that
+URL is likely to be shared anywhere before deleting.
 
 ## Gotchas
 
@@ -248,9 +334,19 @@ the previous version, so the public site never breaks.
 the project ID is filled in. The live site stays up, but the Actions tab goes
 red.
 
-**Photos aren't in the CMS.** Player and team photos still live in
-`src/assets/rosters/` and are matched by jersey number. Only About page text is
-in Sanity so far.
+**Never put a dot in a document ID.** Sanity treats a dotted prefix as a
+reserved namespace — the same mechanism as `drafts.` — and refuses
+_unauthenticated_ reads of those documents. The first pass of the team migration
+used IDs like `team.jones`, which imported fine and was readable with the CLI,
+but the public API returned `{"omitted":[{"reason":"permission"}]}`. Since the
+build reads without a token, that would have deployed a site with no teams at
+all, and no error, because an empty collection is valid. IDs are `team-jones`
+with a hyphen for this reason.
+
+**A GROQ projection returns null, not nothing.** Ask for a field that isn't set
+and you get `"email": null`, which Zod's `.optional()` rejects. The loader strips
+nulls recursively before validation (`stripNulls` in
+`src/lib/sanity/loader.ts`) so the schemas can use plain `.optional()`.
 
 **The CDN is bypassed on purpose.** `src/lib/sanity/client.ts` sets
 `useCdn: false`. Sanity's cached endpoint is eventually consistent, so a build

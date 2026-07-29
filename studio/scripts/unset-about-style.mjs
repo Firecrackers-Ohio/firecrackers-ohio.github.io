@@ -45,6 +45,8 @@ const after = await client.fetch(
 );
 
 console.log(`\nPatched ${result._id} (rev ${result._rev})`);
-console.log(`  style values remaining: ${(after.styles ?? []).filter(Boolean).length}`);
+console.log(
+  `  style values remaining: ${(after.styles ?? []).filter(Boolean).length}`
+);
 console.log(`  pageTitle preserved:    ${JSON.stringify(after.pageTitle)}`);
 console.log(`  headings preserved:     ${JSON.stringify(after.headings)}`);

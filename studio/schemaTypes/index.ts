@@ -1,6 +1,7 @@
 import { aboutPage } from "./aboutPage";
+import { team } from "./team";
 
-export const schemaTypes = [aboutPage];
+export const schemaTypes = [aboutPage, team];
 
 /**
  * Document types that should behave as singletons: one fixed document, no

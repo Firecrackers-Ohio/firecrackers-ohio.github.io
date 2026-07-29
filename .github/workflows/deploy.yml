@@ -38,7 +38,53 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      # Lifted to job level so the notify step's `if` can check whether the
+      # secrets exist. Without that guard, anyone without mail secrets
+      # configured would get a failing deploy.
+      MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+      MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+      MAIL_TO: ${{ secrets.MAIL_TO }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # Emails you when a content publish reaches the live site, so you can
+      # eyeball it. Only fires for Sanity-triggered deploys — pushes to main are
+      # your own changes and don't need an alert. Skipped entirely if the mail
+      # secrets aren't set. See docs/sanity-cms.md.
+      - name: Email on content publish
+        if: >-
+          github.event_name == 'repository_dispatch' &&
+          env.MAIL_USERNAME != '' &&
+          env.MAIL_TO != ''
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.MAIL_SERVER || 'smtp.gmail.com' }}
+          server_port: ${{ secrets.MAIL_PORT || 465 }}
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          from: Firecrackers Site
+          to: ${{ secrets.MAIL_TO }}
+          subject: >-
+            Firecrackers site updated${{
+              github.event.client_payload.documentName
+                && format(' — {0}', github.event.client_payload.documentName)
+                || ''
+            }}
+          body: |
+            Someone published a content change and the site has been rebuilt.
+
+            What changed: ${{ github.event.client_payload.documentName || 'unknown — see the Studio' }}
+            Type:         ${{ github.event.client_payload.documentType || 'unknown' }}
+
+            Check it looks right:
+              https://firecrackersohio.com/
+
+            Edit in the Studio:
+              https://firecrackersohio.sanity.studio/
+
+            Build log:
+              ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

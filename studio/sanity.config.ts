@@ -20,6 +20,15 @@ export default defineConfig({
           .title("Website content")
           .items([
             S.listItem()
+              .title("Teams")
+              .schemaType("team")
+              .child(
+                S.documentTypeList("team")
+                  .title("Teams")
+                  .defaultOrdering([{ field: "name", direction: "asc" }])
+              ),
+            S.divider(),
+            S.listItem()
               .title("About page")
               .id("aboutPage")
               .child(
