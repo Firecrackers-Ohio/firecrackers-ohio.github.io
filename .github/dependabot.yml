@@ -1,0 +1,39 @@
+version: 2
+
+# Two npm packages plus the workflows. Minor and patch updates are grouped into
+# one pull request per ecosystem so this doesn't bury the repo — majors still
+# arrive on their own, since those are the ones worth reading about.
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    groups:
+      website:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  # The Studio's dependencies are deliberately separate from the website's, so
+  # Dependabot has to be pointed at it explicitly.
+  - package-ecosystem: "npm"
+    directory: "/studio"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    groups:
+      studio:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  # Actions went three majors out of date before anyone noticed, which is how
+  # the Node 20 deprecation warnings appeared.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    groups:
+      actions:
+        patterns: ["*"]
