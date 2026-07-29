@@ -7,6 +7,10 @@ export default defineCliConfig({
   // Where `npx sanity deploy` publishes the Studio: <studioHost>.sanity.studio
   studioHost,
   // The Studio is deployed on its own, never as part of the Astro site build.
-  // Auto-updates let Sanity ship Studio patches without a redeploy from here.
-  deployment: { autoUpdates: true },
+  deployment: {
+    // Auto-updates let Sanity ship Studio patches without a redeploy from here.
+    autoUpdates: true,
+    // Identifies the deployed Studio app, so `sanity deploy` doesn't prompt.
+    appId: "djlbchqfa077dxz00wisg42g",
+  },
 });
