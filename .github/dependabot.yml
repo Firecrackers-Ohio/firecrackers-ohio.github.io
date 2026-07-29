@@ -14,6 +14,22 @@ updates:
       website:
         patterns: ["*"]
         update-types: ["minor", "patch"]
+      # Majors too, for this family: eslint and @eslint/js move in lockstep and
+      # a major bump to one alone can't install. Dependabot split them once and
+      # the PR was unmergeable by construction.
+      eslint:
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+          - "eslint-plugin-*"
+          - "typescript-eslint"
+    ignore:
+      # eslint-plugin-astro 2.x and 3.x require eslint-plugin-jsx-a11y >= 6.10.2
+      # as a peer, and 6.10.2 — still the newest release — declares support only
+      # up to eslint 9. So the chain cannot resolve, whichever way it's grouped.
+      # Drop this once jsx-a11y ships a release that accepts eslint 10.
+      - dependency-name: "eslint-plugin-astro"
+        update-types: ["version-update:semver-major"]
 
   # The Studio's dependencies are deliberately separate from the website's, so
   # Dependabot has to be pointed at it explicitly.
