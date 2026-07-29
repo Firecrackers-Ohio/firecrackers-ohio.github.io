@@ -1,0 +1,32 @@
+---
+import type { MarkProps } from "astro-portabletext/types";
+
+/**
+ * Renders the "link" annotation from Portable Text.
+ *
+ * astro-portabletext passes the annotation's own fields on `node.markDef`, and
+ * the linked text arrives as the default slot.
+ */
+type Props = MarkProps<{ href?: string; newTab?: boolean }>;
+
+const { node } = Astro.props as Props;
+
+const href = node.markDef?.href;
+const opensInNewTab = node.markDef?.newTab ?? false;
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class="text-link"
+      target={opensInNewTab ? "_blank" : undefined}
+      rel={opensInNewTab ? "noopener noreferrer" : undefined}
+    >
+      <slot />
+    </a>
+  ) : (
+    /* A link with no URL shouldn't break the page — render the text plainly. */
+    <slot />
+  )
+}

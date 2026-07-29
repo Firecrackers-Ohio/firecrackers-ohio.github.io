@@ -20,8 +20,10 @@
     "@fontsource/orbitron": "^5.2.8",
     "@fontsource/poppins": "^5.2.7",
     "@playform/compress": "^0.2.0",
+    "@sanity/client": "^7.25.0",
     "@tailwindcss/vite": "^4.1.10",
     "astro": "^5.16.16",
+    "astro-portabletext": "^0.13.0",
     "tailwindcss": "^4.1.10",
     "typescript": "^5.8.3"
   },
