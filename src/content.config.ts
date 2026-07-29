@@ -1,6 +1,44 @@
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
+import { sanityLoader } from "./lib/sanity/loader";
+
+/**
+ * Portable Text: Sanity's rich-text format, an array of block objects. The
+ * shape is validated by the Studio schema, so here we only assert that it's a
+ * non-empty array of objects and let the renderer interpret the rest.
+ */
+const portableText = z
+  .array(z.object({ _type: z.string() }).passthrough())
+  .min(1);
+
+/**
+ * The About page, edited in Sanity Studio.
+ *
+ * A single document, so the collection holds exactly one entry, keyed "about".
+ */
+const about = defineCollection({
+  loader: sanityLoader({
+    query: `*[_type == "aboutPage"][0...1]{
+      pageTitle,
+      sections[]{ heading, style, body }
+    }`,
+    entryId: () => "about",
+  }),
+  schema: z.object({
+    pageTitle: z.string(),
+    sections: z
+      .array(
+        z.object({
+          heading: z.string(),
+          style: z.enum(["centered", "card"]),
+          body: portableText,
+        })
+      )
+      .min(1),
+  }),
+});
+
 const teams = defineCollection({
   loader: glob({
     pattern: "**/*.json",
@@ -52,4 +90,4 @@ const teams = defineCollection({
   }),
 });
 
-export const collections = { teams };
+export const collections = { teams, about };

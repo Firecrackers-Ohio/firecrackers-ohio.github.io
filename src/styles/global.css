@@ -106,6 +106,21 @@
   .body-text-xl {
     @apply text-lg leading-relaxed text-gray-700 md:text-xl dark:text-gray-300;
   }
+  /* Rich text rendered from Sanity (Portable Text).
+   * The renderer emits plain <p> elements, so paragraph styling is applied from
+   * the wrapper. These mirror .body-text and .body-text-xl above; keep them in
+   * sync. Spacing matches the space-y-6 the About page used previously. */
+  .rich-text > p {
+    @apply text-lg leading-relaxed text-gray-700 dark:text-gray-300;
+  }
+  .rich-text-xl > p {
+    @apply text-lg leading-relaxed text-gray-700 md:text-xl dark:text-gray-300;
+  }
+  .rich-text > p + p,
+  .rich-text-xl > p + p {
+    @apply mt-6;
+  }
+
   .team-card-title {
     @apply mb-2 text-2xl font-bold text-gray-900 transition-colors dark:text-white;
   }
@@ -129,7 +144,7 @@
 
   /* Links */
   .text-link {
-    @apply text-red dark:text-red-400 underline transition-all hover:text-red-700 hover:no-underline;
+    @apply text-red underline transition-all hover:text-red-700 hover:no-underline dark:text-red-400;
   }
 
   /* Section Tabs */
@@ -159,7 +174,7 @@
     @apply mx-auto mb-8 max-w-fit text-xl text-gray-600 md:text-xl;
   }
   .p-link {
-    @apply text-red dark:text-red-400 underline;
+    @apply text-red underline dark:text-red-400;
   }
   h1 {
     @apply decoration-red text-2xl font-bold underline;

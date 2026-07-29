@@ -1,0 +1,22 @@
+{
+  "name": "firecrackers-studio",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Sanity Studio for firecrackersohio.com. Deployed separately from the website.",
+  "scripts": {
+    "dev": "sanity dev",
+    "deploy": "sanity deploy",
+    "seed": "sanity dataset import seed/about.ndjson --dataset production --replace"
+  },
+  "dependencies": {
+    "@sanity/vision": "^6.7.0",
+    "react": "^19.2.2",
+    "react-dom": "^19.2.2",
+    "sanity": "^6.7.0",
+    "styled-components": "^6.1.15"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

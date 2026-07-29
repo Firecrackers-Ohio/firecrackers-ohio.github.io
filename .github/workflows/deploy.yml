@@ -7,6 +7,11 @@ on:
     branches: [main]
   # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
+  # Triggered by a webhook from Sanity when a coach or admin publishes a content
+  # change. Sanity POSTs to https://api.github.com/repos/<owner>/<repo>/dispatches
+  # with {"event_type": "sanity-publish"}. See docs/sanity-cms.md for setup.
+  repository_dispatch:
+    types: [sanity-publish]
 
 # Allow this job to clone the repo and create a page deployment
 permissions:

@@ -31,6 +31,16 @@ Teams are defined as JSON files in `src/content/teams/` (e.g., `brown.json`, `jo
 
 Roster player photos live in `src/assets/rosters/{teamId}/{number}.jpg` and are loaded dynamically in the team page using Astro's `import.meta.glob`.
 
+### Sanity CMS (About page only)
+
+The About page content comes from Sanity, not from code — see `docs/sanity-cms.md`. Everything else is still hardcoded; this is a pilot.
+
+- `studio/` is a **separate npm package** (its own `package.json`, excluded from the root `tsconfig.json`) holding the Studio config and schema. Its deps are deliberately kept out of the website build. Deployed on its own with `npm run deploy` from `studio/`.
+- `src/lib/sanity/loader.ts` is a generic Astro content-collection loader — reuse it for new document types rather than fetching in page frontmatter.
+- Rich text (Portable Text) renders through `src/components/RichText.astro`; paragraph styling comes from `.rich-text` / `.rich-text-xl` in `global.css`.
+- A Sanity webhook triggers `repository_dispatch: sanity-publish` in `deploy.yml` on publish.
+- The project ID is duplicated in `src/lib/sanity/client.ts` and `studio/project.ts`; change both. It is not a secret.
+
 ### Styling
 
 Tailwind CSS 4 with a custom `@theme` in `src/styles/global.css` defining brand colors (red `#c20202`, yellow `#fff200`, grays, blues). Reusable CSS component classes (`.card`, `.btn-red`, `.page-title`, etc.) are defined in a `@layer components` block there — add new shared styles there rather than inline.

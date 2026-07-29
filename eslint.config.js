@@ -63,6 +63,9 @@ export default [
       "dist/**/*",
       ".astro/**/*",
       "node_modules/**/*",
+      // The Sanity Studio is a separate package with its own tsconfig and
+      // generated runtime files; it isn't part of the website's lint scope.
+      "studio/**/*",
       "*.config.js",
       "*.config.ts",
       "*.config.mjs",

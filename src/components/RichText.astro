@@ -1,0 +1,28 @@
+---
+import { PortableText } from "astro-portabletext";
+import type { PortableTextProps } from "astro-portabletext/types";
+
+import RichTextLink from "./richtext/RichTextLink.astro";
+
+interface Props {
+  /** Portable Text from Sanity. */
+  value: PortableTextProps["value"];
+  /**
+   * "large" matches the old `.body-text-xl` sizing used by the centred sections;
+   * "default" matches `.body-text`.
+   */
+  size?: "default" | "large";
+  class?: string;
+}
+
+const { value, size = "default", class: className } = Astro.props;
+
+// Paragraph styling is applied by CSS on this wrapper (see `.rich-text` in
+// global.css) rather than per-component, because PortableText doesn't forward
+// arbitrary props down to the elements it renders.
+const sizeClass = size === "large" ? "rich-text-xl" : "rich-text";
+---
+
+<div class:list={[sizeClass, className]}>
+  <PortableText value={value} components={{ mark: { link: RichTextLink } }} />
+</div>
