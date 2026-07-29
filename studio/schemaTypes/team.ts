@@ -120,7 +120,7 @@ export const team = defineType({
       type: "string",
       group: "details",
       description:
-        'Eligibility window for this age group, shown on the Tryouts page, e.g. "SEPT 2013 - DEC 2014". Fixed per age group — it does not change from season to season. When a team moves up an age group, use the window for its new group.',
+        'Eligibility window for this age group, shown on the Tryouts page, e.g. "SEPT 2013 - DEC 2014".',
     }),
     defineField({
       name: "tryoutPhone",
