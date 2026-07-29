@@ -1,0 +1,94 @@
+name: Checks
+
+# The website deploy and the Studio deploy both only run after a merge, so
+# without this workflow a pull request got no automated validation at all and
+# merging was the first time anything ran. Two real breakages reached `main`
+# that way: a stale studio/package-lock.json and a Studio build that couldn't
+# resolve the root tsconfig.
+on:
+  pull_request:
+  # Also on main, so a direct push doesn't skip the checks either.
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# Superseded pushes to the same branch don't need finishing.
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  website:
+    name: Website
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Cheapest first, so an obvious formatting miss fails in seconds rather
+      # than after a full build.
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npm run type-check
+
+      # Also the only check that the site's Sanity content still satisfies the
+      # collection schemas, since the build is what fetches it.
+      - name: Build
+        run: npm run build
+
+  studio:
+    name: Studio
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: studio
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          # Sanity 6 requires Node >= 22.12.
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            studio/package-lock.json
+
+      # Needed for the Studio build, not for the website: see the comment in
+      # studio.yml. Running it here is what catches that class of failure before
+      # a merge rather than after.
+      - name: Install the website's dependencies
+        working-directory: .
+        run: npm ci
+
+      - name: Install the Studio's dependencies
+        run: npm ci
+
+      # The root tsconfig excludes studio/, so `npm run type-check` at the root
+      # never sees any of this.
+      - name: Type-check
+        run: npx tsc --noEmit
+
+      # A dry run of what studio.yml does on merge, minus the upload. Needs no
+      # Sanity credentials, so it works on pull requests from forks too.
+      - name: Build
+        run: npx sanity build

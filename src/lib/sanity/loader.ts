@@ -40,6 +40,18 @@ interface SanityLoaderOptions {
    * as "about" is nicer than Sanity's internal one.
    */
   entryId?: (_doc: SanityDocument, _index: number) => string;
+  /**
+   * Fails the build if the query returns fewer documents than this.
+   *
+   * Zod validates each document, but an empty result set is valid to Zod and to
+   * every page that maps over it — the site just builds without that content.
+   * For teams that means a Teams page with no teams, a nav with no menu and a
+   * Tryouts page with nothing to try out for, all from a green build. That has
+   * come close to shipping before: document IDs containing a dot are silently
+   * unreadable to the public API, which empties the collection rather than
+   * erroring. Set this on any collection the site can't sensibly render without.
+   */
+  minEntries?: number;
 }
 
 /**
@@ -57,7 +69,7 @@ interface SanityLoaderOptions {
 export function sanityLoader(options: SanityLoaderOptions): Loader {
   return {
     name: "sanity-loader",
-    load: async ({ store, parseData, generateDigest, logger }) => {
+    load: async ({ collection, store, parseData, generateDigest, logger }) => {
       const documents = await getSanityClient().fetch<SanityDocument[]>(
         options.query,
         options.params ?? {}
@@ -67,6 +79,19 @@ export function sanityLoader(options: SanityLoaderOptions): Loader {
         throw new Error(
           `[sanity-loader] Expected the GROQ query to return an array but got ${typeof documents}. ` +
             `Check the query: ${options.query}`
+        );
+      }
+
+      const minEntries = options.minEntries ?? 0;
+      if (documents.length < minEntries) {
+        throw new Error(
+          `[sanity-loader] The "${collection}" collection needs at least ${minEntries} ` +
+            `document(s) but Sanity returned ${documents.length}. The site would build ` +
+            `without this content rather than fail, so the build is stopped here.\n\n` +
+            `Likely causes: nothing published yet, a document ID containing a dot ` +
+            `(unreadable to the public API — see docs/sanity-cms.md), or a dataset or ` +
+            `project ID mismatch in src/lib/sanity/client.ts.\n\n` +
+            `Query: ${options.query}`
         );
       }
 

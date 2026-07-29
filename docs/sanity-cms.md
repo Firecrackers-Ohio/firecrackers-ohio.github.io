@@ -382,6 +382,11 @@ build reads without a token, that would have deployed a site with no teams at
 all, and no error, because an empty collection is valid. IDs are `team-jones`
 with a hyphen for this reason.
 
+That last part no longer holds, deliberately: the loader takes a `minEntries`
+option and both collections set it to 1, so a collection that comes back empty
+fails the build instead of quietly publishing a site without it. Set it on any
+new collection the site can't sensibly render without.
+
 **A GROQ projection returns null, not nothing.** Ask for a field that isn't set
 and you get `"email": null`, which Zod's `.optional()` rejects. The loader strips
 nulls recursively before validation (`stripNulls` in
