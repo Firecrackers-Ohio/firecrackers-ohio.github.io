@@ -9,6 +9,15 @@ export default defineConfig({
   site: "https://firecrackersohio.com",
   integrations: [sitemap(), compress()],
 
+  // Pages for teams that no longer exist. On a static build Astro emits a small
+  // HTML page with a meta refresh and a canonical link, since GitHub Pages can't
+  // issue a real 301. Add an entry here whenever a team is retired, so old links
+  // shared on social media land somewhere useful instead of on a 404.
+  redirects: {
+    "/teams/evans": "/teams",
+    "/teams/nieman": "/teams",
+  },
+
   // Build optimizations
   build: {
     inlineStylesheets: "auto",
