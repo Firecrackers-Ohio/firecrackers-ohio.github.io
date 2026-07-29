@@ -130,6 +130,37 @@ Test it by editing the About page and hitting Publish. A run should appear in th
 repo's Actions tab within a few seconds, and the site updates in a couple of
 minutes.
 
+### Debugging the webhook
+
+Delivery attempts are visible from the CLI, which is faster than the web UI:
+
+```bash
+cd studio
+npx sanity hooks list                     # confirm it exists
+npx sanity hooks logs "Deploy Website"    # status code of each attempt
+```
+
+`204` is success — that's what GitHub returns for an accepted dispatch. What the
+failures mean:
+
+| Code | Cause |
+| --- | --- |
+| `401` | GitHub didn't get valid credentials. Check the token is in an **Authorization header** with a `Bearer ` prefix — not in Sanity's "Secret" field, which is for HMAC signing and which GitHub ignores. Also suspect a truncated paste, or an expired token. |
+| `403` | Token is valid but lacks the `repo` scope. |
+| `404` | Wrong repository in the URL, or the token can't see it. |
+| `422` | GitHub got the request but no `event_type` — the Projection field is missing or wrong. |
+
+Two things that surprise people:
+
+- **Editing the webhook config doesn't re-fire it.** It only fires when a
+  document changes, so you need to publish a real edit to retest. Sanity leaves
+  Publish disabled when nothing has actually changed.
+- **A deploy triggered this way shows up in Actions with the event
+  `repository_dispatch`** and the title `sanity-publish`, not as a push. That's
+  how you tell a content deploy from a code deploy at a glance.
+
+Expect roughly a minute from Publish to live.
+
 ## Testing locally
 
 Two servers, two terminal tabs. They're independent — the Studio talks straight
