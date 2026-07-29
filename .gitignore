@@ -1,2 +1,12 @@
 .DS_Store
 node_modules
+
+# Build output. GitHub Pages serves the artifact produced by the deploy
+# workflow (Pages build_type is "workflow"), not the contents of this folder,
+# so there's no reason to track it.
+dist
+
+# Astro's generated types and content cache. Regenerated on every dev/build,
+# and data-store.json holds a copy of the CMS content, so tracking it means
+# churn every time someone publishes.
+.astro
