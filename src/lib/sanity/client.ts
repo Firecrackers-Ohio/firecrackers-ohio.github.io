@@ -13,31 +13,17 @@ import { createClient, type SanityClient } from "@sanity/client";
 export const SANITY_PROJECT_ID = "9mzt60a4";
 export const SANITY_DATASET = "production";
 
-const PLACEHOLDER = "REPLACE_WITH_SANITY_PROJECT_ID";
-
-/** False until the project ID above has been filled in. */
-export const isSanityConfigured = SANITY_PROJECT_ID !== PLACEHOLDER;
-
 let client: SanityClient | undefined;
 
 /**
  * Returns the shared read-only Sanity client.
  *
- * Built lazily rather than at module load so that importing this file (during
- * `astro check`, linting, or editor tooling) doesn't explode before the project
- * ID has been filled in.
+ * Built lazily rather than at module load so that importing this file doesn't
+ * open a connection during linting or editor tooling.
  */
 export function getSanityClient(): SanityClient {
   if (client) {
     return client;
-  }
-
-  if (!isSanityConfigured) {
-    throw new Error(
-      "Sanity is not configured yet. Replace SANITY_PROJECT_ID in " +
-        "src/lib/sanity/client.ts (and studio/project.ts) with the project ID " +
-        "shown at https://sanity.io/manage."
-    );
   }
 
   client = createClient({

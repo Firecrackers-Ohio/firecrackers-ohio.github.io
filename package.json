@@ -21,6 +21,7 @@
     "@fontsource/poppins": "^5.2.7",
     "@playform/compress": "^0.2.0",
     "@sanity/client": "^7.25.0",
+    "@sanity/image-url": "^2.1.1",
     "@tailwindcss/vite": "^4.1.10",
     "astro": "^5.16.16",
     "astro-portabletext": "^0.13.0",

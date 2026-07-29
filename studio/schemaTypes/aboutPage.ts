@@ -45,22 +45,11 @@ export const aboutPage = defineType({
               type: "string",
               validation: Rule => Rule.required(),
             }),
-            defineField({
-              name: "style",
-              title: "Appearance",
-              type: "string",
-              description:
-                "Centred: plain text, slightly larger. Boxed: sits inside a grey card.",
-              options: {
-                list: [
-                  { title: "Centred text", value: "centered" },
-                  { title: "Boxed card", value: "card" },
-                ],
-                layout: "radio",
-              },
-              initialValue: "centered",
-              validation: Rule => Rule.required(),
-            }),
+            // NOTE: there is deliberately no "appearance" or layout field here.
+            // Sections alternate between plain and boxed presentation based on
+            // their position, which is the template's decision, not an
+            // editor's. Reordering sections therefore changes which ones are
+            // boxed.
             defineField({
               name: "body",
               title: "Body",
@@ -105,11 +94,8 @@ export const aboutPage = defineType({
             }),
           ],
           preview: {
-            select: { title: "heading", subtitle: "style" },
-            prepare: ({ title, subtitle }) => ({
-              title: title || "Untitled section",
-              subtitle: subtitle === "card" ? "Boxed card" : "Centred text",
-            }),
+            select: { title: "heading" },
+            prepare: ({ title }) => ({ title: title || "Untitled section" }),
           },
         }),
       ],

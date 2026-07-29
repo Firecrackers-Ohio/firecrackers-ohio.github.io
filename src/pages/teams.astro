@@ -1,12 +1,19 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import logoTextOutline from "../assets/logo-text-outline.svg";
+import { ageRangeLabel } from "../lib/teams";
+
+// Driven by the teams collection, so adding or removing a team in Sanity
+// updates this page without a code change.
+const teams = await getCollection("teams");
+const ageRange = ageRangeLabel(teams.map(team => team.data.name));
 ---
 
 <Layout
   title="Our Teams | Firecrackers Central Ohio"
-  description="Meet the Firecrackers Ohio teams competing from 10U through 14U. Learn about our coaching staff, training philosophy, and team culture."
+  description={`Meet the Firecrackers Ohio teams competing ${ageRange}. Learn about our coaching staff, training philosophy, and team culture.`}
 >
   <div class="container mx-auto px-4 py-8">
     <!-- Header -->
@@ -27,50 +34,19 @@ import logoTextOutline from "../assets/logo-text-outline.svg";
     <!-- Teams Grid -->
     <div class="card-container mx-auto max-w-4xl">
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <a href="/teams/brown" class="group team-card">
-          <h2 class="team-card-title group-hover:text-red">10U Brown</h2>
-          <p class="team-card-description">
-            Building fundamentals and fostering a love for the game in young
-            athletes.
-          </p>
-          <div class="team-card-link group-hover:underline">Learn more →</div>
-        </a>
-
-        <a href="/teams/nieman" class="group team-card">
-          <h2 class="team-card-title group-hover:text-red">11U Nieman</h2>
-          <p class="team-card-description">
-            Developing skilled and confident athletes through progressive
-            coaching.
-          </p>
-          <div class="team-card-link group-hover:underline">Learn more →</div>
-        </a>
-
-        <a href="/teams/allen" class="group team-card">
-          <h2 class="team-card-title group-hover:text-red">12U Allen</h2>
-          <p class="team-card-description">
-            Advanced skill development and competitive preparation for elite
-            play.
-          </p>
-          <div class="team-card-link group-hover:underline">Learn more →</div>
-        </a>
-
-        <a href="/teams/jones" class="group team-card">
-          <h2 class="team-card-title group-hover:text-red">13U Jones</h2>
-          <p class="team-card-description">
-            Building well-rounded athletes through hard work and team-first
-            mentality.
-          </p>
-          <div class="team-card-link group-hover:underline">Learn more →</div>
-        </a>
-
-        <a href="/teams/evans" class="group team-card">
-          <h2 class="team-card-title group-hover:text-red">14U Evans</h2>
-          <p class="team-card-description">
-            Developing athletic versatility and competitive excellence with
-            experienced leadership.
-          </p>
-          <div class="team-card-link group-hover:underline">Learn more →</div>
-        </a>
+        {
+          teams.map(team => (
+            <a href={`/teams/${team.id}`} class="group team-card">
+              <h2 class="team-card-title group-hover:text-red">
+                {team.data.name}
+              </h2>
+              <p class="team-card-description">{team.data.cardDescription}</p>
+              <div class="team-card-link group-hover:underline">
+                Learn more →
+              </div>
+            </a>
+          ))
+        }
       </div>
     </div>
   </div>

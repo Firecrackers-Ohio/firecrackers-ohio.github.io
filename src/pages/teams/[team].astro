@@ -1,9 +1,11 @@
 ---
 import { getCollection } from "astro:content";
-import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import CoachTitle from "../../components/teams/CoachTitle.astro";
 import PlayerCard from "../../components/teams/PlayerCard.astro";
+import RichText from "../../components/RichText.astro";
+import { headshotImage, teamPhotoImage } from "../../lib/sanity/image";
+import { EXTERNAL_URLS } from "../../config";
 
 export async function getStaticPaths() {
   const teams = await getCollection("teams");
@@ -15,57 +17,17 @@ export async function getStaticPaths() {
 
 const { team } = Astro.props;
 
-// Helper function to extract last name and get email from coach data
-function getCoachEmail(
-  coachName: string,
-  coachEmail?: string
-): { email: string; lastName: string } | null {
-  if (!coachEmail) {
-    return null;
-  }
-
-  // Extract the name part before the dash (e.g., "Phil Jones - Head Coach" -> "Phil Jones")
-  const namePart = coachName.split(" - ")[0].trim();
-
-  // Extract last name (assume it's the last word)
-  const nameWords = namePart.split(" ");
-  const lastName = nameWords[nameWords.length - 1];
-
-  return { email: coachEmail, lastName };
-}
-
-const teamTitle = team.data.displayName || `${team.data.title} Team`;
-const instagramUrl =
-  team.data.instagramUrl || "https://www.instagram.com/firecrackers_oh/";
-const facebookUrl =
-  team.data.facebookUrl || "https://www.facebook.com/firecrackersohio";
-
-const rosterImages = import.meta.glob<{ default: ImageMetadata }>(
-  "/src/assets/rosters/**/*.{jpg,jpeg,png,webp}",
-  { eager: true }
-);
-
-function getPlayerImage(teamId: string, playerNumber: number): ImageMetadata | undefined {
-  const extensions = ["jpg", "jpeg", "png", "webp"];
-  for (const ext of extensions) {
-    const path = `/src/assets/rosters/${teamId}/${playerNumber}.${ext}`;
-    if (rosterImages[path]) return rosterImages[path].default;
-  }
-  return undefined;
-}
-
-function getTeamPhoto(teamId: string, filename: string): ImageMetadata | undefined {
-  const path = `/src/assets/rosters/${teamId}/${filename}`;
-  return rosterImages[path]?.default;
-}
+const teamTitle = `${team.data.name} Team`;
+const instagramUrl = team.data.instagramUrl || EXTERNAL_URLS.instagram;
+const facebookUrl = team.data.facebookUrl || EXTERNAL_URLS.facebook;
 
 const teamPhoto = team.data.teamPhoto
-  ? getTeamPhoto(team.id, team.data.teamPhoto)
+  ? teamPhotoImage(team.data.teamPhoto)
   : undefined;
 
-const teamHasPlayerImages = team.data.roster?.some(
-  player => getPlayerImage(team.id, player.number) !== undefined
-) ?? false;
+/** Grid view is only offered when at least one player has a headshot. */
+const teamHasPlayerImages =
+  team.data.roster?.some(player => player.photo) ?? false;
 
 // Default to the Coaches section when roster information is missing
 const hasRoster = (team.data.roster?.length ?? 0) > 0;
@@ -75,7 +37,6 @@ const activeTabClass =
   "section-tab section-tab-active border-red text-red border-b-2 px-1 py-4 text-sm font-semibold transition-colors md:text-lg dark:text-red-400";
 const inactiveTabClass =
   "section-tab border-b-2 border-transparent px-1 py-4 text-sm font-semibold text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900 md:text-lg dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-300";
-
 ---
 
 <Layout
@@ -83,19 +44,26 @@ const inactiveTabClass =
   description={`Meet the ${teamTitle} coaching staff and learn about their training philosophy, competitive structure, and player development approach.`}
 >
   <div class="container mx-auto px-4 py-8">
-    <CoachTitle teamName={team.data.title} instagramUrl={instagramUrl} facebookUrl={facebookUrl} />
+    <CoachTitle
+      teamName={team.data.name.toUpperCase()}
+      instagramUrl={instagramUrl}
+      facebookUrl={facebookUrl}
+    />
 
     <div class="mx-auto max-w-4xl space-y-12">
-      {teamPhoto && (
-        <div class="hidden overflow-hidden rounded-lg md:block">
-          <Image
-            src={teamPhoto}
-            alt={`${teamTitle} photo`}
-            class="w-full object-cover"
-            width={896}
-          />
-        </div>
-      )}
+      {
+        teamPhoto && (
+          <div class="hidden overflow-hidden rounded-lg md:block">
+            <img
+              src={teamPhoto.src}
+              srcset={teamPhoto.srcset}
+              alt={`${teamTitle} photo`}
+              class="w-full object-cover"
+              width={teamPhoto.width}
+            />
+          </div>
+        )
+      }
 
       <!-- Section Navigation Tabs -->
       <div class="border-b border-gray-300 dark:border-gray-700">
@@ -106,13 +74,17 @@ const inactiveTabClass =
         >
           <button
             data-section="roster"
-            class={defaultSection === "roster" ? activeTabClass : inactiveTabClass}
+            class={defaultSection === "roster"
+              ? activeTabClass
+              : inactiveTabClass}
           >
             Roster
           </button>
           <button
             data-section="coaches"
-            class={defaultSection === "coaches" ? activeTabClass : inactiveTabClass}
+            class={defaultSection === "coaches"
+              ? activeTabClass
+              : inactiveTabClass}
           >
             Coaches
           </button>
@@ -134,59 +106,111 @@ const inactiveTabClass =
       <!-- Section Content -->
       <div class="section-content">
         <!-- Roster Section (default) -->
-        <section id="roster-section" class:list={["team-section", { hidden: defaultSection !== "roster" }]}>
+        <section
+          id="roster-section"
+          class:list={["team-section", { hidden: defaultSection !== "roster" }]}
+        >
           <div class="mb-6 flex items-center justify-between">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white">ROSTER</h2>
-            {team.data.roster && team.data.roster.length > 0 && teamHasPlayerImages && (
-              <div class="flex items-center gap-1">
-                <button
-                  id="roster-list-btn"
-                  class="roster-view-btn rounded-md p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-                  aria-label="List view"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
-                  </svg>
-                </button>
-                <button
-                  id="roster-grid-btn"
-                  class="roster-view-btn rounded-md bg-red p-2 text-white transition-colors"
-                  aria-label="Grid view"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 8a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zm6-6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 8a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                  </svg>
-                </button>
-              </div>
-            )}
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
+              ROSTER
+            </h2>
+            {
+              team.data.roster &&
+                team.data.roster.length > 0 &&
+                teamHasPlayerImages && (
+                  <div class="flex items-center gap-1">
+                    <button
+                      id="roster-list-btn"
+                      class="roster-view-btn rounded-md p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                      aria-label="List view"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                    <button
+                      id="roster-grid-btn"
+                      class="roster-view-btn bg-red rounded-md p-2 text-white transition-colors"
+                      aria-label="Grid view"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 8a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zm6-6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 8a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                      </svg>
+                    </button>
+                  </div>
+                )
+            }
           </div>
           {
             team.data.roster && team.data.roster.length > 0 ? (
               <>
-                <!-- Table/List View -->
-                <div id="roster-list-view" class:list={[!teamHasPlayerImages ? "" : "hidden"]}>
+                {/* Table/List View */}
+                <div
+                  id="roster-list-view"
+                  class:list={[!teamHasPlayerImages ? "" : "hidden"]}
+                >
                   <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
                     <table class="w-full text-left text-sm">
                       <thead>
                         <tr class="bg-red text-white">
-                          <th class="px-4 py-3 font-semibold uppercase tracking-wide">#</th>
-                          <th class="px-4 py-3 font-semibold uppercase tracking-wide">Name</th>
-                          <th class="px-4 py-3 font-semibold uppercase tracking-wide">Pos</th>
-                          <th class="hidden px-4 py-3 font-semibold uppercase tracking-wide sm:table-cell">Grad</th>
-                          <th class="hidden px-4 py-3 font-semibold uppercase tracking-wide sm:table-cell">High School</th>
+                          <th class="px-4 py-3 font-semibold tracking-wide uppercase">
+                            #
+                          </th>
+                          <th class="px-4 py-3 font-semibold tracking-wide uppercase">
+                            Name
+                          </th>
+                          <th class="px-4 py-3 font-semibold tracking-wide uppercase">
+                            Pos
+                          </th>
+                          <th class="hidden px-4 py-3 font-semibold tracking-wide uppercase sm:table-cell">
+                            Grad
+                          </th>
+                          <th class="hidden px-4 py-3 font-semibold tracking-wide uppercase sm:table-cell">
+                            High School
+                          </th>
                         </tr>
                       </thead>
                       <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                         {team.data.roster.map((player, i) => (
-                          <tr class={i % 2 === 0 ? "bg-white dark:bg-gray-900" : "bg-gray-50 dark:bg-gray-800/50"}>
-                            <td class="px-4 py-3 font-mono text-xs font-bold text-red dark:text-red-400">{player.number}</td>
+                          <tr
+                            class={
+                              i % 2 === 0
+                                ? "bg-white dark:bg-gray-900"
+                                : "bg-gray-50 dark:bg-gray-800/50"
+                            }
+                          >
+                            <td class="text-red px-4 py-3 font-mono text-xs font-bold dark:text-red-400">
+                              {player.number}
+                            </td>
                             <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
                               {player.name}
-                              <div class="mt-0.5 text-xs text-gray-500 sm:hidden dark:text-gray-400">{player.gradYear} &middot; {player.highSchool}</div>
+                              <div class="mt-0.5 text-xs text-gray-500 sm:hidden dark:text-gray-400">
+                                {player.gradYear} &middot; {player.highSchool}
+                              </div>
                             </td>
-                            <td class="px-4 py-3 text-gray-600 dark:text-gray-400">{player.position}</td>
-                            <td class="hidden px-4 py-3 text-gray-600 sm:table-cell dark:text-gray-400">{player.gradYear}</td>
-                            <td class="hidden px-4 py-3 text-gray-600 sm:table-cell dark:text-gray-400">{player.highSchool}</td>
+                            <td class="px-4 py-3 text-gray-600 dark:text-gray-400">
+                              {player.position}
+                            </td>
+                            <td class="hidden px-4 py-3 text-gray-600 sm:table-cell dark:text-gray-400">
+                              {player.gradYear}
+                            </td>
+                            <td class="hidden px-4 py-3 text-gray-600 sm:table-cell dark:text-gray-400">
+                              {player.highSchool}
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -194,9 +218,12 @@ const inactiveTabClass =
                   </div>
                 </div>
 
-                <!-- Grid View -->
+                {/* Grid View */}
                 {teamHasPlayerImages && (
-                  <div id="roster-grid-view" class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                  <div
+                    id="roster-grid-view"
+                    class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+                  >
                     {team.data.roster.map(player => (
                       <PlayerCard
                         name={player.name}
@@ -204,7 +231,9 @@ const inactiveTabClass =
                         position={player.position}
                         gradYear={player.gradYear}
                         highSchool={player.highSchool}
-                        image={getPlayerImage(team.id, player.number)}
+                        image={
+                          player.photo ? headshotImage(player.photo) : undefined
+                        }
                       />
                     ))}
                   </div>
@@ -219,32 +248,37 @@ const inactiveTabClass =
         </section>
 
         <!-- Coaches Section -->
-        <section id="coaches-section" class:list={["team-section", { hidden: defaultSection !== "coaches" }]}>
+        <section
+          id="coaches-section"
+          class:list={[
+            "team-section",
+            { hidden: defaultSection !== "coaches" },
+          ]}
+        >
           <h2 class="section-heading">COACHING STAFF</h2>
           <div class="space-y-8">
             {
               team.data.staff.map(coach => {
-                const coachEmailInfo = getCoachEmail(coach.name, coach.email);
+                // Name and role are separate fields, so the last name comes
+                // straight off the name rather than being parsed out of a
+                // combined "Name - Role" string.
+                const lastName = coach.name.trim().split(/\s+/).at(-1);
                 return (
                   <div class="card">
-                    <div class="mb-4 flex items-center justify-between">
+                    <div class="mb-4 flex items-center justify-between gap-4">
                       <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">
-                        {coach.name}
+                        {coach.name} - {coach.role}
                       </h3>
-                      {coachEmailInfo && (
+                      {coach.email && (
                         <a
-                          href={`mailto:${coachEmailInfo.email}`}
-                          class="text-link text-sm font-medium dark:text-red-400"
+                          href={`mailto:${coach.email}`}
+                          class="text-link shrink-0 text-sm font-medium dark:text-red-400"
                         >
-                          Email Coach {coachEmailInfo.lastName}
+                          Email Coach {lastName}
                         </a>
                       )}
                     </div>
-                    <div class="space-y-4">
-                      {coach.bio.map(paragraph => (
-                        <p class="body-text">{paragraph}</p>
-                      ))}
-                    </div>
+                    {coach.bio && <RichText value={coach.bio} />}
                   </div>
                 );
               })
@@ -254,27 +288,47 @@ const inactiveTabClass =
 
         <!-- Schedule Section -->
         <section id="schedule-section" class="team-section hidden">
-          <h2 class="section-heading">2026 SPRING/SUMMER SCHEDULE</h2>
+          <h2 class="section-heading">
+            {team.data.scheduleHeading.toUpperCase()}
+          </h2>
           {
             team.data.schedule && team.data.schedule.length > 0 ? (
               <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
                 <table class="w-full text-left text-sm">
                   <thead>
                     <tr class="bg-red text-white">
-                      <th class="px-4 py-3 font-semibold uppercase tracking-wide">Dates</th>
-                      <th class="px-4 py-3 font-semibold uppercase tracking-wide">Tournament</th>
-                      <th class="hidden px-4 py-3 font-semibold uppercase tracking-wide sm:table-cell">Location</th>
+                      <th class="px-4 py-3 font-semibold tracking-wide uppercase">
+                        Dates
+                      </th>
+                      <th class="px-4 py-3 font-semibold tracking-wide uppercase">
+                        Tournament
+                      </th>
+                      <th class="hidden px-4 py-3 font-semibold tracking-wide uppercase sm:table-cell">
+                        Location
+                      </th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                     {team.data.schedule.map((event, i) => (
-                      <tr class={i % 2 === 0 ? "bg-white dark:bg-gray-900" : "bg-gray-50 dark:bg-gray-800/50"}>
-                        <td class="whitespace-nowrap px-4 py-3 font-mono text-xs text-gray-600 dark:text-gray-400">{event.dates}</td>
+                      <tr
+                        class={
+                          i % 2 === 0
+                            ? "bg-white dark:bg-gray-900"
+                            : "bg-gray-50 dark:bg-gray-800/50"
+                        }
+                      >
+                        <td class="px-4 py-3 font-mono text-xs whitespace-nowrap text-gray-600 dark:text-gray-400">
+                          {event.dates}
+                        </td>
                         <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
                           {event.tournament}
-                          <div class="mt-0.5 text-xs text-gray-500 sm:hidden dark:text-gray-400">{event.location}</div>
+                          <div class="mt-0.5 text-xs text-gray-500 sm:hidden dark:text-gray-400">
+                            {event.location}
+                          </div>
                         </td>
-                        <td class="hidden px-4 py-3 text-gray-600 sm:table-cell dark:text-gray-400">{event.location}</td>
+                        <td class="hidden px-4 py-3 text-gray-600 sm:table-cell dark:text-gray-400">
+                          {event.location}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -290,29 +344,53 @@ const inactiveTabClass =
 
         <!-- Results Section -->
         <section id="results-section" class="team-section hidden">
-          <h2 class="section-heading">2025 FALL RESULTS</h2>
+          <h2 class="section-heading">
+            {team.data.resultsHeading.toUpperCase()}
+          </h2>
           {
             team.data.results && team.data.results.length > 0 ? (
               <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
                 <table class="w-full text-left text-sm">
                   <thead>
                     <tr class="bg-red text-white">
-                      <th class="px-4 py-3 font-semibold uppercase tracking-wide">Date</th>
-                      <th class="px-4 py-3 font-semibold uppercase tracking-wide">Tournament</th>
-                      <th class="hidden px-4 py-3 font-semibold uppercase tracking-wide sm:table-cell">Location</th>
-                      <th class="px-4 py-3 font-semibold uppercase tracking-wide">Result</th>
+                      <th class="px-4 py-3 font-semibold tracking-wide uppercase">
+                        Date
+                      </th>
+                      <th class="px-4 py-3 font-semibold tracking-wide uppercase">
+                        Tournament
+                      </th>
+                      <th class="hidden px-4 py-3 font-semibold tracking-wide uppercase sm:table-cell">
+                        Location
+                      </th>
+                      <th class="px-4 py-3 font-semibold tracking-wide uppercase">
+                        Result
+                      </th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                     {team.data.results.map((entry, i) => (
-                      <tr class={i % 2 === 0 ? "bg-white dark:bg-gray-900" : "bg-gray-50 dark:bg-gray-800/50"}>
-                        <td class="whitespace-nowrap px-4 py-3 font-mono text-xs text-gray-600 dark:text-gray-400">{entry.date}</td>
+                      <tr
+                        class={
+                          i % 2 === 0
+                            ? "bg-white dark:bg-gray-900"
+                            : "bg-gray-50 dark:bg-gray-800/50"
+                        }
+                      >
+                        <td class="px-4 py-3 font-mono text-xs whitespace-nowrap text-gray-600 dark:text-gray-400">
+                          {entry.date}
+                        </td>
                         <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
                           {entry.tournament}
-                          <div class="mt-0.5 text-xs text-gray-500 sm:hidden dark:text-gray-400">{entry.location}</div>
+                          <div class="mt-0.5 text-xs text-gray-500 sm:hidden dark:text-gray-400">
+                            {entry.location}
+                          </div>
                         </td>
-                        <td class="hidden px-4 py-3 text-gray-600 sm:table-cell dark:text-gray-400">{entry.location}</td>
-                        <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{entry.result}</td>
+                        <td class="hidden px-4 py-3 text-gray-600 sm:table-cell dark:text-gray-400">
+                          {entry.location}
+                        </td>
+                        <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
+                          {entry.result}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -355,7 +433,9 @@ const inactiveTabClass =
           );
         });
 
-        const activeTab = document.querySelector(`[data-section="${targetSection}"]`);
+        const activeTab = document.querySelector(
+          `[data-section="${targetSection}"]`
+        );
         if (activeTab) {
           activeTab.classList.add(
             "section-tab-active",
@@ -375,7 +455,9 @@ const inactiveTabClass =
           section.classList.add("hidden");
         });
 
-        const activeSection = document.getElementById(`${targetSection}-section`);
+        const activeSection = document.getElementById(
+          `${targetSection}-section`
+        );
         if (activeSection) {
           activeSection.classList.remove("hidden");
         }
@@ -392,7 +474,14 @@ const inactiveTabClass =
         const gridBtn = document.getElementById("roster-grid-btn");
 
         const activeClasses = ["bg-red", "text-white"];
-        const inactiveClasses = ["text-gray-400", "hover:bg-gray-100", "hover:text-gray-600", "dark:text-gray-500", "dark:hover:bg-gray-800", "dark:hover:text-gray-300"];
+        const inactiveClasses = [
+          "text-gray-400",
+          "hover:bg-gray-100",
+          "hover:text-gray-600",
+          "dark:text-gray-500",
+          "dark:hover:bg-gray-800",
+          "dark:hover:text-gray-300",
+        ];
 
         if (view === "list") {
           listView?.classList.remove("hidden");
@@ -417,12 +506,18 @@ const inactiveTabClass =
         tabs.forEach(tab => {
           tab.addEventListener("click", () => {
             const targetSection = tab.getAttribute("data-section");
-            if (targetSection) activateSection(targetSection);
+            if (targetSection) {
+              activateSection(targetSection);
+            }
           });
         });
 
-        document.getElementById("roster-list-btn")?.addEventListener("click", () => setRosterView("list"));
-        document.getElementById("roster-grid-btn")?.addEventListener("click", () => setRosterView("grid"));
+        document
+          .getElementById("roster-list-btn")
+          ?.addEventListener("click", () => setRosterView("list"));
+        document
+          .getElementById("roster-grid-btn")
+          ?.addEventListener("click", () => setRosterView("grid"));
 
         // Activate section from URL hash on load
         const hash = window.location.hash.slice(1);

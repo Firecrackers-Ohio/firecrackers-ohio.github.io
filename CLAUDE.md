@@ -22,24 +22,37 @@ This is an **Astro 5** static site for Firecrackers Central Ohio (competitive yo
 ### Routing
 
 File-based routing under `src/pages/`:
+
 - `teams/[team].astro` — dynamic team detail pages driven by content collections
 - `sitemap.xml.ts` — programmatic sitemap
 
 ### Content Collections
 
-Teams are defined as JSON files in `src/content/teams/` (e.g., `brown.json`, `jones.json`). The schema (validated with Zod in `src/content.config.ts`) includes: `title`, `displayName`, `staff[]`, `roster[]`, `schedule[]`, `results[]`, `instagramUrl`, `facebookUrl`, `teamPhoto`.
+Both collections are backed by Sanity — there are no local content files. See `docs/sanity-cms.md`.
 
-Roster player photos live in `src/assets/rosters/{teamId}/{number}.jpg` and are loaded dynamically in the team page using Astro's `import.meta.glob`.
+- `teams` — one document per team, keyed by slug so `/teams/jones` works. Covers `name`, `cardDescription`, `staff[]`, `roster[]`, `schedule[]`, `results[]`, photos, and tryout contact details.
+- `about` — a singleton, keyed `"about"`.
 
-### Sanity CMS (About page only)
+Team photos and player headshots are Sanity assets served from its CDN via `src/lib/sanity/image.ts`. Headshots are cropped to 4:5 by the CDN so uploads of any shape render uniformly.
 
-The About page content comes from Sanity, not from code — see `docs/sanity-cms.md`. Everything else is still hardcoded; this is a pilot.
+**The teams collection drives the nav menus, the Teams listing and the Tryouts page.** There is no hardcoded list of teams anywhere — don't reintroduce one. Age-group phrasing like "from 11U through 14U" is derived from team names by `src/lib/teams.ts`.
+
+### Sanity CMS
+
+The About page and all team content come from Sanity — see `docs/sanity-cms.md`.
 
 - `studio/` is a **separate npm package** (its own `package.json`, excluded from the root `tsconfig.json`) holding the Studio config and schema. Its deps are deliberately kept out of the website build. Deployed on its own with `npm run deploy` from `studio/`.
 - `src/lib/sanity/loader.ts` is a generic Astro content-collection loader — reuse it for new document types rather than fetching in page frontmatter.
 - Rich text (Portable Text) renders through `src/components/RichText.astro`; paragraph styling comes from `.rich-text` / `.rich-text-xl` in `global.css`.
 - A Sanity webhook triggers `repository_dispatch: sanity-publish` in `deploy.yml` on publish.
 - The project ID is duplicated in `src/lib/sanity/client.ts` and `studio/project.ts`; change both. It is not a secret.
+- **Document IDs must not contain a dot.** Sanity treats dotted prefixes as reserved namespaces and blocks unauthenticated reads, which silently empties the collection at build time. Use `team-jones`, never `team.jones`.
+- GROQ projections return `null` for unset fields; `stripNulls` in the loader removes them so Zod schemas can use plain `.optional()`.
+- Editors get text, images and list ordering — never style or layout. New fields should follow that.
+
+### Adding a New Team
+
+Create the document in Sanity Studio. The nav, Teams page, Tryouts page and `/teams/{slug}` route all pick it up automatically. Nothing to change in code.
 
 ### Styling
 
@@ -53,9 +66,3 @@ Fonts: Poppins (default), Almarai, Orbitron (accent).
 - `src/layouts/Layout.astro` — root layout; handles SEO meta, Open Graph, dark mode, skip links
 - `src/middleware.ts` — security and cache-control response headers
 - `astro.config.mjs` — site URL, integrations (sitemap, @playform/compress), prefetch strategy, image domains
-
-### Adding a New Team
-
-1. Create `src/content/teams/{id}.json` following the existing schema
-2. Add roster photos to `src/assets/rosters/{id}/`
-3. The dynamic route `teams/[team].astro` picks it up automatically

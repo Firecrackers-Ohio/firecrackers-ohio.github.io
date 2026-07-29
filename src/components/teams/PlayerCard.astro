@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import type { RenderedImage } from "../../lib/sanity/image";
 
 interface Props {
   name: string;
@@ -7,48 +7,57 @@ interface Props {
   position: string;
   gradYear: number;
   highSchool: string;
-  image?: ImageMetadata;
+  image?: RenderedImage;
 }
 
 const { name, number, position, gradYear, highSchool, image } = Astro.props;
 ---
 
-<div class="group overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg dark:bg-gray-800">
+<div
+  class="group overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg dark:bg-gray-800"
+>
   <div class="relative">
-    {image ? (
-      <Image
-        src={image}
-        alt={`${name} headshot`}
-        class="aspect-[4/5] w-full object-contain"
-        width={240}
-        height={300}
-      />
-    ) : (
-      <div class="aspect-[4/5] w-full bg-gray-100 dark:bg-gray-700"></div>
-    )}
+    {
+      image ? (
+        /* Already cropped to 4:5 by Sanity's CDN, so it fills the box exactly
+         whatever shape the coach uploaded. */
+        <img
+          src={image.src}
+          srcset={image.srcset}
+          alt={`${name} headshot`}
+          class="aspect-[4/5] w-full object-cover"
+          width={image.width}
+          height={image.height}
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <div class="aspect-[4/5] w-full bg-gray-100 dark:bg-gray-700" />
+      )
+    }
     <span
-      class="absolute bottom-2 left-2 flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-red text-sm font-bold text-white shadow-lg drop-shadow-md"
+      class="bg-red absolute bottom-2 left-2 flex h-10 w-10 items-center justify-center rounded-full border-2 border-white text-sm font-bold text-white shadow-lg drop-shadow-md"
     >
       #{number}
     </span>
   </div>
   <div class="p-4">
     <h3
-      class="text-base font-bold leading-tight text-gray-900 sm:text-lg dark:text-white"
+      class="text-base leading-tight font-bold text-gray-900 sm:text-lg dark:text-white"
     >
       {name}
     </h3>
     <div class="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-400">
       <div class="flex items-center gap-2">
-        <span class="font-semibold text-red dark:text-red-400">POS</span>
+        <span class="text-red font-semibold dark:text-red-400">POS</span>
         <span>{position}</span>
       </div>
       <div class="flex items-center gap-2">
-        <span class="font-semibold text-red dark:text-red-400">GRAD</span>
+        <span class="text-red font-semibold dark:text-red-400">GRAD</span>
         <span>{gradYear}</span>
       </div>
       <div class="flex items-center gap-2">
-        <span class="font-semibold text-red dark:text-red-400">HS</span>
+        <span class="text-red font-semibold dark:text-red-400">HS</span>
         <span class="truncate">{highSchool}</span>
       </div>
     </div>
