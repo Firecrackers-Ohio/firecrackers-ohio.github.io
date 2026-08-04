@@ -10,6 +10,12 @@ export default [
   ...tseslint.configs.recommended,
 
   // Astro recommended rules
+  //
+  // The plugin also ships `jsx-a11y-recommended`, which would lint the markup in
+  // .astro files for accessibility problems. It can't be enabled yet: it needs
+  // eslint-plugin-jsx-a11y, whose latest release (6.10.2) still declares peer
+  // support only up to ESLint 9, so it won't install alongside ESLint 10. Worth
+  // adding when that changes.
   ...eslintPluginAstro.configs.recommended,
 
   {
