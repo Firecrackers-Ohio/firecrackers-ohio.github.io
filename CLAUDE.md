@@ -25,7 +25,7 @@ This is an **Astro 5** static site for Firecrackers Central Ohio (competitive yo
 - `deploy.yml` — builds and deploys the site to Pages on push to `main` and on the Sanity publish webhook.
 - `studio.yml` — deploys the Sanity Studio when `studio/**` changes. See `docs/sanity-cms.md`.
 
-Node is pinned to 22 by `.nvmrc`, which every workflow reads.
+Node is pinned to 22 by `.nvmrc`, which every workflow reads. `checks.yml` and `studio.yml` pass it to `setup-node` as `node-version-file`; `deploy.yml` reads it into a step output first, because `withastro/action` only accepts a literal `node-version`. Astro 6 and up require Node >= 22.12, so `.nvmrc` can move forward but not back.
 
 ### Routing
 

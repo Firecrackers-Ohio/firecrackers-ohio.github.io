@@ -31,12 +31,18 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v7
+      # withastro/action has no `node-version-file` input, only `node-version`,
+      # so .nvmrc can't be handed to it directly the way the other workflows do
+      # it. Reading the file into an output keeps the version defined in exactly
+      # one place: bump .nvmrc and the deploy follows, instead of quietly
+      # building on a different Node than CI checked.
+      - name: Read the Node version from .nvmrc
+        id: nvmrc
+        run: echo "version=$(tr -d 'v[:space:]' < .nvmrc)" >> "$GITHUB_OUTPUT"
       - name: Install, build, and upload your site
         uses: withastro/action@v6
         with:
-          # Pinned to match .nvmrc and the other workflows, rather than tracking
-          # whatever the action defaults to.
-          node-version: 22
+          node-version: ${{ steps.nvmrc.outputs.version }}
 
   deploy:
     needs: build
