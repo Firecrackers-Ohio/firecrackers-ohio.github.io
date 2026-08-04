@@ -17,7 +17,7 @@ npm run type-check   # TypeScript validation
 
 ## Architecture
 
-This is an **Astro 5** static site for Firecrackers Central Ohio (competitive youth fastpitch softball), deployed to GitHub Pages at firecrackersohio.com via `.github/workflows/deploy.yml` on push to `main`.
+This is an **Astro 7** static site for Firecrackers Central Ohio (competitive youth fastpitch softball), deployed to GitHub Pages at firecrackersohio.com via `.github/workflows/deploy.yml` on push to `main`.
 
 ### Workflows
 
@@ -25,7 +25,7 @@ This is an **Astro 5** static site for Firecrackers Central Ohio (competitive yo
 - `deploy.yml` — builds and deploys the site to Pages on push to `main` and on the Sanity publish webhook.
 - `studio.yml` — deploys the Sanity Studio when `studio/**` changes. See `docs/sanity-cms.md`.
 
-Node is pinned to 22 by `.nvmrc`, which every workflow reads.
+Node is pinned to 22 by `.nvmrc`, which every workflow reads. `checks.yml` and `studio.yml` pass it to `setup-node` as `node-version-file`; `deploy.yml` reads it into a step output first, because `withastro/action` only accepts a literal `node-version`. Astro 6 and up require Node >= 22.12, so `.nvmrc` can move forward but not back.
 
 ### Routing
 
@@ -72,7 +72,7 @@ Tailwind CSS 4 with a custom `@theme` in `src/styles/global.css` defining brand 
 
 Fonts: Poppins (default), Almarai, Orbitron (accent).
 
-**Leave `vite.build.cssMinify: "esbuild"` in `astro.config.mjs` alone.** Setting it to `true` selects Lightning CSS under Vite 8, which rewrites `@media (min-width: …)` to range syntax that `@playform/compress` then silently deletes — the build stays green and every responsive style disappears. The config has the full explanation.
+**Two CSS settings in `astro.config.mjs` are load-bearing; leave both alone.** `vite.build.cssMinify` stays `"esbuild"` — `true` means Lightning CSS under Vite 8, which emits `@media (width >= …)` range syntax that iOS Safari below 16.4 can't parse, costing those browsers every responsive style. And `compress({ CSS: false })` keeps csso off the CSS, because it deletes range-syntax blocks outright. Either mistake produces a green build that looks broken only in a browser. The config explains both in full.
 
 ### Key Files
 
