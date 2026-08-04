@@ -4,6 +4,7 @@ import { visionTool } from "@sanity/vision";
 
 import { schemaTypes, singletonTypes } from "./schemaTypes";
 import { dataset, projectId } from "./project";
+import { isAdmin } from "./roles";
 
 export default defineConfig({
   name: "default",
@@ -15,7 +16,9 @@ export default defineConfig({
     structureTool({
       // Custom sidebar. Because the About page is a singleton we link straight
       // to the one document instead of showing a list with a "create" button.
-      structure: S =>
+      // Coaches see only Teams — the About page isn't theirs to edit, so it
+      // isn't in their sidebar at all.
+      structure: (S, { currentUser }) =>
         S.list()
           .title("Website content")
           .items([
@@ -27,16 +30,20 @@ export default defineConfig({
                   .title("Teams")
                   .defaultOrdering([{ field: "name", direction: "asc" }])
               ),
-            S.divider(),
-            S.listItem()
-              .title("About page")
-              .id("aboutPage")
-              .child(
-                S.document()
-                  .schemaType("aboutPage")
-                  .documentId("aboutPage")
-                  .title("About page")
-              ),
+            ...(isAdmin(currentUser)
+              ? [
+                  S.divider(),
+                  S.listItem()
+                    .title("About page")
+                    .id("aboutPage")
+                    .child(
+                      S.document()
+                        .schemaType("aboutPage")
+                        .documentId("aboutPage")
+                        .title("About page")
+                    ),
+                ]
+              : []),
           ]),
     }),
     // Lets you run GROQ queries against the dataset from inside the Studio.
@@ -53,14 +60,21 @@ export default defineConfig({
 
   document: {
     // Strip "duplicate", "delete" and "unpublish" from singletons so an editor
-    // can't accidentally remove the only About page document.
-    actions: (actions, { schemaType }) =>
-      singletonTypes.has(schemaType)
+    // can't accidentally remove the only About page document. Coaches get the
+    // same treatment on every type: edit and publish, nothing structural.
+    actions: (actions, { schemaType, currentUser }) =>
+      singletonTypes.has(schemaType) || !isAdmin(currentUser)
         ? actions.filter(action =>
             ["publish", "discardChanges", "restore"].includes(
               action.action ?? ""
             )
           )
         : actions,
+
+    // Adding a team is an admin job — a coach who created one couldn't fill in
+    // the (hidden) name and web address, so publishing would fail on validation
+    // errors they can't see. This removes the "create" buttons for them.
+    newDocumentOptions: (options, { currentUser }) =>
+      isAdmin(currentUser) ? options : [],
   },
 });
