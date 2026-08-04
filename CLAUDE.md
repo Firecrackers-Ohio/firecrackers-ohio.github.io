@@ -72,7 +72,7 @@ Tailwind CSS 4 with a custom `@theme` in `src/styles/global.css` defining brand 
 
 Fonts: Poppins (default), Almarai, Orbitron (accent).
 
-**Leave `vite.build.cssMinify: "esbuild"` in `astro.config.mjs` alone.** Setting it to `true` selects Lightning CSS under Vite 8, which rewrites `@media (min-width: …)` to range syntax that `@playform/compress` then silently deletes — the build stays green and every responsive style disappears. The config has the full explanation.
+**Two CSS settings in `astro.config.mjs` are load-bearing; leave both alone.** `vite.build.cssMinify` stays `"esbuild"` — `true` means Lightning CSS under Vite 8, which emits `@media (width >= …)` range syntax that iOS Safari below 16.4 can't parse, costing those browsers every responsive style. And `compress({ CSS: false })` keeps csso off the CSS, because it deletes range-syntax blocks outright. Either mistake produces a green build that looks broken only in a browser. The config explains both in full.
 
 ### Key Files
 
