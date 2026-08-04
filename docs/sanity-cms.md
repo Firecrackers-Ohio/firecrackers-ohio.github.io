@@ -88,7 +88,9 @@ secret that needs.
 
 Then invite the coaches: **sanity.io/manage → Members → Invite**. The free plan
 includes a limited number of users, so check the count before inviting everyone.
-Give coaches the **Editor** role, not Administrator.
+Give coaches the **Editor** role, not Administrator — Editors can publish on
+their own, and the Studio hides the admin-only fields from them. See
+[Who can edit what](#who-can-edit-what).
 
 At this point you can verify the site builds against real content:
 
@@ -314,6 +316,43 @@ The pieces worth reusing:
 Two things to remember for any new type: add it to the **webhook filter**, or
 publishing won't deploy, and give it a **hyphenated ID** (see the dot gotcha
 below).
+
+## Who can edit what
+
+Two kinds of user: **Administrator** (you) and **Editor** (the coaches). Coaches
+can publish without approval; they just see a shorter form.
+
+Hidden from Editors:
+
+| Hidden                                  | Where             | Why                                                                       |
+| --------------------------------------- | ----------------- | ------------------------------------------------------------------------- |
+| Team name                               | `team.name`       | Drives the nav, the age-group phrasing on Tryouts, and the document title |
+| Web address                             | `team.slug`       | Locked after creation; changing it breaks every link                      |
+| Birth year range                        | `team.birthYears` | An org-wide rule for the age group, not a per-team setting                |
+| About page                              | sidebar item      | Not a coach's page                                                        |
+| Create / delete / duplicate / unpublish | document actions  | Adding and removing teams is an admin job                                 |
+
+Everything else on a team — roster, coaching staff, schedule, results, headings,
+short description, team photo, social links, contact phone — is coach-editable.
+
+How it works: `studio/roles.ts` exports `isAdmin()` and an `adminOnly` callback,
+used as `hidden: adminOnly` on a field and as a conditional in the sidebar and
+document actions in `studio/sanity.config.ts`. To move a field between the two
+categories, add or remove that one line — and remember schema changes need a
+[Studio deploy](#deploying-the-studio) to reach the hosted Studio.
+
+Two things to know:
+
+- **It's for clarity, not security.** These are UI rules. Sanity enforces
+  per-field permissions only through custom roles, which are Enterprise-only, so
+  an Editor with an API token could still write a hidden field. `visionTool()` is
+  also enabled for everyone, so nothing in the dataset is actually concealed. The
+  goal is a short, obvious form.
+- **Never put `adminOnly` on a required field a coach can create empty.** Hidden
+  plus required plus empty blocks publishing with a validation error the coach
+  can't see the cause of. That's exactly why Editors can't create teams: you
+  create the team and set its name and web address, then the coach fills in the
+  rest.
 
 ## What editors deliberately cannot do
 

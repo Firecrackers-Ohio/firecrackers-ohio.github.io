@@ -1,5 +1,7 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+import { adminOnly } from "../roles";
+
 /**
  * Rich text configuration shared by coach bios.
  *
@@ -64,6 +66,9 @@ export const team = defineType({
       group: "details",
       description:
         'Include the age group, e.g. "14U Jones" — update this when the team ages up. The website capitalises it for the big heading and adds "Team" where a longer name is needed, so this is the only place it needs changing.',
+      // Admin-only: the name drives the nav, the age-group phrasing on the
+      // Tryouts page and this document's title, so it's not a coach's call.
+      hidden: adminOnly,
       validation: Rule => Rule.required(),
     }),
     defineField({
@@ -74,8 +79,11 @@ export const team = defineType({
       description:
         '⚠️ Determines the page address, e.g. "jones" makes firecrackersohio.com/teams/jones. Locked once saved, because changing it would break every existing link to this team. Ask a developer if it genuinely needs changing.',
       options: { source: "name", maxLength: 40 },
-      // Settable when the team is first created, then locked.
+      // Settable when the team is first created, then locked — and never shown
+      // to coaches at all, since they can't change it and seeing it only invites
+      // questions.
       readOnly: ({ value }) => Boolean(value),
+      hidden: adminOnly,
       validation: Rule => Rule.required(),
     }),
     defineField({
@@ -121,6 +129,9 @@ export const team = defineType({
       group: "details",
       description:
         'Eligibility window for this age group, shown on the Tryouts page, e.g. "SEPT 2013 - DEC 2014".',
+      // Admin-only: this is an organisation-wide rule for the age group, not
+      // something a single team sets.
+      hidden: adminOnly,
     }),
     defineField({
       name: "tryoutPhone",
