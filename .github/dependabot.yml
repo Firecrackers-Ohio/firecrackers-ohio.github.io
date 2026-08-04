@@ -23,13 +23,13 @@ updates:
           - "@eslint/*"
           - "eslint-plugin-*"
           - "typescript-eslint"
-    ignore:
-      # eslint-plugin-astro 2.x and 3.x require eslint-plugin-jsx-a11y >= 6.10.2
-      # as a peer, and 6.10.2 — still the newest release — declares support only
-      # up to eslint 9. So the chain cannot resolve, whichever way it's grouped.
-      # Drop this once jsx-a11y ships a release that accepts eslint 10.
-      - dependency-name: "eslint-plugin-astro"
-        update-types: ["version-update:semver-major"]
+    # Nothing ignored. There used to be a rule here holding eslint-plugin-astro
+    # back on 1.x, on the grounds that 2.x and 3.x can't resolve against eslint
+    # 10 because they need eslint-plugin-jsx-a11y >= 6.10.2 and 6.10.2 supports
+    # only up to eslint 9. Half right: that peer is declared *optional*, so the
+    # plugin installs and lints fine without it — only the plugin's jsx-a11y
+    # configs are unavailable, and we don't enable those. 3.1.0 went in by hand
+    # in #37, so the rule was suppressing updates for no reason.
 
   # The Studio's dependencies are deliberately separate from the website's, so
   # Dependabot has to be pointed at it explicitly.
