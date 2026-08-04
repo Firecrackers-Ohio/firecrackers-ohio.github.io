@@ -17,7 +17,7 @@ npm run type-check   # TypeScript validation
 
 ## Architecture
 
-This is an **Astro 5** static site for Firecrackers Central Ohio (competitive youth fastpitch softball), deployed to GitHub Pages at firecrackersohio.com via `.github/workflows/deploy.yml` on push to `main`.
+This is an **Astro 7** static site for Firecrackers Central Ohio (competitive youth fastpitch softball), deployed to GitHub Pages at firecrackersohio.com via `.github/workflows/deploy.yml` on push to `main`.
 
 ### Workflows
 
