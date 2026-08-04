@@ -10,10 +10,10 @@
     "seed": "sanity dataset import seed/about.ndjson --dataset production --replace"
   },
   "dependencies": {
-    "@sanity/vision": "^6.7.0",
+    "@sanity/vision": "^6.8.0",
     "react": "^19.2.2",
     "react-dom": "^19.2.2",
-    "sanity": "^6.7.0",
+    "sanity": "^6.8.0",
     "styled-components": "^6.1.15"
   },
   "devDependencies": {
