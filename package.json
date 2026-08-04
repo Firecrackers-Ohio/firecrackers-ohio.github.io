@@ -20,7 +20,7 @@
     "@fontsource/orbitron": "^5.3.0",
     "@fontsource/poppins": "^5.3.0",
     "@playform/compress": "^0.2.3",
-    "@sanity/client": "^7.25.0",
+    "@sanity/client": "^7.26.0",
     "@sanity/image-url": "^2.1.1",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^5.16.16",
