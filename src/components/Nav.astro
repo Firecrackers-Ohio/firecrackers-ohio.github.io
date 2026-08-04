@@ -4,12 +4,12 @@ import logoRound from "../assets/logo-round.svg";
 import fbIcon from "../assets/fb.svg";
 import igIcon from "../assets/ig.svg";
 import emailIcon from "../assets/email.svg";
-import { getCollection } from "astro:content";
 import { EXTERNAL_URLS } from "../config";
+import { getTeamsInDisplayOrder } from "../lib/teams";
 
 // Team links come from the teams collection, so adding, removing or renaming a
 // team in Sanity updates every menu here without a code change.
-const teams = await getCollection("teams");
+const teams = await getTeamsInDisplayOrder();
 const teamLinks = teams.map(team => ({
   slug: team.id,
   href: `/teams/${team.id}`,

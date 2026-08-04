@@ -1,9 +1,12 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import logoTextOutline from "../assets/logo-text-outline.svg";
-import { ageGroupLabel, ageRangeLabel } from "../lib/teams";
+import {
+  ageGroupLabel,
+  ageRangeLabel,
+  getTeamsInDisplayOrder,
+} from "../lib/teams";
 
 /**
  * Between seasons this page is a general "get in touch" page rather than a
@@ -14,7 +17,7 @@ import { ageGroupLabel, ageRangeLabel } from "../lib/teams";
  * Contact details come from each team's head coach — the first entry in its
  * staff list — plus the phone number and birth year range on the team itself.
  */
-const teams = await getCollection("teams");
+const teams = await getTeamsInDisplayOrder();
 
 const ageGroups = teams.map(team => {
   const headCoach = team.data.staff[0];
