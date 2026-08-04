@@ -1,13 +1,12 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import logoTextOutline from "../assets/logo-text-outline.svg";
-import { ageRangeLabel } from "../lib/teams";
+import { ageRangeLabel, getTeamsInDisplayOrder } from "../lib/teams";
 
 // Driven by the teams collection, so adding or removing a team in Sanity
 // updates this page without a code change.
-const teams = await getCollection("teams");
+const teams = await getTeamsInDisplayOrder();
 const ageRange = ageRangeLabel(teams.map(team => team.data.name));
 ---
 

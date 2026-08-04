@@ -23,7 +23,7 @@
     "@sanity/client": "^7.26.0",
     "@sanity/image-url": "^2.1.1",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^5.16.16",
+    "astro": "^7.1.6",
     "astro-portabletext": "^0.13.0",
     "tailwindcss": "^4.1.10",
     "typescript": "^5.8.3"

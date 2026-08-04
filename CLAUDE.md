@@ -45,6 +45,8 @@ Team photos and player headshots are Sanity assets served from its CDN via `src/
 
 **The teams collection drives the nav menus, the Teams listing and the Tryouts page.** There is no hardcoded list of teams anywhere — don't reintroduce one. Age-group phrasing like "from 11U through 14U" is derived from team names by `src/lib/teams.ts`.
 
+Call `getTeamsInDisplayOrder()` from `src/lib/teams.ts` wherever team order is visible, not `getCollection("teams")` directly. The GROQ query asks for `order(name asc)` but that order does not survive the content layer — Astro returns entries keyed by id (the slug), which put "13U Allen" ahead of "11U Brown".
+
 ### Sanity CMS
 
 The About page and all team content come from Sanity — see `docs/sanity-cms.md`.
@@ -69,6 +71,8 @@ Create the document in Sanity Studio. The nav, Teams page, Tryouts page and `/te
 Tailwind CSS 4 with a custom `@theme` in `src/styles/global.css` defining brand colors (red `#c20202`, yellow `#fff200`, grays, blues). Reusable CSS component classes (`.card`, `.btn-red`, `.page-title`, etc.) are defined in a `@layer components` block there — add new shared styles there rather than inline.
 
 Fonts: Poppins (default), Almarai, Orbitron (accent).
+
+**Leave `vite.build.cssMinify: "esbuild"` in `astro.config.mjs` alone.** Setting it to `true` selects Lightning CSS under Vite 8, which rewrites `@media (min-width: …)` to range syntax that `@playform/compress` then silently deletes — the build stays green and every responsive style disappears. The config has the full explanation.
 
 ### Key Files
 

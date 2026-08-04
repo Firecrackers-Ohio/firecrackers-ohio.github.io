@@ -1,4 +1,7 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+// Astro 6 deprecated re-exporting `z` from "astro:content"; it comes from
+// "astro/zod" now. Same Zod, just a different import path.
+import { z } from "astro/zod";
 
 import { sanityLoader } from "./lib/sanity/loader";
 
@@ -7,17 +10,17 @@ import { sanityLoader } from "./lib/sanity/loader";
  * shape is validated by the Studio schema, so here we only assert that it's a
  * non-empty array of objects and let the renderer interpret the rest.
  */
-const portableText = z
-  .array(z.object({ _type: z.string() }).passthrough())
-  .min(1);
+// `looseObject` is Zod 4's name for what used to be `.object().passthrough()`:
+// keep the unknown keys rather than stripping them.
+const portableText = z.array(z.looseObject({ _type: z.string() })).min(1);
 
 /**
  * A Sanity image reference. The asset ID plus optional crop and hotspot data is
  * everything the URL builder in lib/sanity/image.ts needs.
  */
-const sanityImage = z
-  .object({ asset: z.object({ _ref: z.string() }).passthrough() })
-  .passthrough();
+const sanityImage = z.looseObject({
+  asset: z.looseObject({ _ref: z.string() }),
+});
 
 /**
  * The About page, edited in Sanity Studio.
@@ -87,8 +90,10 @@ const teams = defineCollection({
     birthYears: z.string().optional(),
     tryoutPhone: z.string().optional(),
     teamPhoto: sanityImage.optional(),
-    instagramUrl: z.string().url().optional(),
-    facebookUrl: z.string().url().optional(),
+    // Zod 4 moved the string format checks to the top level: z.url(), not
+    // z.string().url().
+    instagramUrl: z.url().optional(),
+    facebookUrl: z.url().optional(),
     scheduleHeading: z.string(),
     resultsHeading: z.string(),
     staff: z
@@ -96,7 +101,7 @@ const teams = defineCollection({
         z.object({
           name: z.string(),
           role: z.string(),
-          email: z.string().email().optional(),
+          email: z.email().optional(),
           bio: portableText.optional(),
         })
       )
