@@ -7,7 +7,20 @@ import compress from "@playform/compress";
 // https://astro.build/config
 export default defineConfig({
   site: "https://firecrackersohio.com",
-  integrations: [sitemap(), compress()],
+  integrations: [
+    sitemap(),
+    // Compresses the built output in place: sharp over the images, svgo over the
+    // SVGs, html-minifier-terser over the HTML. That's worth about 2 MB on this
+    // site, most of it images, so it stays.
+    //
+    // CSS is deliberately excluded. Vite has already minified it by this point,
+    // and compress's CSS pass uses csso, which is old enough not to understand
+    // media query range syntax (`@media (width >= 48rem)`) — when it meets one
+    // it drops the whole block silently. That is how a build can pass every
+    // check and ship a site with no responsive styles; see the cssMinify note
+    // below. Skipping CSS here costs ~250 bytes and removes the trap.
+    compress({ CSS: false }),
+  ],
 
   // Pages for teams that no longer exist. On a static build Astro emits a small
   // HTML page with a meta refresh and a canonical link, since GitHub Pages can't
@@ -53,19 +66,19 @@ export default defineConfig({
 
     // Build optimizations
     build: {
-      // Must stay "esbuild" — do not change this to `true`.
+      // Kept as "esbuild" rather than `true`, which under Vite 8 means Lightning
+      // CSS. Lightning CSS rewrites `@media (min-width: 48rem)` into the modern
+      // range form `@media (width >= 48rem)`. That's valid CSS and 60 bytes
+      // smaller across the whole site, but iOS Safari below 16.4 doesn't parse
+      // it, and a browser that can't parse the media query loses every
+      // responsive style on the page. Not a trade worth making for 60 bytes on
+      // a site read on whatever phone a parent happens to own.
       //
-      // Vite 8 changed what `true` means: it now runs Lightning CSS, which
-      // rewrites `@media (min-width: 48rem)` into the equivalent modern range
-      // syntax `@media (width >= 48rem)`. The @playform/compress integration
-      // then minifies dist/ a second time with a parser that doesn't
-      // understand that syntax, and silently drops every one of those blocks.
-      //
-      // The result is a build that succeeds, type-checks and lints clean while
-      // shipping a site with no responsive styles at all — no `md:` or `lg:`
-      // utility survives, so the mobile menu shows on desktop and the desktop
-      // nav never appears. Pinning esbuild keeps the old output syntax, which
-      // compress handles, and produces byte-identical CSS to Astro 5.
+      // Getting this wrong is quiet: the build succeeds, type-check and lint
+      // pass, and the breakage is visible only in a browser. It is also how the
+      // Astro 7 upgrade nearly shipped a site with no responsive CSS at all —
+      // back then compress's csso pass deleted the range-syntax blocks outright
+      // rather than merely leaving old browsers behind.
       cssMinify: "esbuild",
       // There was a `rollupOptions.output.manualChunks` entry here splitting a
       // "vendor" chunk out of `astro`. It never produced one — the whole site
