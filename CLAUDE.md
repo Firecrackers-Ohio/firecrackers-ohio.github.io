@@ -58,6 +58,7 @@ The About page and all team content come from Sanity — see `docs/sanity-cms.md
 - GROQ projections return `null` for unset fields; `stripNulls` in the loader removes them so Zod schemas can use plain `.optional()`.
 - The loader's `minEntries` option fails the build when a collection comes back empty, which Zod treats as valid. Both collections set it to `1`; set it on any new collection the site can't render without.
 - Editors get text, images and list ordering — never style or layout. New fields should follow that.
+- Coaches are Sanity **Editors**; the site owner is an Administrator. `studio/roles.ts` exports `isAdmin()` and an `adminOnly` `hidden` callback — a handful of team fields, the About page and all create/delete actions are admin-only. It's UI clarity, not enforcement (per-field permissions are Enterprise-only). Never put `adminOnly` on a required field an Editor could leave empty: hidden + required + empty silently blocks publishing. See `docs/sanity-cms.md`.
 
 ### Adding a New Team
 
