@@ -74,6 +74,10 @@ jobs:
           github.event_name == 'repository_dispatch' &&
           env.MAIL_USERNAME != '' &&
           env.MAIL_TO != ''
+        # The site is already live by the time this runs. A bounced notification
+        # is not a failed deploy, and marking the run red for one sends you
+        # chasing a publish that actually worked.
+        continue-on-error: true
         # Pinned to a commit rather than a tag: this is a third-party action and
         # the only one here that gets a secret, the SMTP password. A moving tag
         # means whoever controls it can change what runs with that password.
@@ -84,7 +88,10 @@ jobs:
           secure: true
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          from: Firecrackers Site
+          # Needs a real address, not just a display name: v3 accepted a bare
+          # name, v18 rejects it. MAIL_USERNAME is the Gmail account this
+          # authenticates as, so it's also the only sender Gmail will accept.
+          from: Firecrackers Site <${{ secrets.MAIL_USERNAME }}>
           to: ${{ secrets.MAIL_TO }}
           subject: >-
             Firecrackers site updated${{
