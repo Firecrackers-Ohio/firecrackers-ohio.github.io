@@ -42,6 +42,39 @@ const bioBlock = defineArrayMember({
 });
 
 /**
+ * One tournament on a schedule. Shared by the fall and spring/summer tables so
+ * the two stay identical — a coach filling in one has learned both.
+ */
+const scheduleEvent = defineArrayMember({
+  type: "object",
+  name: "event",
+  fields: [
+    defineField({
+      name: "dates",
+      title: "Dates",
+      type: "string",
+      description: 'Free text, e.g. "5/22 - 5/24".',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: "tournament",
+      title: "Tournament",
+      type: "string",
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: "location",
+      title: "Location",
+      type: "string",
+      validation: Rule => Rule.required(),
+    }),
+  ],
+  preview: {
+    select: { title: "tournament", subtitle: "dates" },
+  },
+});
+
+/**
  * A team: roster, coaching staff, schedule and results.
  *
  * One document per team. Field groups mirror the tabs on the website so the
@@ -262,106 +295,124 @@ export const team = defineType({
     }),
 
     defineField({
-      name: "scheduleHeading",
-      title: "Schedule heading",
+      name: "fallScheduleHeading",
+      title: "Fall schedule heading",
       type: "string",
       group: "schedule",
       description:
-        'Shown above the schedule table, in capitals. Update each season, e.g. "2026 Spring/Summer Schedule".',
-      initialValue: "2026 Spring/Summer Schedule",
+        'Shown above the fall table, in capitals. Update each season, e.g. "2026 Fall Schedule".',
+      initialValue: "2026 Fall Schedule",
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: "fallSchedule",
+      title: "Fall tournaments",
+      type: "array",
+      group: "schedule",
+      description:
+        'Drag to reorder. Leave empty and the fall table shows "Coming soon".',
+      of: [scheduleEvent],
+    }),
+
+    // Historically the only schedule, which is why the field is plainly
+    // `schedule` while its fall counterpart above is prefixed. Renaming it would
+    // mean moving live coach content to change nothing a coach can see — the
+    // titles below are what they read in the Studio.
+    defineField({
+      name: "scheduleHeading",
+      title: "Spring/summer schedule heading",
+      type: "string",
+      group: "schedule",
+      description:
+        'Shown above the spring/summer table, in capitals. Update each season, e.g. "2027 Spring/Summer Schedule" — or just "2027 Summer Schedule".',
+      initialValue: "2027 Spring/Summer Schedule",
       validation: Rule => Rule.required(),
     }),
     defineField({
       name: "schedule",
-      title: "Tournaments",
+      title: "Spring/summer tournaments",
       type: "array",
       group: "schedule",
       description:
-        'Drag to reorder. Leave empty and the tab shows "Coming soon".',
-      of: [
-        defineArrayMember({
-          type: "object",
-          name: "event",
-          fields: [
-            defineField({
-              name: "dates",
-              title: "Dates",
-              type: "string",
-              description: 'Free text, e.g. "5/22 - 5/24".',
-              validation: Rule => Rule.required(),
-            }),
-            defineField({
-              name: "tournament",
-              title: "Tournament",
-              type: "string",
-              validation: Rule => Rule.required(),
-            }),
-            defineField({
-              name: "location",
-              title: "Location",
-              type: "string",
-              validation: Rule => Rule.required(),
-            }),
-          ],
-          preview: {
-            select: { title: "tournament", subtitle: "dates" },
-          },
-        }),
-      ],
+        'Drag to reorder. Leave empty and the spring/summer table shows "Coming soon".',
+      of: [scheduleEvent],
     }),
 
     defineField({
-      name: "resultsHeading",
-      title: "Results heading",
-      type: "string",
-      group: "results",
-      description:
-        'Shown above the results table, in capitals. Update each season, e.g. "2025 Fall Results".',
-      initialValue: "2025 Fall Results",
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: "results",
-      title: "Finishes",
+      name: "resultTables",
+      title: "Results by year",
       type: "array",
       group: "results",
       description:
-        'Drag to reorder. Leave empty and the tab shows "Coming soon".',
+        'One table per year, each with its own heading. Add a new one each season rather than overwriting the last — old finishes are worth keeping. Drag to reorder, newest year first. Leave empty and the tab shows "Coming soon".',
       of: [
         defineArrayMember({
           type: "object",
-          name: "result",
+          name: "resultTable",
           fields: [
             defineField({
-              name: "date",
-              title: "Date",
-              type: "string",
-              description: 'Free text, e.g. "Oct 11".',
-              validation: Rule => Rule.required(),
-            }),
-            defineField({
-              name: "tournament",
-              title: "Tournament",
-              type: "string",
-              validation: Rule => Rule.required(),
-            }),
-            defineField({
-              name: "location",
-              title: "Location",
-              type: "string",
-              validation: Rule => Rule.required(),
-            }),
-            defineField({
-              name: "result",
-              title: "Finish",
+              name: "heading",
+              title: "Heading",
               type: "string",
               description:
-                'Free text, e.g. "Champions", "2nd Place", "Semi-Finalist".',
+                'Shown above this table, in capitals, e.g. "2025 Fall Results".',
               validation: Rule => Rule.required(),
+            }),
+            defineField({
+              name: "rows",
+              title: "Finishes",
+              type: "array",
+              description:
+                'Drag to reorder. Leave empty and this table shows "Coming soon", which is handy for a season that has started but has no finishes yet.',
+              of: [
+                defineArrayMember({
+                  type: "object",
+                  name: "result",
+                  fields: [
+                    defineField({
+                      name: "date",
+                      title: "Date",
+                      type: "string",
+                      description: 'Free text, e.g. "Oct 11".',
+                      validation: Rule => Rule.required(),
+                    }),
+                    defineField({
+                      name: "tournament",
+                      title: "Tournament",
+                      type: "string",
+                      validation: Rule => Rule.required(),
+                    }),
+                    defineField({
+                      name: "location",
+                      title: "Location",
+                      type: "string",
+                      validation: Rule => Rule.required(),
+                    }),
+                    defineField({
+                      name: "result",
+                      title: "Finish",
+                      type: "string",
+                      description:
+                        'Free text, e.g. "Champions", "2nd Place", "Semi-Finalist".',
+                      validation: Rule => Rule.required(),
+                    }),
+                  ],
+                  preview: {
+                    select: { title: "tournament", subtitle: "result" },
+                  },
+                }),
+              ],
             }),
           ],
           preview: {
-            select: { title: "tournament", subtitle: "result" },
+            select: { title: "heading", rows: "rows" },
+            prepare: ({ title, rows }) => ({
+              title: title || "Untitled table",
+              subtitle:
+                rows?.length === 1
+                  ? "1 finish"
+                  : `${rows?.length ?? 0} finishes`,
+            }),
           },
         }),
       ],

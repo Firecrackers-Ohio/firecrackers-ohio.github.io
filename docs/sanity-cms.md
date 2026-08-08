@@ -387,6 +387,16 @@ Things worth knowing:
   no photos shows the table instead. That's derived, not a setting.
 - **An empty roster is allowed** and shows "Coming soon". A team must always have
   at least one coach.
+- **The Schedule tab has two fixed tables**, fall and spring/summer, each with
+  its own heading and tournament list. Both are optional; whichever is empty
+  shows its heading above "Coming soon". The pair is fixed — a coach can't add a
+  third. (The fields are `fallSchedule` and, for historical reasons, plain
+  `schedule` for spring/summer.)
+- **The Results tab is a list of tables, one per year**, and coaches add them.
+  Each has a heading and its own finishes, and they render in the order they're
+  arranged in the Studio — newest year first by convention, not enforced. A new
+  season means adding a table, not overwriting the last one. A table with no rows
+  shows its heading above "Coming soon".
 - **Age groups live in the team name.** "14U Jones" is parsed to produce the
   "from 11U through 14U" phrasing on the home, teams and tryouts pages. Keep the
   `NNU` format or that phrase will silently drop that team.
