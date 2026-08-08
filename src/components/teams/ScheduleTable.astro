@@ -1,0 +1,66 @@
+---
+/**
+ * One schedule table on a team page: a heading and the tournaments beneath it.
+ *
+ * The Schedule tab stacks two of these — fall, then spring/summer — so each
+ * carries its own heading and its own empty state. A season with nothing booked
+ * yet still shows its heading, with "Coming soon." underneath.
+ */
+interface Props {
+  heading: string;
+  rows?: { dates: string; tournament: string; location: string }[];
+}
+
+const { heading, rows } = Astro.props;
+---
+
+<h2 class="section-heading">{heading.toUpperCase()}</h2>
+{
+  rows && rows.length > 0 ? (
+    <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-red text-white">
+            <th class="px-4 py-3 font-semibold tracking-wide uppercase">
+              Dates
+            </th>
+            <th class="px-4 py-3 font-semibold tracking-wide uppercase">
+              Tournament
+            </th>
+            <th class="hidden px-4 py-3 font-semibold tracking-wide uppercase sm:table-cell">
+              Location
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+          {rows.map((event, i) => (
+            <tr
+              class={
+                i % 2 === 0
+                  ? "bg-white dark:bg-gray-900"
+                  : "bg-gray-50 dark:bg-gray-800/50"
+              }
+            >
+              <td class="px-4 py-3 font-mono text-xs whitespace-nowrap text-gray-600 dark:text-gray-400">
+                {event.dates}
+              </td>
+              <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
+                {event.tournament}
+                <div class="mt-0.5 text-xs text-gray-500 sm:hidden dark:text-gray-400">
+                  {event.location}
+                </div>
+              </td>
+              <td class="hidden px-4 py-3 text-gray-600 sm:table-cell dark:text-gray-400">
+                {event.location}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  ) : (
+    <div class="card">
+      <p class="body-text">Coming soon.</p>
+    </div>
+  )
+}

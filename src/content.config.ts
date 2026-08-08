@@ -23,6 +23,21 @@ const sanityImage = z.looseObject({
 });
 
 /**
+ * Tournaments on a schedule. The fall and spring/summer tables hold the same
+ * shape, and either may be empty — a season nobody has booked yet renders its
+ * heading above "Coming soon" rather than disappearing.
+ */
+const scheduleEvents = z
+  .array(
+    z.object({
+      dates: z.string(),
+      tournament: z.string(),
+      location: z.string(),
+    })
+  )
+  .optional();
+
+/**
  * The About page, edited in Sanity Studio.
  *
  * A single document, so the collection holds exactly one entry, keyed "about".
@@ -70,12 +85,13 @@ const teams = defineCollection({
       teamPhoto,
       instagramUrl,
       facebookUrl,
+      fallScheduleHeading,
       scheduleHeading,
-      resultsHeading,
       staff[]{ name, role, email, bio },
       roster[]{ name, number, position, gradYear, highSchool, photo },
+      fallSchedule[]{ dates, tournament, location },
       schedule[]{ dates, tournament, location },
-      results[]{ date, tournament, location, result }
+      resultTables[]{ heading, rows[]{ date, tournament, location, result } }
     }`,
     entryId: doc => String(doc.slug),
     // The nav, the Teams page and the Tryouts page are all derived from this
@@ -94,8 +110,8 @@ const teams = defineCollection({
     // z.string().url().
     instagramUrl: z.url().optional(),
     facebookUrl: z.url().optional(),
+    fallScheduleHeading: z.string(),
     scheduleHeading: z.string(),
-    resultsHeading: z.string(),
     staff: z
       .array(
         z.object({
@@ -118,22 +134,25 @@ const teams = defineCollection({
         })
       )
       .optional(),
-    schedule: z
+    fallSchedule: scheduleEvents,
+    schedule: scheduleEvents,
+    // One table per year, newest first, in whatever order the coach arranged
+    // them. A table with no rows is legitimate — a season underway with nothing
+    // to report yet — and renders its heading above "Coming soon".
+    resultTables: z
       .array(
         z.object({
-          dates: z.string(),
-          tournament: z.string(),
-          location: z.string(),
-        })
-      )
-      .optional(),
-    results: z
-      .array(
-        z.object({
-          date: z.string(),
-          tournament: z.string(),
-          location: z.string(),
-          result: z.string(),
+          heading: z.string(),
+          rows: z
+            .array(
+              z.object({
+                date: z.string(),
+                tournament: z.string(),
+                location: z.string(),
+                result: z.string(),
+              })
+            )
+            .optional(),
         })
       )
       .optional(),

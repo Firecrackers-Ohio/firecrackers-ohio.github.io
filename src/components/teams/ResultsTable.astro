@@ -1,0 +1,78 @@
+---
+/**
+ * One year's results on a team page: a heading and the finishes beneath it.
+ *
+ * The Results tab stacks as many of these as a coach has added, newest year
+ * first. Same shape as ScheduleTable with a Finish column on the end — kept as
+ * its own component rather than a shared configurable table, because that
+ * fourth column and its mobile handling are most of what a reader is here for.
+ */
+interface Props {
+  heading: string;
+  rows?: {
+    date: string;
+    tournament: string;
+    location: string;
+    result: string;
+  }[];
+}
+
+const { heading, rows } = Astro.props;
+---
+
+<h2 class="section-heading">{heading.toUpperCase()}</h2>
+{
+  rows && rows.length > 0 ? (
+    <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="bg-red text-white">
+            <th class="px-4 py-3 font-semibold tracking-wide uppercase">
+              Date
+            </th>
+            <th class="px-4 py-3 font-semibold tracking-wide uppercase">
+              Tournament
+            </th>
+            <th class="hidden px-4 py-3 font-semibold tracking-wide uppercase sm:table-cell">
+              Location
+            </th>
+            <th class="px-4 py-3 font-semibold tracking-wide uppercase">
+              Result
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+          {rows.map((entry, i) => (
+            <tr
+              class={
+                i % 2 === 0
+                  ? "bg-white dark:bg-gray-900"
+                  : "bg-gray-50 dark:bg-gray-800/50"
+              }
+            >
+              <td class="px-4 py-3 font-mono text-xs whitespace-nowrap text-gray-600 dark:text-gray-400">
+                {entry.date}
+              </td>
+              <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
+                {entry.tournament}
+                <div class="mt-0.5 text-xs text-gray-500 sm:hidden dark:text-gray-400">
+                  {entry.location}
+                </div>
+              </td>
+              <td class="hidden px-4 py-3 text-gray-600 sm:table-cell dark:text-gray-400">
+                {entry.location}
+              </td>
+              <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
+                {entry.result}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  ) : (
+    <div class="card">
+      <p class="body-text">Coming soon.</p>
+    </div>
+  )
+}
