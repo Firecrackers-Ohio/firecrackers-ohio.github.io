@@ -40,19 +40,11 @@ const { pageTitle, sections } = about.data;
     <!-- Main Content -->
     <div class="mx-auto max-w-4xl space-y-12">
       {
-        /* Layout alternates by position — plain, boxed, plain, boxed — rather
-           than being chosen per section in the CMS. Editors control the words
-           and the order; the presentation is decided here. */
         sections.map((section, i) =>
-          i % 2 === 1 ? (
+          (
             <section class="card-lg">
               <h2 class="section-heading text-center">{section.heading}</h2>
               <RichText value={section.body} />
-            </section>
-          ) : (
-            <section class="text-center">
-              <h2 class="section-heading">{section.heading}</h2>
-              <RichText value={section.body} size="large" />
             </section>
           )
         )

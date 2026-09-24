@@ -4,7 +4,7 @@ export const EXTERNAL_URLS = {
     import.meta.env.PUBLIC_TEAM_STORE_URL ||
     "https://gear.firecrackersoftball.com/",
   tournament:
-    import.meta.env.PUBLIC_TOURNAMENT_URL || "https://tinyurl.com/boombash26",
+    import.meta.env.PUBLIC_TOURNAMENT_URL || "https://docs.google.com/forms/d/e/1FAIpQLScT-0w5X0KQbcJ6IpNWcYac_x4EJsxVM3-y6SHeBNdmLCi7Dg/viewform",
   tryoutRegistration:
     import.meta.env.PUBLIC_TRYOUT_REGISTRATION_URL ||
     "https://docs.google.com/forms/d/e/1FAIpQLSd3Xiv5M5WycU9bQDIubCt_eAFehdVMxJ-IRgg3rR7nxvEIgw/viewform",
