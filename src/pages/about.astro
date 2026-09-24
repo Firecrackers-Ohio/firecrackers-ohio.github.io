@@ -40,7 +40,7 @@ const { pageTitle, sections } = about.data;
     <!-- Main Content -->
     <div class="mx-auto max-w-4xl space-y-12">
       {
-        sections.map((section, i) => (
+        sections.map(section => (
           <section class="card-lg">
             <h2 class="section-heading text-center">{section.heading}</h2>
             <RichText value={section.body} />
